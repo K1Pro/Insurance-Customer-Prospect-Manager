@@ -37,6 +37,8 @@ const showSearchList = function (JsonDB) {
       if (rep < 10) {
         rep++;
         message.innerText +=
+          rep +
+          ') ' +
           userData.FirstName +
           ' ' +
           userData.LastName +
