@@ -2,6 +2,7 @@ const ContactsURL = 'http://192.168.54.22:4000/contacts';
 const message = document.getElementById('message');
 const firstNameSearch = document.getElementById('firstNameSearch');
 let rep = 0;
+let count = 0;
 
 //////////  Connecting to Database and Retrieving Data
 const getJSON = function (url, errorMsg = 'Something went wrong') {
@@ -12,46 +13,37 @@ const getJSON = function (url, errorMsg = 'Something went wrong') {
 };
 
 const showSearchList = function (JsonDB) {
-  console.log(`test 1: ${firstNameSearch.value.toLowerCase()}`);
+  // prints the entire array: console.log(JsonDB);
 
-  if (rep < 10) {
-    message.innerText = '';
-  }
+  message.innerText = '';
+  rep = 0;
+  count = 0;
 
-  for (let userData in JsonDB) {
-    if (rep < 10) {
-      const searchingFirstName = JsonDB[
-        userData
-      ].FirstName.toLowerCase().includes(firstNameSearch.value.toLowerCase());
-
-      const searchingLastName = JsonDB[
-        userData
-      ].LastName.toLowerCase().includes(firstNameSearch.value.toLowerCase());
-
-      const searchingSpouseName = JsonDB[userData].SpouseName.includes(
-        firstNameSearch.value
-      );
-
-      if (searchingFirstName || searchingLastName || searchingSpouseName) {
+  JsonDB.filter((userData) => {
+    if (
+      userData.FirstName.toLowerCase().slice(0, firstNameSearch.value.length) ==
+      firstNameSearch.value.toLowerCase()
+    ) {
+      count++;
+      if (rep < 10) {
         rep++;
-
-        console.log(`test 2: ${rep}`);
         message.innerText +=
-          JsonDB[userData].FirstName +
+          userData.FirstName +
           ' ' +
-          JsonDB[userData].LastName +
+          userData.LastName +
           ' - ' +
-          JsonDB[userData].id +
+          userData.id +
           '\n';
       }
     }
-  }
+  });
+  message.innerText += 'Found ' + count + ' results';
 };
 
 ////////// Event Listener For First Name Search
 firstNameSearch.addEventListener('keyup', function (e) {
   if (
-    e.key !== 'Backspace' &&
+    // e.key !== 'Backspace' &&
     e.key !== 'Shift' &&
     e.key !== 'CapsLock' &&
     e.key !== 'Control' &&
