@@ -20,9 +20,18 @@ const showSearchList = function (JsonDB) {
   count = 0;
 
   JsonDB.filter((userData) => {
+    let FullName = userData.FirstName + ' ' + userData.LastName;
     if (
       userData.FirstName.toLowerCase().slice(0, firstNameSearch.value.length) ==
-      firstNameSearch.value.toLowerCase()
+        firstNameSearch.value.toLowerCase() ||
+      userData.LastName.toLowerCase().slice(0, firstNameSearch.value.length) ==
+        firstNameSearch.value.toLowerCase() ||
+      userData.SpouseName.toLowerCase().slice(
+        0,
+        firstNameSearch.value.length
+      ) == firstNameSearch.value.toLowerCase() ||
+      FullName.toLowerCase().slice(0, firstNameSearch.value.length) ==
+        firstNameSearch.value.toLowerCase()
     ) {
       count++;
       if (rep < 10) {
@@ -37,7 +46,10 @@ const showSearchList = function (JsonDB) {
       }
     }
   });
-  message.innerText += 'Found ' + count + ' results';
+
+  firstNameSearch.value.length == 0
+    ? (message.innerText = '')
+    : (message.innerText += 'Found ' + count + ' results');
 };
 
 ////////// Event Listener For First Name Search
@@ -49,11 +61,8 @@ firstNameSearch.addEventListener('keyup', function (e) {
     e.key !== 'Control' &&
     e.key !== 'Alt'
   ) {
-    // if (firstNameSearch.value.length > 3) {
-    // console.log(e.key);
     getJSON(ContactsURL).then((data) => {
       showSearchList(data);
     });
-    // }
   }
 });
