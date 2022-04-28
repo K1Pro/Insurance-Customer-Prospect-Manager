@@ -1,0 +1,22 @@
+{
+  "name": "calendar",
+  "version": "1.0.0",
+  "description": "Calendar App",
+  "main": "index.js",
+  "scripts": {
+    "test": "nodemon search.html",
+    "bart": "nodemon -e * search.js",
+    "start": "json-server --watch contacts.json --port 4000 --host 192.168.54.22"
+  },
+  "nodemonConfig": {
+    "ext": "js,html"
+  },
+  "author": "Bartosz",
+  "license": "ISC",
+  "dependencies": {
+    "forever": "^4.0.3",
+    "json-server": "^0.17.0",
+    "nodemon": "^2.0.15",
+    "pm2": "^5.2.0"
+  }
+}
