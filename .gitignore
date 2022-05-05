@@ -13,6 +13,7 @@
 /build
 
 # database
+/database_backup
 contacts.json
 ContactsCleanedComma.csv
 startjson.sh

@@ -1,14 +1,27 @@
 const ContactsURL = 'http://192.168.54.22:4000/contacts';
 const message = document.getElementById('message');
-const firstNameSearch = document.getElementById('firstNameSearch');
+const contactSearch = document.getElementById('contactSearch');
 const firstNameInput = document.getElementById('inputFirstName');
 const lastNameInput = document.getElementById('inputLastName');
+const spouseFirstNameInput = document.getElementById('inputSpouseFirstName');
+const spouseLastNameInput = document.getElementById('inputSpouseLastName');
+const birthDateInput = document.getElementById('inputBirthDate');
+const spouseBirthDateInput = document.getElementById('inputSpouseBirthDate');
 const addressInput = document.getElementById('inputAddress');
+const address2Input = document.getElementById('inputAddress2');
 const cityInput = document.getElementById('inputCity');
+const stateInput = document.getElementById('inputState');
 const zipInput = document.getElementById('inputZip');
+const phoneInput = document.getElementById('inputPhone');
+const emailInput = document.getElementById('inputEmail');
 let list = document.getElementById('myList');
 let rep = 0;
 let count = 0;
+
+function BK_UpperCase(anyInput) {
+  anyInput = anyInput.toUpperCase();
+  return anyInput;
+}
 
 //////////  Connecting to Database and Retrieving Data
 const getJSON = function (url, errorMsg = 'Something went wrong') {
@@ -28,17 +41,22 @@ const showSearchList = function (JsonDB) {
 
   JsonDB.filter((userData) => {
     let FullName = userData.FirstName + ' ' + userData.LastName;
+    let SpouseFullName = userData.SpouseName + ' ' + userData.SpouseLastName;
     if (
-      userData.FirstName.toLowerCase().slice(0, firstNameSearch.value.length) ==
-        firstNameSearch.value.toLowerCase() ||
-      userData.LastName.toLowerCase().slice(0, firstNameSearch.value.length) ==
-        firstNameSearch.value.toLowerCase() ||
-      userData.SpouseName.toLowerCase().slice(
+      userData.FirstName.toLowerCase().slice(0, contactSearch.value.length) ==
+        contactSearch.value.toLowerCase() ||
+      userData.LastName.toLowerCase().slice(0, contactSearch.value.length) ==
+        contactSearch.value.toLowerCase() ||
+      FullName.toLowerCase().slice(0, contactSearch.value.length) ==
+        contactSearch.value.toLowerCase() ||
+      userData.SpouseName.toLowerCase().slice(0, contactSearch.value.length) ==
+        contactSearch.value.toLowerCase() ||
+      userData.SpouseLastName.toLowerCase().slice(
         0,
-        firstNameSearch.value.length
-      ) == firstNameSearch.value.toLowerCase() ||
-      FullName.toLowerCase().slice(0, firstNameSearch.value.length) ==
-        firstNameSearch.value.toLowerCase()
+        contactSearch.value.length
+      ) == contactSearch.value.toLowerCase() ||
+      SpouseFullName.toLowerCase().slice(0, contactSearch.value.length) ==
+        contactSearch.value.toLowerCase()
     ) {
       count++;
       if (rep < 10) {
@@ -52,22 +70,30 @@ const showSearchList = function (JsonDB) {
             console.log(userData.id);
             firstNameInput.value = userData.FirstName;
             lastNameInput.value = userData.LastName;
+            birthDateInput.value = userData.BirthDate;
+            spouseFirstNameInput.value = userData.SpouseName;
+            spouseLastNameInput.value = userData.SpouseLastName;
+            spouseBirthDateInput.value = userData.SpouseBirthDate;
             addressInput.value = userData.Address;
+            address2Input.value = userData.Address2;
             cityInput.value = userData.City;
+            stateInput.value = BK_UpperCase(userData.State);
             zipInput.value = userData.Zip;
+            phoneInput.value = userData.Phone;
+            emailInput.value = userData.Email;
           });
         rep++;
       }
     }
   });
 
-  firstNameSearch.value.length == 0
+  contactSearch.value.length == 0
     ? (message.innerText = '')
     : (message.innerText += 'Found ' + count + ' results');
 };
 
 ////////// Event Listener For First Name Search
-firstNameSearch.addEventListener('keyup', function (e) {
+contactSearch.addEventListener('keyup', function (e) {
   if (
     // e.key !== 'Backspace' &&
     e.key !== 'Shift' &&
@@ -80,3 +106,5 @@ firstNameSearch.addEventListener('keyup', function (e) {
     });
   }
 });
+
+// contactSearch.addEventListener('keyup', function (e) {

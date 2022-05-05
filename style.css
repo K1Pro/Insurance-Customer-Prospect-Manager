@@ -1,0 +1,10 @@
+li:hover {
+  background-color: grey;
+  transition: background-color 800ms;
+  cursor: pointer;
+  /* font-size: 150%; */
+}
+li {
+  text-decoration: none;
+  list-style: none;
+}
