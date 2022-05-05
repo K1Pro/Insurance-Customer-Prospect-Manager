@@ -12,7 +12,7 @@
       crossorigin="anonymous"
     />
     <script defer src="search.js"></script>
-    <title>Search for Contacts</title>
+    <title>Insurance Contact Manager</title>
   </head>
   <body>
     <div class="container-fluid">
@@ -31,6 +31,7 @@
         >
           Search Name or Phone:<br />
           <input type="text" id="firstNameSearch" /><br />
+          <ul id="myList"></ul>
           <div id="message"></div>
         </div>
         <div
@@ -43,65 +44,106 @@
           class="col bg-secondary h-100"
           style="padding: 10px; --bs-bg-opacity: 0.25"
         >
-          <form class="row g-3">
-            <div class="col-md-6">
-              <input
-                type="email"
-                placeholder="Email"
-                class="form-control"
-                id="inputEmail4"
-              />
+          <form>
+            <div class="row g-2">
+              <div class="col-md-1">
+                <input
+                  type="text"
+                  placeholder="First Name"
+                  class="form-control"
+                  id="inputFirstName"
+                />
+              </div>
+              <div class="col-md-2">
+                <input
+                  type="text"
+                  placeholder="Last Name"
+                  class="form-control"
+                  id="inputLastName"
+                />
+              </div>
+              <div class="col-md-1">
+                <input
+                  type="text"
+                  placeholder="Spouse First Name"
+                  class="form-control"
+                  id="inputSpouseFirstName"
+                />
+              </div>
+              <div class="col-md-2">
+                <input
+                  type="text"
+                  placeholder="Spouse Last Name"
+                  class="form-control"
+                  id="inputSpouseLastName"
+                />
+              </div>
             </div>
-            <div class="col-md-6">
-              <input
-                type="password"
-                placeholder="Password"
-                class="form-control"
-                id="inputPassword4"
-              />
+            <div class="row g-2">
+              <div class="col-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="inputAddress"
+                  placeholder="Address"
+                />
+              </div>
+              <div class="col-1">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="inputAddress2"
+                  placeholder="Address 2"
+                />
+              </div>
+              <div class="col-md-2">
+                <input
+                  type="text"
+                  placeholder="City"
+                  class="form-control"
+                  id="inputCity"
+                />
+              </div>
             </div>
-            <div class="col-12">
-              <input
-                type="text"
-                class="form-control"
-                id="inputAddress"
-                placeholder="Address"
-              />
+            <div class="row g-2">
+              <div class="col-md-1">
+                <select id="inputState" class="form-select">
+                  <option selected>Choose State...</option>
+                  <option>...</option>
+                </select>
+              </div>
+              <div class="col-md-1">
+                <input
+                  type="text"
+                  placeholder="Zip"
+                  class="form-control"
+                  id="inputZip"
+                />
+              </div>
+              <div class="col-md-2">
+                <input
+                  type="text"
+                  placeholder="Phone"
+                  class="form-control"
+                  id="inputPhone"
+                />
+              </div>
+              <div class="col-md-2">
+                <input
+                  type="text"
+                  placeholder="Email"
+                  class="form-control"
+                  id="inputEmail"
+                />
+              </div>
             </div>
-            <div class="col-12">
-              <input
-                type="text"
-                class="form-control"
-                id="inputAddress2"
-                placeholder="Address 2"
-              />
-            </div>
-            <div class="col-md-6">
-              <input
-                type="text"
-                placeholder="City"
-                class="form-control"
-                id="inputCity"
-              />
-            </div>
-            <div class="col-md-4">
-              <select id="inputState" class="form-select">
-                <option selected>Choose State...</option>
-                <option>...</option>
-              </select>
-            </div>
-            <div class="col-md-2">
-              <input
-                type="text"
-                placeholder="Zip"
-                class="form-control"
-                id="inputZip"
-              />
-            </div>
-            <div class="col-12">
-              <button type="submit" class="btn btn-primary">
-                Create Customer/Prospect
-              </button>
+            <br />
+            <div class="row g-2">
+              <div class="col-md-3">
+                <button type="submit" class="btn btn-primary">
+                  Create Customer/Prospect
+                </button>
+              </div>
             </div>
           </form>
         </div>
