@@ -4,8 +4,10 @@ const contactSearch = document.getElementById('contactSearch');
 let list = document.getElementById('myList');
 let rep = 0;
 let count = 0;
+BK_UpperCase = (anyInput) => (anyInput = anyInput.toUpperCase());
+BK_LowerCase = (anyInput) => (anyInput = anyInput.toLowerCase());
 
-// Dynamically assigning Contact Fields to variable name and adding EventListener
+// Programmatically assigning Contact Fields to variable name and adding EventListener
 const ContactFields = document
   .getElementById('ContactFields')
   .querySelectorAll('*');
@@ -22,9 +24,6 @@ for (let rep = 0; rep < ContactFields.length; rep++) {
       });
   }
 }
-
-BK_UpperCase = (anyInput) => (anyInput = anyInput.toUpperCase());
-BK_LowerCase = (anyInput) => (anyInput = anyInput.toLowerCase());
 
 //////////  Connecting to Database and Retrieving Data
 const getJSON = function (url, errorMsg = 'Something went wrong') {
@@ -88,27 +87,7 @@ const showSearchList = function (JsonDB) {
         li.setAttribute('id', `list${userData.id}`);
         li.innerText = userData.FirstName + ' ' + userData.LastName;
         list.appendChild(li);
-        // this is an commented working version replaced by a dynamically loaded input values
-        // document
-        //   .getElementById(`${userData.id}`)
-        //   .addEventListener('click', function () {
-        //     console.log(`Contact ID from Search List: ${userData.id}`);
-        //     id.value = userData.id;
-        //     FirstName.value = userData.FirstName;
-        //     LastName.value = userData.LastName;
-        //     BirthDate.value = userData.BirthDate;
-        //     SpouseName.value = userData.SpouseName;
-        //     SpouseLastName.value = userData.SpouseLastName;
-        //     SpouseBirthDate.value = userData.SpouseBirthDate;
-        //     Address.value = userData.Address;
-        //     Address2.value = userData.Address2;
-        //     City.value = userData.City;
-        //     State.value = BK_UpperCase(userData.State);
-        //     Zip.value = userData.Zip;
-        //     Phone.value = userData.Phone;
-        //     Email.value = userData.Email;
-        //   });
-
+        // programmatically userData inserted into Contact Fields
         window['list' + userData.id] = document
           .getElementById(`list${userData.id}`)
           .addEventListener('click', function () {
