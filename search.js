@@ -1,27 +1,38 @@
+// const Demo = document.getElementById('Demo');
+// DemoTwo = Demo.querySelectorAll('*');
+// for (let ii = 0; ii < DemoTwo.length; ii++) {
+//   let childId = DemoTwo[ii].id;
+//   if (childId) {
+//     console.log(childId);
+//     eval('let ' + childId + '=' + 'document.getElementById(' + childId + ');');
+//   }
+// }
+
 const ContactsURL = 'http://192.168.54.22:4000/contacts';
 const message = document.getElementById('message');
 const contactSearch = document.getElementById('contactSearch');
-const firstNameInput = document.getElementById('inputFirstName');
-const lastNameInput = document.getElementById('inputLastName');
-const spouseFirstNameInput = document.getElementById('inputSpouseFirstName');
-const spouseLastNameInput = document.getElementById('inputSpouseLastName');
-const birthDateInput = document.getElementById('inputBirthDate');
-const spouseBirthDateInput = document.getElementById('inputSpouseBirthDate');
-const addressInput = document.getElementById('inputAddress');
-const address2Input = document.getElementById('inputAddress2');
-const cityInput = document.getElementById('inputCity');
-const stateInput = document.getElementById('inputState');
-const zipInput = document.getElementById('inputZip');
-const phoneInput = document.getElementById('inputPhone');
-const emailInput = document.getElementById('inputEmail');
+
+const contactIDFound = document.getElementById('id');
+const FirstName = document.getElementById('FirstName');
+const LastName = document.getElementById('LastName');
+const SpouseName = document.getElementById('SpouseName');
+const SpouseLastName = document.getElementById('SpouseLastName');
+const BirthDate = document.getElementById('BirthDate');
+const SpouseBirthDate = document.getElementById('SpouseBirthDate');
+const Address = document.getElementById('Address');
+const Address2 = document.getElementById('Address2');
+const City = document.getElementById('City');
+const State = document.getElementById('State');
+const Zip = document.getElementById('Zip');
+const Phone = document.getElementById('Phone');
+const Email = document.getElementById('Email');
+
 let list = document.getElementById('myList');
 let rep = 0;
 let count = 0;
 
-function BK_UpperCase(anyInput) {
-  anyInput = anyInput.toUpperCase();
-  return anyInput;
-}
+BK_UpperCase = (anyInput) => (anyInput = anyInput.toUpperCase());
+BK_LowerCase = (anyInput) => (anyInput = anyInput.toLowerCase());
 
 //////////  Connecting to Database and Retrieving Data
 const getJSON = function (url, errorMsg = 'Something went wrong') {
@@ -30,6 +41,27 @@ const getJSON = function (url, errorMsg = 'Something went wrong') {
     return response.json();
   });
 };
+
+//////////  Adding Database and Retrieving Data
+function updateContactInfo(contactID, updateThisKey, updateThisValue) {
+  console.log(`${ContactsURL}/${contactID}`);
+
+  fetch(`${ContactsURL}/${contactID}`, {
+    method: 'PATCH',
+    body: JSON.stringify({
+      [updateThisKey]: updateThisValue,
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => response.text())
+    .then(() => {
+      getJSON(ContactsURL).then((data) => {
+        showSearchList(data);
+      });
+    });
+}
 
 const showSearchList = function (JsonDB) {
   // prints the entire array: console.log(JsonDB);
@@ -43,20 +75,20 @@ const showSearchList = function (JsonDB) {
     let FullName = userData.FirstName + ' ' + userData.LastName;
     let SpouseFullName = userData.SpouseName + ' ' + userData.SpouseLastName;
     if (
-      userData.FirstName.toLowerCase().slice(0, contactSearch.value.length) ==
-        contactSearch.value.toLowerCase() ||
-      userData.LastName.toLowerCase().slice(0, contactSearch.value.length) ==
-        contactSearch.value.toLowerCase() ||
-      FullName.toLowerCase().slice(0, contactSearch.value.length) ==
-        contactSearch.value.toLowerCase() ||
-      userData.SpouseName.toLowerCase().slice(0, contactSearch.value.length) ==
-        contactSearch.value.toLowerCase() ||
-      userData.SpouseLastName.toLowerCase().slice(
+      BK_LowerCase(userData.FirstName).slice(0, contactSearch.value.length) ==
+        BK_LowerCase(contactSearch.value) ||
+      BK_LowerCase(userData.LastName).slice(0, contactSearch.value.length) ==
+        BK_LowerCase(contactSearch.value) ||
+      BK_LowerCase(FullName).slice(0, contactSearch.value.length) ==
+        BK_LowerCase(contactSearch.value) ||
+      BK_LowerCase(userData.SpouseName).slice(0, contactSearch.value.length) ==
+        BK_LowerCase(contactSearch.value) ||
+      BK_LowerCase(userData.SpouseLastName).slice(
         0,
         contactSearch.value.length
-      ) == contactSearch.value.toLowerCase() ||
-      SpouseFullName.toLowerCase().slice(0, contactSearch.value.length) ==
-        contactSearch.value.toLowerCase()
+      ) == BK_LowerCase(contactSearch.value) ||
+      BK_LowerCase(SpouseFullName).slice(0, contactSearch.value.length) ==
+        BK_LowerCase(contactSearch.value)
     ) {
       count++;
       if (rep < 10) {
@@ -68,19 +100,20 @@ const showSearchList = function (JsonDB) {
           .getElementById(`${userData.id}`)
           .addEventListener('click', function () {
             console.log(userData.id);
-            firstNameInput.value = userData.FirstName;
-            lastNameInput.value = userData.LastName;
-            birthDateInput.value = userData.BirthDate;
-            spouseFirstNameInput.value = userData.SpouseName;
-            spouseLastNameInput.value = userData.SpouseLastName;
-            spouseBirthDateInput.value = userData.SpouseBirthDate;
-            addressInput.value = userData.Address;
-            address2Input.value = userData.Address2;
-            cityInput.value = userData.City;
-            stateInput.value = BK_UpperCase(userData.State);
-            zipInput.value = userData.Zip;
-            phoneInput.value = userData.Phone;
-            emailInput.value = userData.Email;
+            contactIDFound.value = userData.id;
+            FirstName.value = userData.FirstName;
+            LastName.value = userData.LastName;
+            BirthDate.value = userData.BirthDate;
+            SpouseName.value = userData.SpouseName;
+            SpouseLastName.value = userData.SpouseLastName;
+            SpouseBirthDate.value = userData.SpouseBirthDate;
+            Address.value = userData.Address;
+            Address2.value = userData.Address2;
+            City.value = userData.City;
+            State.value = BK_UpperCase(userData.State);
+            Zip.value = userData.Zip;
+            Phone.value = userData.Phone;
+            Email.value = userData.Email;
           });
         rep++;
       }
@@ -107,4 +140,13 @@ contactSearch.addEventListener('keyup', function (e) {
   }
 });
 
-// contactSearch.addEventListener('keyup', function (e) {
+FirstName.addEventListener('change', function (e) {
+  let thisID = this.id;
+  let thisValue = this.value;
+  updateContactInfo(contactIDFound.value, thisID, thisValue);
+});
+SpouseName.addEventListener('change', function (e) {
+  let thisID = this.id;
+  let thisValue = this.value;
+  updateContactInfo(contactIDFound.value, thisID, thisValue);
+});
