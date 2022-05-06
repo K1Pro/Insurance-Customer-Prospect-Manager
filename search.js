@@ -1,43 +1,27 @@
-const Demo = document.getElementById('Demo');
-DemoTwo = Demo.querySelectorAll('*');
-for (let ii = 0; ii < DemoTwo.length; ii++) {
-  let childId = DemoTwo[ii].id;
-  if (childId) {
-    console.log(childId);
-    // eval('let ' + childId + '=' + 'document.getElementById(' + childId + ');');
-    window['childId'] = document
-      .getElementById(`${childId}`)
-      .addEventListener('change', function (e) {
-        let thisID = this.id;
-        let thisValue = this.value;
-        console.log('now we are here');
-        updateContactInfo(id.value, thisID, thisValue);
-      });
-  }
-}
-
 const ContactsURL = 'http://192.168.54.22:4000/contacts';
 const message = document.getElementById('message');
 const contactSearch = document.getElementById('contactSearch');
-
-// const id = document.getElementById('id');
-// const FirstName = document.getElementById('FirstName');
-// const LastName = document.getElementById('LastName');
-// const SpouseName = document.getElementById('SpouseName');
-// const SpouseLastName = document.getElementById('SpouseLastName');
-// const BirthDate = document.getElementById('BirthDate');
-// const SpouseBirthDate = document.getElementById('SpouseBirthDate');
-// const Address = document.getElementById('Address');
-// const Address2 = document.getElementById('Address2');
-// const City = document.getElementById('City');
-// const State = document.getElementById('State');
-// const Zip = document.getElementById('Zip');
-// const Phone = document.getElementById('Phone');
-// const Email = document.getElementById('Email');
-
 let list = document.getElementById('myList');
 let rep = 0;
 let count = 0;
+
+// Dynamically assigning Contact Fields to variable name and adding EventListener
+const ContactFields = document
+  .getElementById('ContactFields')
+  .querySelectorAll('*');
+for (let rep = 0; rep < ContactFields.length; rep++) {
+  let ContactFieldsIDs = ContactFields[rep].id;
+  if (ContactFieldsIDs) {
+    console.log(ContactFieldsIDs);
+    window['ContactFieldsIDs'] = document
+      .getElementById(`${ContactFieldsIDs}`)
+      .addEventListener('change', function (e) {
+        let ContactFieldID = this.id;
+        let ContactFieldValue = this.value;
+        updateContactInfo(id.value, ContactFieldID, ContactFieldValue);
+      });
+  }
+}
 
 BK_UpperCase = (anyInput) => (anyInput = anyInput.toUpperCase());
 BK_LowerCase = (anyInput) => (anyInput = anyInput.toLowerCase());
@@ -101,28 +85,48 @@ const showSearchList = function (JsonDB) {
       count++;
       if (rep < 10) {
         let li = document.createElement('li');
-        li.setAttribute('id', userData.id);
+        li.setAttribute('id', `list${userData.id}`);
         li.innerText = userData.FirstName + ' ' + userData.LastName;
         list.appendChild(li);
-        document
-          .getElementById(`${userData.id}`)
+        // this is an commented working version replaced by a dynamically loaded input values
+        // document
+        //   .getElementById(`${userData.id}`)
+        //   .addEventListener('click', function () {
+        //     console.log(`Contact ID from Search List: ${userData.id}`);
+        //     id.value = userData.id;
+        //     FirstName.value = userData.FirstName;
+        //     LastName.value = userData.LastName;
+        //     BirthDate.value = userData.BirthDate;
+        //     SpouseName.value = userData.SpouseName;
+        //     SpouseLastName.value = userData.SpouseLastName;
+        //     SpouseBirthDate.value = userData.SpouseBirthDate;
+        //     Address.value = userData.Address;
+        //     Address2.value = userData.Address2;
+        //     City.value = userData.City;
+        //     State.value = BK_UpperCase(userData.State);
+        //     Zip.value = userData.Zip;
+        //     Phone.value = userData.Phone;
+        //     Email.value = userData.Email;
+        //   });
+
+        window['list' + userData.id] = document
+          .getElementById(`list${userData.id}`)
           .addEventListener('click', function () {
-            console.log(userData.id);
-            id.value = userData.id;
-            FirstName.value = userData.FirstName;
-            LastName.value = userData.LastName;
-            BirthDate.value = userData.BirthDate;
-            SpouseName.value = userData.SpouseName;
-            SpouseLastName.value = userData.SpouseLastName;
-            SpouseBirthDate.value = userData.SpouseBirthDate;
-            Address.value = userData.Address;
-            Address2.value = userData.Address2;
-            City.value = userData.City;
-            State.value = BK_UpperCase(userData.State);
-            Zip.value = userData.Zip;
-            Phone.value = userData.Phone;
-            Email.value = userData.Email;
+            console.log(`Contact ID from Search List: ${userData.id}`);
+            for (
+              let SecondRep = 0;
+              SecondRep < ContactFields.length;
+              SecondRep++
+            ) {
+              let ContactFieldsIDs = ContactFields[SecondRep].id;
+              if (ContactFieldsIDs) {
+                document.getElementById(
+                  `${ContactFieldsIDs}`
+                ).value = `${userData[ContactFieldsIDs]}`;
+              }
+            }
           });
+
         rep++;
       }
     }
@@ -147,14 +151,3 @@ contactSearch.addEventListener('keyup', function (e) {
     });
   }
 });
-// This is no longer needed, is being loaded dynamically
-// FirstName.addEventListener('change', function (e) {
-//   let thisID = this.id;
-//   let thisValue = this.value;
-//   updateContactInfo(id.value, thisID, thisValue);
-// });
-// SpouseName.addEventListener('change', function (e) {
-//   let thisID = this.id;
-//   let thisValue = this.value;
-//   updateContactInfo(id.value, thisID, thisValue);
-// });
