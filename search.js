@@ -7,7 +7,21 @@ let rep = 0;
 let count = 0;
 BK_UpperCase = (anyInput) => (anyInput = anyInput.toUpperCase());
 BK_LowerCase = (anyInput) => (anyInput = anyInput.toLowerCase());
-let controller = null;
+// let controller = null;
+controller = new AbortController();
+
+let nav = 0;
+let clicked = null;
+const calendar = document.getElementById('calendar');
+const weekdays = [
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+];
 
 // Programmatically assigning Contact Fields to variable name and adding EventListener
 const ContactFields = document
@@ -36,7 +50,7 @@ for (let rep = 0; rep < ContactFields.length; rep++) {
 //   });
 // };
 
-// still working on converting this to async/await
+// Async / Await;
 async function getJSON(url, errorMsg = 'Something went wrong') {
   try {
     console.log('bart started request...');
@@ -134,7 +148,6 @@ const showSearchList = function (JsonDB) {
 
 ////////// Event Listener For First Name Search
 contactSearch.addEventListener('keyup', function (e) {
-  controller = new AbortController();
   if (
     // e.key !== 'Backspace' &&
     e.key !== 'Shift' &&
@@ -146,11 +159,84 @@ contactSearch.addEventListener('keyup', function (e) {
       showSearchList(data);
       // controller.abort();
     });
-    controller = null;
   }
 });
-function BartkaTestFunction() {
-  // alert('hi');
-  controller.abort();
+
+// function BartkaTestFunction() {
+//   // alert('hi');
+//   controller.abort();
+// }
+// BartkaTestButton.addEventListener('click', BartkaTestFunction);
+
+function load(myLocalJSONDatabase) {
+  const dt = new Date();
+  if (nav !== 0) {
+    dt.setMonth(new Date().getMonth() + nav);
+  }
+  const day = dt.getDate();
+  const month = dt.getMonth();
+  const year = dt.getFullYear();
+  const firstDayOfMonth = new Date(year, month, 1);
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const dateString = firstDayOfMonth.toLocaleDateString('en-us', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+  });
+  const paddingDays = weekdays.indexOf(dateString.split(', ')[0]);
+
+  document.getElementById(
+    'monthDisplay'
+  ).innerText = `Bundle Insurance - Ubezpieczenia: ${dt.toLocaleDateString(
+    'en-us',
+    { month: 'long' }
+  )} ${day}, ${year}`;
+  calendar.innerHTML = '';
+  for (let i = 1; i <= paddingDays + daysInMonth; i++) {
+    const daySquare = document.createElement('div');
+    daySquare.classList.add('day');
+    const dayString = `${month + 1}/${i - paddingDays}/${year}`;
+    if (i > paddingDays) {
+      daySquare.innerText = i - paddingDays;
+      //original
+      // const eventForDay = events.find((e) => e.date === dayString);
+      const eventForDay = myLocalJSONDatabase?.find(
+        (e) => e.date === dayString
+      );
+
+      if (i - paddingDays === day && nav === 0) {
+        daySquare.id = 'currentDay';
+      }
+
+      if (eventForDay) {
+        const eventDiv = document.createElement('div');
+        eventDiv.classList.add('event');
+        eventDiv.innerText = eventForDay.title;
+        daySquare.appendChild(eventDiv);
+      }
+      daySquare.addEventListener('click', () =>
+        openModal(dayString, myLocalJSONDatabase)
+      );
+    } else {
+      daySquare.classList.add('padding');
+    }
+    calendar.appendChild(daySquare);
+  }
 }
-BartkaTestButton.addEventListener('click', BartkaTestFunction);
+function initButtons() {
+  document.getElementById('nextButton').addEventListener('click', () => {
+    nav++;
+    // fetchRequest();
+    load();
+  });
+
+  document.getElementById('backButton').addEventListener('click', () => {
+    nav--;
+    // fetchRequest();
+    load();
+  });
+}
+
+initButtons();
+load();

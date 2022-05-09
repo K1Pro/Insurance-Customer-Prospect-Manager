@@ -13,15 +13,18 @@
     />
     <!-- <link rel="stylesheet" href="bootstrap.min.css" /> -->
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="calExstyle.css" />
     <script defer src="search.js"></script>
     <title>Bundle Contact Manager</title>
   </head>
   <body>
     <div class="container-fluid">
       <div class="row border border-dark" style="height: 8vh">
-        <div class="col-12 bg-primary text-light" style="--bs-bg-opacity: 1">
-          Bundle Insurance - Ubezpieczenia
-        </div>
+        <div
+          id="monthDisplay"
+          class="col-12 bg-primary text-light"
+          style="--bs-bg-opacity: 1"
+        ></div>
       </div>
       <div
         class="row border border-dark"
@@ -39,14 +42,35 @@
         <div
           class="col-12 col-md-9 bg-secondary"
           style="padding: 10px; --bs-bg-opacity: 0.5"
-        ></div>
+        >
+          <div id="CalendarContainer">
+            <div id="CalendarHeader">
+              <div>
+                <button id="backButton">Back</button>
+                <button id="nextButton">Next</button>
+              </div>
+            </div>
+
+            <div id="weekdays">
+              <div>Sunday</div>
+              <div>Monday</div>
+              <div>Tuesday</div>
+              <div>Wednesday</div>
+              <div>Thursday</div>
+              <div>Friday</div>
+              <div>Saturday</div>
+            </div>
+
+            <div id="calendar"></div>
+          </div>
+        </div>
       </div>
       <div class="row" style="height: 46vh; overflow-y: visible">
         <div
           class="col bg-secondary h-100"
           style="padding: 10px; --bs-bg-opacity: 0.25"
         >
-          <form id="ContactFields"">
+          <form id="ContactFields">
             <input
               type="text"
               placeholder="Contact ID"
@@ -225,39 +249,39 @@
               </div>
             </div>
             <div class="row g-2">
-              <div class=" col-md-2">
-              <div class="input-group">
-                <span class="input-group-text">Auto</span>
-                <input
-                  type="text"
-                  placeholder="Policy#"
-                  class="form-control"
-                  id="AutoPolicyNumber"
-                  aria-label="Auto Policy"
-                />
+              <div class="col-md-2">
+                <div class="input-group">
+                  <span class="input-group-text">Auto</span>
+                  <input
+                    type="text"
+                    placeholder="Policy#"
+                    class="form-control"
+                    id="AutoPolicyNumber"
+                    aria-label="Auto Policy"
+                  />
+                </div>
               </div>
-            </div>
-            <div class=" col-md-2">
-              <div class="input-group">
-                <span class="input-group-text">Home</span>
-                <input
-                  type="text"
-                  placeholder="Policy#"
-                  class="form-control"
-                  id="HomePolicyNumber"
-                />
+              <div class="col-md-2">
+                <div class="input-group">
+                  <span class="input-group-text">Home</span>
+                  <input
+                    type="text"
+                    placeholder="Policy#"
+                    class="form-control"
+                    id="HomePolicyNumber"
+                  />
+                </div>
               </div>
-            </div>
               <div class="col-md-2">
                 <div class="input-group">
                   <span class="input-group-text">Life</span>
-                <input
-                  type="text"
-                  placeholder="Policy#"
-                  class="form-control"
-                  id="LifePolicyNumber"
-                />
-              </div>
+                  <input
+                    type="text"
+                    placeholder="Policy#"
+                    class="form-control"
+                    id="LifePolicyNumber"
+                  />
+                </div>
               </div>
             </div>
             <!-- <br />
@@ -269,9 +293,9 @@
               </div>
             </div> -->
           </form>
-          <button type="submit" id="BartkaTestButton" class="btn btn-primary">
+          <!-- <button type="submit" id="BartkaTestButton" class="btn btn-primary">
             Create Customer/Prospect
-          </button>
+          </button> -->
         </div>
       </div>
     </div>
