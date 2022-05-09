@@ -4,10 +4,6 @@ li:hover {
   cursor: pointer;
   /* font-size: 150%; */
 }
-li {
-  text-decoration: none;
-  list-style: none;
-}
 
 #id {
   display: none;
@@ -19,4 +15,9 @@ li {
 .form-control::placeholder {
   color: red;
   opacity: 0.6;
+}
+
+#myList li {
+  list-style: none;
+  margin-left: -27px;
 }

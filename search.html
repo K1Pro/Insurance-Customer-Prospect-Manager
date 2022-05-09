@@ -25,6 +25,10 @@
           class="col-12 bg-primary text-light"
           style="--bs-bg-opacity: 1"
         ></div>
+        <div class="bg-primary">
+          <button id="backButton">Back</button>
+          <button id="nextButton">Next</button>
+        </div>
       </div>
       <div
         class="row border border-dark"
@@ -39,26 +43,18 @@
           <ul id="myList"></ul>
           <div id="message"></div>
         </div>
-        <div
-          class="col-12 col-md-9 bg-secondary"
-          style="padding: 10px; --bs-bg-opacity: 0.5"
-        >
+        <div class="col-12 col-md-9 bg-secondary" style="--bs-bg-opacity: 0.5">
           <div id="CalendarContainer">
-            <div id="CalendarHeader">
-              <div>
-                <button id="backButton">Back</button>
-                <button id="nextButton">Next</button>
-              </div>
-            </div>
+            <div id="CalendarHeader"></div>
 
             <div id="weekdays">
-              <div>Sunday</div>
-              <div>Monday</div>
-              <div>Tuesday</div>
-              <div>Wednesday</div>
-              <div>Thursday</div>
-              <div>Friday</div>
-              <div>Saturday</div>
+              <div>Sun</div>
+              <div>Mon</div>
+              <div>Tue</div>
+              <div>Wed</div>
+              <div>Thu</div>
+              <div>Fri</div>
+              <div>Sat</div>
             </div>
 
             <div id="calendar"></div>
@@ -280,6 +276,42 @@
                     placeholder="Policy#"
                     class="form-control"
                     id="LifePolicyNumber"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="row g-2">
+              <div class="col-md-2">
+                <div class="input-group">
+                  <span class="input-group-text">Condo</span>
+                  <input
+                    type="text"
+                    placeholder="Policy#"
+                    class="form-control"
+                    id="CondoPolicyNumber"
+                    aria-label="Condo Policy"
+                  />
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="input-group">
+                  <span class="input-group-text">Renters</span>
+                  <input
+                    type="text"
+                    placeholder="Policy#"
+                    class="form-control"
+                    id="RentersPolicyNumber"
+                  />
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="input-group">
+                  <span class="input-group-text">Landlords</span>
+                  <input
+                    type="text"
+                    placeholder="Policy#"
+                    class="form-control"
+                    id="LandlordPolicyNumber"
                   />
                 </div>
               </div>
