@@ -7,8 +7,7 @@ let rep = 0;
 let count = 0;
 BK_UpperCase = (anyInput) => (anyInput = anyInput.toUpperCase());
 BK_LowerCase = (anyInput) => (anyInput = anyInput.toLowerCase());
-const controller = new AbortController();
-const signal = controller.signal;
+let controller = null;
 
 // Programmatically assigning Contact Fields to variable name and adding EventListener
 const ContactFields = document
@@ -30,18 +29,24 @@ for (let rep = 0; rep < ContactFields.length; rep++) {
 }
 
 //////////  Connecting to Database and Retrieving Data
-const getJSON = function (url, errorMsg = 'Something went wrong') {
-  return fetch(url, { signal }).then((response) => {
-    if (!response.ok) throw new Error(`${errorMsg} (${response.status})`);
-    return response.json();
-  });
-};
+// const getJSON = function (url, errorMsg = 'Something went wrong') {
+//   return fetch(url, { signal: controller.signal }).then((response) => {
+//     if (!response.ok) throw new Error(`${errorMsg} (${response.status})`);
+//     return response.json();
+//   });
+// };
 
 // still working on converting this to async/await
-// async function getJSON(url, errorMsg = 'Something went wrong') {
-//   const response = await fetch(url);
-//   const movies = await response.json();  return movies;
-// }
+async function getJSON(url, errorMsg = 'Something went wrong') {
+  try {
+    console.log('bart started request...');
+    const response = await fetch(url, { signal: controller.signal });
+    const contactData = await response.json();
+    return contactData;
+  } catch (error) {
+    console.log(errorMsg);
+  }
+}
 
 //////////  Adding Database and Retrieving Data
 function updateContactInfo(contactID, updateThisKey, updateThisValue) {
@@ -129,6 +134,7 @@ const showSearchList = function (JsonDB) {
 
 ////////// Event Listener For First Name Search
 contactSearch.addEventListener('keyup', function (e) {
+  controller = new AbortController();
   if (
     // e.key !== 'Backspace' &&
     e.key !== 'Shift' &&
@@ -140,6 +146,7 @@ contactSearch.addEventListener('keyup', function (e) {
       showSearchList(data);
       // controller.abort();
     });
+    controller = null;
   }
 });
 function BartkaTestFunction() {
