@@ -67,11 +67,11 @@ button {
 }
 
 .day + #notActiveDay {
-  background-color: rgb(255, 255, 255);
-}
-.day + #ActiveDay {
   background-color: #ffffcb;
 }
+/* .day + #ActiveDay {
+  background-color: #ffffcb;
+} */
 .event {
   font-size: 10px;
   padding: 3px;

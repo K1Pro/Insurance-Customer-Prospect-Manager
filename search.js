@@ -171,78 +171,79 @@ function openModal() {
   console.log('Lets do some magic here');
 }
 
-function load(myLocalJSONDatabase) {
-  const dt = new Date();
-  if (nav !== 0) {
-    dt.setMonth(new Date().getMonth() + nav);
-  }
-  let nextMonth = 1;
-  const day = dt.getDate();
-  const month = dt.getMonth();
-  const year = dt.getFullYear();
-  const firstDayOfMonth = new Date(year, month, 1);
-  const lastDayOfPreviousMonth = new Date(year, month, 0).getDate();
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
-  const dateString = firstDayOfMonth.toLocaleDateString('en-us', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'numeric',
-    day: 'numeric',
+function load() {
+  getJSON(ContactsURL).then((data) => {
+    const dt = new Date();
+    if (nav !== 0) {
+      dt.setMonth(new Date().getMonth() + nav);
+    }
+    let nextMonth = 1;
+    const day = dt.getDate();
+    const month = dt.getMonth();
+    const year = dt.getFullYear();
+    const firstDayOfMonth = new Date(year, month, 1);
+    const lastDayOfPreviousMonth = new Date(year, month, 0).getDate();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const dateString = firstDayOfMonth.toLocaleDateString('en-us', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+    });
+    const paddingDays = weekdays.indexOf(dateString.split(', ')[0]);
+
+    document.getElementById(
+      'monthDisplay'
+    ).innerText = `Bundle Insurance - Ubezpieczenia: ${dt.toLocaleDateString(
+      'en-us',
+      { month: 'long' }
+    )} ${day}, ${year}`;
+
+    calendar.innerHTML = '';
+
+    for (let i = 1; i <= 42; i++) {
+      // original: for (let i = 1; i <= paddingDays + daysInMonth; i++) {
+      const daySquare = document.createElement('div');
+      daySquare.classList.add('day');
+      const dayString = `${month + 1}/${i - paddingDays}/${year}`;
+
+      if (i <= paddingDays) {
+        daySquare.id = 'notActiveDay';
+        daySquare.innerText = lastDayOfPreviousMonth + i - paddingDays;
+      }
+
+      if (i > paddingDays) {
+        daySquare.id = 'ActiveDay';
+        daySquare.innerText = i - paddingDays;
+        //original: const eventForDay = events.find((e) => e.date === dayString);
+        const eventForDay = data?.find((e) => e.date === dayString);
+
+        if (i - paddingDays === day && nav === 0) {
+          daySquare.id = 'currentDay';
+        }
+
+        if (eventForDay) {
+          const eventDiv = document.createElement('div');
+          eventDiv.classList.add('event');
+          eventDiv.innerText = eventForDay.title;
+          daySquare.appendChild(eventDiv);
+        }
+        daySquare.addEventListener('click', () =>
+          // openModal(dayString, myLocalJSONDatabase)
+          openModal()
+        );
+        // } else {
+        //   daySquare.classList.add('padding');
+      }
+
+      if (i > paddingDays + daysInMonth) {
+        daySquare.innerText = nextMonth;
+        daySquare.id = 'notActiveDay';
+        nextMonth++;
+      }
+      calendar.appendChild(daySquare);
+    }
   });
-  const paddingDays = weekdays.indexOf(dateString.split(', ')[0]);
-
-  document.getElementById(
-    'monthDisplay'
-  ).innerText = `Bundle Insurance - Ubezpieczenia: ${dt.toLocaleDateString(
-    'en-us',
-    { month: 'long' }
-  )} ${day}, ${year}`;
-
-  calendar.innerHTML = '';
-
-  for (let i = 1; i <= 42; i++) {
-    // original: for (let i = 1; i <= paddingDays + daysInMonth; i++) {
-    const daySquare = document.createElement('div');
-    daySquare.classList.add('day');
-    const dayString = `${month + 1}/${i - paddingDays}/${year}`;
-
-    if (i <= paddingDays) {
-      daySquare.innerText = lastDayOfPreviousMonth + i - paddingDays;
-    }
-
-    if (i > paddingDays) {
-      daySquare.id = 'ActiveDay';
-      daySquare.innerText = i - paddingDays;
-      //original: const eventForDay = events.find((e) => e.date === dayString);
-      const eventForDay = myLocalJSONDatabase?.find(
-        (e) => e.date === dayString
-      );
-
-      if (i - paddingDays === day && nav === 0) {
-        daySquare.id = 'currentDay';
-      }
-
-      if (eventForDay) {
-        const eventDiv = document.createElement('div');
-        eventDiv.classList.add('event');
-        eventDiv.innerText = eventForDay.title;
-        daySquare.appendChild(eventDiv);
-      }
-      daySquare.addEventListener('click', () =>
-        // openModal(dayString, myLocalJSONDatabase)
-        openModal()
-      );
-      // } else {
-      //   daySquare.classList.add('padding');
-    }
-
-    if (i > paddingDays + daysInMonth) {
-      daySquare.innerText = nextMonth;
-      daySquare.id = 'notActiveDay';
-      nextMonth++;
-    }
-    calendar.appendChild(daySquare);
-  }
 }
 function initButtons() {
   document.getElementById('nextButton').addEventListener('click', () => {
