@@ -2,6 +2,7 @@ const ContactsURL = 'http://192.168.54.22:4000/contacts';
 const BartkaTestButton = document.getElementById('BartkaTestButton');
 const message = document.getElementById('message');
 const contactSearch = document.getElementById('contactSearch');
+const Hours = document.getElementById('Hours');
 let list = document.getElementById('myList');
 let rep = 0;
 let count = 0;
@@ -194,10 +195,9 @@ function load() {
 
     document.getElementById(
       'monthDisplay'
-    ).innerText = `Bundle Insurance - Ubezpieczenia: ${dt.toLocaleDateString(
-      'en-us',
-      { month: 'long' }
-    )} ${day}, ${year}`;
+    ).innerText = `${dt.toLocaleDateString('en-us', {
+      month: 'long',
+    })} ${day}, ${year}`;
 
     calendar.innerHTML = '';
 
@@ -208,15 +208,15 @@ function load() {
       const dayString = `${month + 1}/${i - paddingDays}/${year}`;
 
       if (i <= paddingDays) {
-        daySquare.id = 'notActiveDay';
+        daySquare.classList.add('notActiveDay');
         daySquare.innerText = lastDayOfPreviousMonth + i - paddingDays;
       }
 
       if (i > paddingDays) {
-        daySquare.id = 'ActiveDay';
+        daySquare.classList.add('ActiveDay');
         daySquare.innerText = i - paddingDays;
-        //original: const eventForDay = events.find((e) => e.date === dayString);
-        const eventForDay = data?.find((e) => e.date === dayString);
+        const eventForDay = data?.find((e) => e.Events === dayString);
+        // original: const eventForDay = data?.find((e) => e.date === dayString);
 
         if (i - paddingDays === day && nav === 0) {
           daySquare.id = 'currentDay';
@@ -225,7 +225,7 @@ function load() {
         if (eventForDay) {
           const eventDiv = document.createElement('div');
           eventDiv.classList.add('event');
-          eventDiv.innerText = eventForDay.title;
+          eventDiv.innerText = eventForDay.Title;
           daySquare.appendChild(eventDiv);
         }
         daySquare.addEventListener('click', () =>
@@ -238,7 +238,7 @@ function load() {
 
       if (i > paddingDays + daysInMonth) {
         daySquare.innerText = nextMonth;
-        daySquare.id = 'notActiveDay';
+        daySquare.classList.add('notActiveDay');
         nextMonth++;
       }
       calendar.appendChild(daySquare);

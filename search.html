@@ -19,16 +19,11 @@
   </head>
   <body>
     <div class="container-fluid">
-      <div class="row border border-dark" style="height: 8vh">
-        <div
-          id="monthDisplay"
-          class="col-12 bg-primary text-light"
-          style="--bs-bg-opacity: 1"
-        ></div>
-        <div class="bg-primary">
-          <button id="backButton">Back</button>
-          <button id="nextButton">Next</button>
-        </div>
+      <div
+        class="row border border-dark bg-primary text-light"
+        style="height: 8vh; padding-top: 10px"
+      >
+        <div class="col-12 text-center">Bundle Insurance - Ubezpieczenia</div>
       </div>
       <div
         class="row border border-dark"
@@ -43,7 +38,7 @@
           <ul id="myList"></ul>
           <div id="message"></div>
         </div>
-        <div class="col-12 col-md-9 bg-secondary" style="--bs-bg-opacity: 0.5">
+        <div class="col-12 col-md-4 bg-secondary" style="--bs-bg-opacity: 0.5">
           <div id="CalendarContainer">
             <div id="CalendarHeader"></div>
 
@@ -59,6 +54,18 @@
 
             <div id="calendar"></div>
           </div>
+        </div>
+        <div class="col-12 col-md-5 bg-warning" style="--bs-bg-opacity: 0.5">
+          <div class="row">
+            <button class="col-4" id="backButton">Back</button>
+            <div
+              id="monthDisplay"
+              class="text-center col-4"
+              style="--bs-bg-opacity: 1"
+            ></div>
+            <button id="nextButton" class="col-4">Next</button>
+          </div>
+          <div id="Hours"></div>
         </div>
       </div>
       <div class="row" style="height: 46vh; overflow-y: visible">

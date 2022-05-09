@@ -66,7 +66,7 @@ button {
   background-color: #e8f4fa;
 }
 
-.day + #notActiveDay {
+.day + .notActiveDay {
   background-color: #ffffcb;
 }
 /* .day + #ActiveDay {
