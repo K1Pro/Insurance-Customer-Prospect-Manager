@@ -12,3 +12,11 @@ li {
 #id {
   display: none;
 }
+.form-control::-moz-placeholder {
+  color: red;
+  opacity: 0.6;
+}
+.form-control::placeholder {
+  color: red;
+  opacity: 0.6;
+}

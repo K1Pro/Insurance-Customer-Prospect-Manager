@@ -11,6 +11,7 @@
       integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
       crossorigin="anonymous"
     />
+    <!-- <link rel="stylesheet" href="bootstrap.min.css" /> -->
     <link rel="stylesheet" href="style.css" />
     <script defer src="search.js"></script>
     <title>Bundle Contact Manager</title>
@@ -223,6 +224,42 @@
                 />
               </div>
             </div>
+            <div class="row g-2">
+              <div class=" col-md-2">
+              <div class="input-group">
+                <span class="input-group-text">Auto</span>
+                <input
+                  type="text"
+                  placeholder="Policy#"
+                  class="form-control"
+                  id="AutoPolicyNumber"
+                  aria-label="Auto Policy"
+                />
+              </div>
+            </div>
+            <div class=" col-md-2">
+              <div class="input-group">
+                <span class="input-group-text">Home</span>
+                <input
+                  type="text"
+                  placeholder="Policy#"
+                  class="form-control"
+                  id="HomePolicyNumber"
+                />
+              </div>
+            </div>
+              <div class="col-md-2">
+                <div class="input-group">
+                  <span class="input-group-text">Life</span>
+                <input
+                  type="text"
+                  placeholder="Policy#"
+                  class="form-control"
+                  id="LifePolicyNumber"
+                />
+              </div>
+              </div>
+            </div>
             <!-- <br />
             <div class="row g-2">
               <div class="col-md-3">
@@ -232,6 +269,9 @@
               </div>
             </div> -->
           </form>
+          <button type="submit" id="BartkaTestButton" class="btn btn-primary">
+            Create Customer/Prospect
+          </button>
         </div>
       </div>
     </div>

@@ -1,4 +1,5 @@
 const ContactsURL = 'http://192.168.54.22:4000/contacts';
+const BartkaTestButton = document.getElementById('BartkaTestButton');
 const message = document.getElementById('message');
 const contactSearch = document.getElementById('contactSearch');
 let list = document.getElementById('myList');
@@ -6,11 +7,14 @@ let rep = 0;
 let count = 0;
 BK_UpperCase = (anyInput) => (anyInput = anyInput.toUpperCase());
 BK_LowerCase = (anyInput) => (anyInput = anyInput.toLowerCase());
+const controller = new AbortController();
+const signal = controller.signal;
 
 // Programmatically assigning Contact Fields to variable name and adding EventListener
 const ContactFields = document
   .getElementById('ContactFields')
   .querySelectorAll('*');
+// Example: FirstName = document.getElementById('FirstName').addEventListener('change, function(e){...});
 for (let rep = 0; rep < ContactFields.length; rep++) {
   let ContactFieldsIDs = ContactFields[rep].id;
   if (ContactFieldsIDs) {
@@ -27,11 +31,17 @@ for (let rep = 0; rep < ContactFields.length; rep++) {
 
 //////////  Connecting to Database and Retrieving Data
 const getJSON = function (url, errorMsg = 'Something went wrong') {
-  return fetch(url).then((response) => {
+  return fetch(url, { signal }).then((response) => {
     if (!response.ok) throw new Error(`${errorMsg} (${response.status})`);
     return response.json();
   });
 };
+
+// still working on converting this to async/await
+// async function getJSON(url, errorMsg = 'Something went wrong') {
+//   const response = await fetch(url);
+//   const movies = await response.json();  return movies;
+// }
 
 //////////  Adding Database and Retrieving Data
 function updateContactInfo(contactID, updateThisKey, updateThisValue) {
@@ -40,6 +50,7 @@ function updateContactInfo(contactID, updateThisKey, updateThisValue) {
   fetch(`${ContactsURL}/${contactID}`, {
     method: 'PATCH',
     body: JSON.stringify({
+      // This creates a key-value pair to be patached, ex: "FirstName": Bart
       [updateThisKey]: updateThisValue,
     }),
     headers: {
@@ -87,7 +98,7 @@ const showSearchList = function (JsonDB) {
         li.setAttribute('id', `list${userData.id}`);
         li.innerText = userData.FirstName + ' ' + userData.LastName;
         list.appendChild(li);
-        // programmatically userData inserted into Contact Fields
+        // programmatically userData inserted into Contact Fields, ex: document.getElementByID(FirstName).value = userData.FirstName
         window['list' + userData.id] = document
           .getElementById(`list${userData.id}`)
           .addEventListener('click', function () {
@@ -127,6 +138,12 @@ contactSearch.addEventListener('keyup', function (e) {
   ) {
     getJSON(ContactsURL).then((data) => {
       showSearchList(data);
+      // controller.abort();
     });
   }
 });
+function BartkaTestFunction() {
+  // alert('hi');
+  controller.abort();
+}
+BartkaTestButton.addEventListener('click', BartkaTestFunction);
