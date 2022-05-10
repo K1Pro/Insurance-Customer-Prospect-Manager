@@ -47,16 +47,16 @@ button {
 }
 .day {
   width: 7vh;
-  padding: 10px;
+  /* padding: 10px; */
   height: 7vh;
   cursor: pointer;
   box-sizing: border-box;
   background-color: white;
   /* margin: 5px; */
   box-shadow: 0px 0px 3px #cbd4c2;
-  display: flex;
+  /* display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-between; */
 }
 .day:hover {
   background-color: #e8faed;
@@ -74,10 +74,11 @@ button {
 } */
 .event {
   font-size: 10px;
-  padding: 3px;
-  background-color: #58bae4;
-  color: white;
-  border-radius: 5px;
+  /* padding: 3px; */
+  /* background-color: #58bae4; */
+  background-color: #dbf4ff;
+  /* color: white; */
+  /* border-radius: 5px; */
   max-height: 55px;
   overflow: hidden;
 }

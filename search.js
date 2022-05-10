@@ -10,6 +10,48 @@ BK_UpperCase = (anyInput) => (anyInput = anyInput.toUpperCase());
 BK_LowerCase = (anyInput) => (anyInput = anyInput.toLowerCase());
 // let controller = null;
 controller = new AbortController();
+let datesAgain = '5/25/2022';
+
+getJSON(ContactsURL).then((data) => {
+  showSearchList(data);
+  // console.log(data);
+  // console.log(`Checking if JSON is an Array: ${Array.isArray(data)}`);
+  // console.log(
+  //   `Checking if First in JSON is an Array: ${Array.isArray(data[0])}`
+  // );
+
+  // for (const contactsAgain of data) {
+  //   // console.log(
+  //   //   `Perhaps this will work: ${JSON.stringify(contactsAgain.CalendarEvents)}`
+  //   // );
+  //   for (let key in contactsAgain.CalendarEvents) {
+  //     console.log(contactsAgain.CalendarEvents[key]);
+  //   }
+  //   // if (datesAgain.includes(contactsAgain)) {
+  //   //   console.log(`Perhaps this will work: ${contactsAgain.Date}`);
+  //   // }
+  // }
+});
+
+// let DB = {
+//   products: [
+//     { id: 0, name: 'aaa', price: 10 },
+//     { id: 1, name: 'bbb', price: 20 },
+//     { id: 2, name: 'ccc', price: 50 },
+//     { id: 3, name: 'ddd', price: 1 },
+//   ],
+// };
+// let cartItemsIds = [0, 3];
+// console.log(`Checking typeof of sample DB: ${typeof DB}`);
+// console.log(`Checking what sample DB is: ${DB}`);
+// console.log(DB);
+// // console.log(`products?id=${cartItemsIds.join('&id=')}`);
+
+// for (const product of DB.products) {
+//   if (cartItemsIds.includes(product.id)) {
+//     console.log(`What is in product: ${product.id}`);
+//   }
+// }
 
 let nav = 0;
 let clicked = null;
@@ -32,7 +74,7 @@ const ContactFields = document
 for (let rep = 0; rep < ContactFields.length; rep++) {
   let ContactFieldsIDs = ContactFields[rep].id;
   if (ContactFieldsIDs) {
-    console.log(ContactFieldsIDs);
+    // console.log(ContactFieldsIDs);
     window['ContactFieldsIDs'] = document
       .getElementById(`${ContactFieldsIDs}`)
       .addEventListener('change', function (e) {
@@ -170,7 +212,22 @@ contactSearch.addEventListener('keyup', function (e) {
 
 function openModal() {
   console.log('Lets do some magic here');
+  console.log(`${dayString}`);
 }
+
+function events() {
+  for (let repEvents = 7; repEvents <= 17; repEvents++) {
+    let li = document.createElement('li');
+    li.textContent = `${repEvents}:00`;
+    if (repEvents % 2) {
+      li.classList.add(`EventAlternate`);
+    }
+    li.classList.add(`EventEvery`);
+
+    Hours.appendChild(li);
+  }
+}
+events();
 
 function load() {
   getJSON(ContactsURL).then((data) => {
@@ -215,23 +272,56 @@ function load() {
       if (i > paddingDays) {
         daySquare.classList.add('ActiveDay');
         daySquare.innerText = i - paddingDays;
-        const eventForDay = data?.find((e) => e.Events === dayString);
-        // original: const eventForDay = data?.find((e) => e.date === dayString);
+        const eventForDay = data.filter((e) => e.CalendarEvents);
+
+        // .filter((c) => c.CalendarEvents.Date === dayString);
+        // console.log(`${i}: `);
+        // console.log(eventForDay);
+        for (const againtwo of eventForDay) {
+          for (let keyagain in againtwo.CalendarEvents) {
+            if (againtwo.CalendarEvents[keyagain].Date === dayString) {
+              console.log(againtwo.FirstName);
+              console.log(againtwo.CalendarEvents[keyagain].Date);
+              console.log(againtwo.CalendarEvents[keyagain].Description);
+              bartkaEvent = againtwo.CalendarEvents[keyagain].Description;
+
+              if (eventForDay) {
+                const eventDiv = document.createElement('div');
+                eventDiv.classList.add('event');
+                eventDiv.innerText = againtwo.LastName;
+                //original:  eventDiv.innerText = eventForDay.Title;
+                daySquare.appendChild(eventDiv);
+              }
+            }
+          }
+        }
+
+        // console.log(eventForDay[0]?.CalendarEvent1.Date);
+        // console.log(eventForDay[1]?.CalendarEvent2.Date);
+
+        // console.log(eventForDay.length);
+        // console.log(eventForDay[2].CalendarEvents.Date);
+
+        // let eventForDay = data
+        //   ?.filter(
+        //     (g) => g.CalendarEvents.filter((c) => c.Date === dayString)[0]
+        //   )[0]
+        //   .CalendarEvents.filter((c) => c.Date === dayString)[0];
+
+        //original:  const eventForDay = data?.find((e) => e.Date === dayString);
 
         if (i - paddingDays === day && nav === 0) {
           daySquare.id = 'currentDay';
         }
 
-        if (eventForDay) {
-          const eventDiv = document.createElement('div');
-          eventDiv.classList.add('event');
-          eventDiv.innerText = eventForDay.Title;
-          daySquare.appendChild(eventDiv);
-        }
-        daySquare.addEventListener('click', () =>
+        daySquare.addEventListener('click', () => {
           // openModal(dayString, myLocalJSONDatabase)
-          openModal()
-        );
+          // openModal()
+          console.log('Lets do some magic here');
+          console.log(`${dayString}`);
+
+          document.getElementById('monthDisplay').innerText = `${dayString}`;
+        });
         // } else {
         //   daySquare.classList.add('padding');
       }
