@@ -6,11 +6,7 @@ const TaskList = document.getElementById('TaskList');
 let list = document.getElementById('myList');
 let rep = 0;
 let count = 0;
-BK_UpperCase = (anyInput) => (anyInput = anyInput.toUpperCase());
-BK_LowCase = (anyInput) => (anyInput = anyInput.toLowerCase());
-
 controller = new AbortController();
-
 let nav = 0;
 let clicked = null;
 const calendar = document.getElementById('calendar');
@@ -78,19 +74,18 @@ const showSearchList = function (JsonDB) {
     let FullName = userData.FirstName + ' ' + userData.LastName;
     let SpouseFullName = userData.SpouseName + ' ' + userData.SpouseLastName;
     if (
-      BK_LowCase(userData.FirstName).slice(0, contactSearch.value.length) ==
-        BK_LowCase(contactSearch.value) ||
-      BK_LowCase(userData.LastName).slice(0, contactSearch.value.length) ==
-        BK_LowCase(contactSearch.value) ||
-      BK_LowCase(FullName).slice(0, contactSearch.value.length) ==
-        BK_LowCase(contactSearch.value) ||
-      BK_LowCase(userData.SpouseName).slice(0, contactSearch.value.length) ==
-        BK_LowCase(contactSearch.value) ||
       // prettier-ignore
-      BK_LowCase(userData.SpouseLastName).slice(0, contactSearch.value.length) == 
-      BK_LowCase(contactSearch.value) ||
-      BK_LowCase(SpouseFullName).slice(0, contactSearch.value.length) ==
-        BK_LowCase(contactSearch.value)
+      userData.FirstName?.toLowerCase().slice(0, contactSearch.value.length) == contactSearch.value.toLowerCase() ||
+      // prettier-ignore
+      userData.LastName?.toLowerCase().slice(0, contactSearch.value.length) == contactSearch.value.toLowerCase() ||
+      // prettier-ignore
+      FullName?.toLowerCase().slice(0, contactSearch.value.length) == contactSearch.value.toLowerCase() ||
+      // prettier-ignore
+      userData.SpouseName?.toLowerCase().slice(0, contactSearch.value.length) == contactSearch.value.toLowerCase() ||
+      // prettier-ignore
+      userData.SpouseLastName?.toLowerCase().slice(0, contactSearch.value.length) == contactSearch.value.toLowerCase() ||
+      // prettier-ignore
+      SpouseFullName?.toLowerCase().slice(0, contactSearch.value.length) ==contactSearch.value.toLowerCase()
     ) {
       count++;
       if (rep < 10) {
