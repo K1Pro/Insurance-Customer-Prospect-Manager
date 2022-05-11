@@ -191,6 +191,10 @@ function loadCalendar() {
       const daySquare = document.createElement('div');
       daySquare.classList.add('day');
       const dayString = `${month + 1}/${rep - paddingDays}/${year}`;
+      let tasklistDate = new Date();
+      tasklistDate.setMonth(month);
+      tasklistDate.setDate(rep - paddingDays);
+      tasklistDate.setFullYear(year);
 
       if (rep <= paddingDays) {
         daySquare.classList.add('notActiveDay');
@@ -223,7 +227,10 @@ function loadCalendar() {
                   console.log('==============');
                   document.getElementById(
                     'monthDisplay'
-                  ).innerText = `${dayString}`;
+                  ).innerText = `${tasklistDate.toLocaleDateString('en-us', {
+                    month: 'long',
+                  })} ${rep - paddingDays}, ${year}`;
+                  // oiginally using this for date: = `${dayString}`;
                   // Resets Tasklist
                   for (
                     let timeSlots = openHours;

@@ -15,6 +15,12 @@
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="calExstyle.css" />
     <script defer src="search.js"></script>
+    <!-- JavaScript Bundle with Popper -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+      crossorigin="anonymous"
+    ></script>
     <title>Bundle Contact Manager</title>
   </head>
   <body>
@@ -32,18 +38,20 @@
           <ul id="myList"></ul>
           <div id="message"></div>
         </div>
-        <div class="col-12 col-md-5 bg-secondary" style="--bs-bg-opacity: 0.5">
+        <div class="col-12 col-md-5 bg-secondary" style="--bs-bg-opacity: 0.25">
           <div id="CalendarContainer">
             <div id="CalendarHeader"></div>
 
             <div id="weekdays">
-              <div>Sun</div>
+              <!-- <div>Sun</div> -->
+              <div><button id="backButton">Prev</button></div>
               <div>Mon</div>
               <div>Tue</div>
               <div>Wed</div>
               <div>Thu</div>
               <div>Fri</div>
-              <div>Sat</div>
+              <div><button id="nextButton">Next</button></div>
+              <!-- <div>Sat</div> -->
             </div>
 
             <div id="calendar"></div>
@@ -51,20 +59,22 @@
         </div>
         <div class="col-12 col-md-5 bg-warning" style="--bs-bg-opacity: 0.5">
           <div class="row">
-            <button class="col-4" id="backButton">Previous Month</button>
+            <!-- <button class="col-4" id="backButton">Previous Month</button> -->
+            <button class="col-2" id="PrevDay">Previous Day</button>
             <div
               id="monthDisplay"
-              class="text-center col-4"
+              class="text-center col-8"
               style="--bs-bg-opacity: 1"
             ></div>
-            <button id="nextButton" class="col-4">Next Month</button>
+            <button id="NextDay" class="col-2">Next Day</button>
+            <!-- <button id="nextButton" class="col-4">Next Month</button> -->
           </div>
           <form id="TaskList"></form>
         </div>
       </div>
       <div class="row" style="height: 50vh; overflow-y: visible">
         <div
-          class="col bg-secondary h-100"
+          class="col-12 bg-secondary"
           style="padding: 10px; --bs-bg-opacity: 0.25"
         >
           <form id="ContactFields">
@@ -321,7 +331,7 @@
               <div class="col-md-6">
                 <div class="input-group">
                   <div class="input-group-prepend">
-                    <span class="input-group-text">Customer Notes</span>
+                    <span class="input-group-text">Notes</span>
                   </div>
                   <textarea
                     class="form-control"
