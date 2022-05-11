@@ -28,7 +28,7 @@ button {
   background-color: #92a1d1;
 }
 #CalendarContainer {
-  width: 49vh;
+  width: 83vh;
 }
 #weekdays {
   width: 100%;
@@ -36,7 +36,7 @@ button {
   color: #247ba0;
 }
 #weekdays div {
-  width: 100px;
+  width: 83vh;
   /* padding: 10px; */
 }
 #calendar {
@@ -46,9 +46,9 @@ button {
   flex-wrap: wrap;
 }
 .day {
-  width: 7vh;
+  width: 11.75vh;
   /* padding: 10px; */
-  height: 7vh;
+  height: 7.75vh;
   cursor: pointer;
   box-sizing: border-box;
   background-color: white;

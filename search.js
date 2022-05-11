@@ -9,6 +9,8 @@ let count = 0;
 let nav = 0;
 let clicked = null;
 const calendar = document.getElementById('calendar');
+const openHours = 8;
+const closeHours = 18;
 // prettier-ignore
 const weekdays = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday',];
 // Programmatically assigning Contact Fields to variable name and adding EventListener
@@ -125,7 +127,6 @@ const showSearchList = function (JsonDB) {
 ////////// Event Listeners For First Name Search
 contactSearch.addEventListener('focusin', function (e) {
   getJSON(ContactsURL).then((data) => {
-    console.log(data);
     contactSearch.addEventListener('keyup', function (e) {
       if (
         // e.key !== 'Backspace' &&
@@ -141,16 +142,20 @@ contactSearch.addEventListener('focusin', function (e) {
 });
 
 function dailyEvents() {
-  for (let timeSlots = 7; timeSlots <= 19; timeSlots++) {
-    // let li = document.createElement('li');
+  for (let timeSlots = openHours; timeSlots <= closeHours; timeSlots++) {
     let li = document.createElement('input');
     li.placeholder = `${timeSlots}:00`;
     li.type = 'text';
-    if (timeSlots % 2) {
-      li.classList.add(`EventAlternate`);
-    }
+    li.id = `${timeSlots}TimeSlot`;
     li.classList.add(`form-control`);
+    // prettier-ignore
+    if (timeSlots % 2) {li.classList.add(`EventAlternate`);}
     TaskList.appendChild(li);
+    window[timeSlots + 'TimeSlot'] = document
+      .getElementById(`${timeSlots}TimeSlot`)
+      .addEventListener('focusin', function (e) {
+        console.log(`${timeSlots}TimeSlot`);
+      });
   }
 }
 
@@ -201,35 +206,67 @@ function loadCalendar() {
           for (let eventDetails in eventForDay.CalendarEvents) {
             if (eventForDay.CalendarEvents[eventDetails].Date === dayString) {
               //original:  const eventsForDay = data?.find((e) => e.Date === dayString);
-              console.log(eventForDay.FirstName);
-              console.log(eventForDay.CalendarEvents[eventDetails].Date);
-              console.log(eventForDay.CalendarEvents[eventDetails].Description);
-              bartkaEvent =
-                eventForDay.CalendarEvents[eventDetails].Description;
-
               if (eventsForDay) {
                 const eventDiv = document.createElement('div');
                 eventDiv.classList.add('event');
                 eventDiv.innerText = eventForDay.LastName;
                 //original:  eventDiv.innerText = eventsForDay.Title;
                 daySquare.appendChild(eventDiv);
+
+                daySquare.addEventListener('click', () => {
+                  console.log(eventForDay.LastName);
+                  console.log(eventForDay.CalendarEvents[eventDetails].Date);
+                  console.log(eventForDay.CalendarEvents[eventDetails].Time);
+                  console.log(
+                    eventForDay.CalendarEvents[eventDetails].Description
+                  );
+                  console.log('==============');
+                  document.getElementById(
+                    'monthDisplay'
+                  ).innerText = `${dayString}`;
+                  // Resets Tasklist
+                  for (
+                    let timeSlots = openHours;
+                    timeSlots <= closeHours;
+                    timeSlots++
+                  ) {
+                    document.getElementById(`${timeSlots}TimeSlot`).value = '';
+                  }
+                  function populateTaskList() {
+                    for (
+                      let timeSlots = openHours;
+                      timeSlots <= closeHours;
+                      timeSlots++
+                    ) {
+                      if (
+                        timeSlots ==
+                        eventForDay.CalendarEvents[eventDetails].Time
+                      ) {
+                        document.getElementById(`${timeSlots}TimeSlot`).value =
+                          eventForDay.CalendarEvents[eventDetails].Time
+                            ? `${eventForDay.CalendarEvents[eventDetails].Description}`
+                            : '';
+                      }
+                    }
+                  }
+                  setTimeout(populateTaskList, 1);
+                });
               }
             }
           }
         }
-
-        if (rep - paddingDays === day && nav === 0) {
-          daySquare.id = 'currentDay';
-        }
-        daySquare.addEventListener('click', () => {
-          console.log('Lets do some magic here');
-          console.log(`${dayString}`);
-
-          document.getElementById('monthDisplay').innerText = `${dayString}`;
-        });
-        // } else {
-        //   daySquare.classList.add('padding');
+        // daySquare.addEventListener('click', () => {
+        //   console.log('Lets do some real magic here');
+        //   console.log(`${dayString}`);
+        //   document.getElementById('monthDisplay').innerText = `${dayString}`;
+        // });
       }
+
+      if (rep - paddingDays === day && nav === 0) {
+        daySquare.id = 'currentDay';
+      }
+      // } else {
+      //   daySquare.classList.add('padding');
 
       if (rep > paddingDays + daysInMonth) {
         daySquare.innerText = nextMonth;
