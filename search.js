@@ -6,7 +6,6 @@ const TaskList = document.getElementById('TaskList');
 let list = document.getElementById('myList');
 let rep = 0;
 let count = 0;
-controller = new AbortController();
 let nav = 0;
 let clicked = null;
 const calendar = document.getElementById('calendar');
@@ -34,7 +33,7 @@ for (let rep = 0; rep < ContactFields.length; rep++) {
 // Connecting to Database and Retrieving Data with Async / Await;
 async function getJSON(url, errorMsg = 'Something went wrong') {
   try {
-    const response = await fetch(url, { signal: controller.signal });
+    const response = await fetch(url);
     const contactData = await response.json();
     return contactData;
   } catch (error) {
@@ -123,30 +122,34 @@ const showSearchList = function (JsonDB) {
     : (message.innerText += 'Found ' + count + ' results');
 };
 
-////////// Event Listener For First Name Search
-contactSearch.addEventListener('keyup', function (e) {
-  if (
-    // e.key !== 'Backspace' &&
-    e.key !== 'Shift' &&
-    e.key !== 'CapsLock' &&
-    e.key !== 'Control' &&
-    e.key !== 'Alt'
-  ) {
-    getJSON(ContactsURL).then((data) => {
-      showSearchList(data);
-      // controller.abort();
+////////// Event Listeners For First Name Search
+contactSearch.addEventListener('focusin', function (e) {
+  getJSON(ContactsURL).then((data) => {
+    console.log(data);
+    contactSearch.addEventListener('keyup', function (e) {
+      if (
+        // e.key !== 'Backspace' &&
+        e.key !== 'Shift' &&
+        e.key !== 'CapsLock' &&
+        e.key !== 'Control' &&
+        e.key !== 'Alt'
+      ) {
+        showSearchList(data);
+      }
     });
-  }
+  });
 });
 
 function dailyEvents() {
   for (let timeSlots = 7; timeSlots <= 19; timeSlots++) {
-    let li = document.createElement('li');
-    li.textContent = `${timeSlots}:00`;
+    // let li = document.createElement('li');
+    let li = document.createElement('input');
+    li.placeholder = `${timeSlots}:00`;
+    li.type = 'text';
     if (timeSlots % 2) {
       li.classList.add(`EventAlternate`);
     }
-    li.classList.add(`EventEvery`);
+    li.classList.add(`form-control`);
     TaskList.appendChild(li);
   }
 }
@@ -218,7 +221,6 @@ function loadCalendar() {
         if (rep - paddingDays === day && nav === 0) {
           daySquare.id = 'currentDay';
         }
-
         daySquare.addEventListener('click', () => {
           console.log('Lets do some magic here');
           console.log(`${dayString}`);

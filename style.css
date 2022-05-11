@@ -22,10 +22,10 @@ li:hover {
   margin-left: -27px;
 }
 
-.EventEvery {
+/* .EventEvery {
   margin-left: -40px;
   list-style: none;
-}
+} */
 .EventAlternate {
   background-color: rgb(204, 231, 243);
 }
