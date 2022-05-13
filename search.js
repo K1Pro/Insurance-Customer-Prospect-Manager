@@ -86,7 +86,11 @@ const showSearchList = function (JsonDB) {
       // prettier-ignore
       userData.SpouseLastName?.toLowerCase().slice(0, contactSearch.value.length) == contactSearch.value.toLowerCase() ||
       // prettier-ignore
-      SpouseFullName?.toLowerCase().slice(0, contactSearch.value.length) ==contactSearch.value.toLowerCase()
+      SpouseFullName?.toLowerCase().slice(0, contactSearch.value.length) == contactSearch.value.toLowerCase() ||
+      // prettier-ignore
+      userData.Phone?.toLowerCase().slice(0, contactSearch.value.length) == contactSearch.value.toLowerCase() ||
+      // prettier-ignore
+      userData.Address?.toLowerCase().slice(0, contactSearch.value.length) == contactSearch.value.toLowerCase()
     ) {
       count++;
       if (rep < 10) {
