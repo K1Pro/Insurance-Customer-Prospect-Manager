@@ -30,7 +30,7 @@
           class="col-12 col-md-2 bg-dark text-light"
           style="padding: 10px; --bs-bg-opacity: 0.85"
         >
-          Search Name or Phone:<br />
+          Search Name, Address or Phone:<br />
           <input type="text" id="contactSearch" /><br />
           <ul id="myList"></ul>
           <div id="message"></div>
@@ -74,7 +74,7 @@
       </div>
       <div class="row bartkaRow" style="overflow-y: visible">
         <div
-          class="col-12 bg-secondary"
+          class="col-12 col-md-6 bg-secondary"
           style="padding: 10px; --bs-bg-opacity: 0.25"
         >
           <form id="ContactFields">
@@ -86,7 +86,7 @@
               disabled
             />
             <div class="row g-2">
-              <div class="col-md-2">
+              <div class="col-4">
                 <input
                   type="text"
                   placeholder="Contact Type"
@@ -96,7 +96,7 @@
               </div>
             </div>
             <div class="row g-2">
-              <div class="col-md-2">
+              <div class="col-4">
                 <input
                   type="text"
                   placeholder="First Name"
@@ -104,7 +104,7 @@
                   id="FirstName"
                 />
               </div>
-              <div class="col-md-2">
+              <div class="col-4">
                 <input
                   type="text"
                   placeholder="Last Name"
@@ -112,7 +112,7 @@
                   id="LastName"
                 />
               </div>
-              <div class="col-md-2">
+              <div class="col-4">
                 <input
                   type="text"
                   placeholder="Birth Date"
@@ -122,7 +122,7 @@
               </div>
             </div>
             <div class="row g-2">
-              <div class="col-md-2">
+              <div class="col-4">
                 <input
                   type="text"
                   placeholder="Spouse First Name"
@@ -130,7 +130,7 @@
                   id="SpouseName"
                 />
               </div>
-              <div class="col-md-2">
+              <div class="col-4">
                 <input
                   type="text"
                   placeholder="Spouse Last Name"
@@ -138,7 +138,7 @@
                   id="SpouseLastName"
                 />
               </div>
-              <div class="col-md-2">
+              <div class="col-4">
                 <input
                   type="text"
                   placeholder="Birth Date"
@@ -148,7 +148,7 @@
               </div>
             </div>
             <div class="row g-2">
-              <div class="col-3">
+              <div class="col-6">
                 <input
                   type="text"
                   class="form-control"
@@ -156,7 +156,7 @@
                   placeholder="Address"
                 />
               </div>
-              <div class="col-1">
+              <div class="col-2">
                 <input
                   type="text"
                   class="form-control"
@@ -164,7 +164,7 @@
                   placeholder="Unit"
                 />
               </div>
-              <div class="col-md-2">
+              <div class="col-4">
                 <input
                   type="text"
                   placeholder="City"
@@ -174,7 +174,7 @@
               </div>
             </div>
             <div class="row g-2">
-              <div class="col-md-1">
+              <div class="col-2">
                 <select id="State" class="form-select">
                   <option selected>IL</option>
                   <option value="AL">AL</option>
@@ -230,7 +230,7 @@
                   <option value="WY">WY</option>
                 </select>
               </div>
-              <div class="col-md-1">
+              <div class="col-2">
                 <input
                   type="text"
                   placeholder="Zip"
@@ -238,7 +238,7 @@
                   id="Zip"
                 />
               </div>
-              <div class="col-md-2">
+              <div class="col-4">
                 <input
                   type="text"
                   placeholder="Phone"
@@ -246,7 +246,7 @@
                   id="Phone"
                 />
               </div>
-              <div class="col-md-2">
+              <div class="col-4">
                 <input
                   type="text"
                   placeholder="Email"
@@ -256,7 +256,7 @@
               </div>
             </div>
             <div class="row g-2">
-              <div class="col-md-2">
+              <div class="col-4">
                 <div class="input-group">
                   <span class="input-group-text">Auto</span>
                   <input
@@ -268,7 +268,7 @@
                   />
                 </div>
               </div>
-              <div class="col-md-2">
+              <div class="col-4">
                 <div class="input-group">
                   <span class="input-group-text">Home</span>
                   <input
@@ -279,7 +279,7 @@
                   />
                 </div>
               </div>
-              <div class="col-md-2">
+              <div class="col-4">
                 <div class="input-group">
                   <span class="input-group-text">Life</span>
                   <input
@@ -292,7 +292,7 @@
               </div>
             </div>
             <div class="row g-2">
-              <div class="col-md-2">
+              <div class="col-4">
                 <div class="input-group">
                   <span class="input-group-text">Condo</span>
                   <input
@@ -304,7 +304,7 @@
                   />
                 </div>
               </div>
-              <div class="col-md-2">
+              <div class="col-4">
                 <div class="input-group">
                   <span class="input-group-text">Renters</span>
                   <input
@@ -315,7 +315,7 @@
                   />
                 </div>
               </div>
-              <div class="col-md-2">
+              <div class="col-4">
                 <div class="input-group">
                   <span class="input-group-text">Landlords</span>
                   <input
@@ -328,7 +328,7 @@
               </div>
             </div>
             <div class="row g-2">
-              <div class="col-md-6">
+              <div class="col-12">
                 <div class="input-group">
                   <div class="input-group-prepend">
                     <span class="input-group-text">Notes</span>
@@ -354,6 +354,11 @@
             Create Customer/Prospect
           </button> -->
         </div>
+        <div
+          class="col-12 col-md-6 bg-secondary"
+          style="padding: 10px; --bs-bg-opacity: 0.5"
+        >
+        <form id="CalendarEventsList"></form>
       </div>
     </div>
   </body>
