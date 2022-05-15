@@ -4,6 +4,7 @@ const message = document.getElementById('message');
 const contactSearch = document.getElementById('contactSearch');
 const TaskList = document.getElementById('TaskList');
 let list = document.getElementById('myList');
+let CalendarEventsList = document.getElementById('CalendarEventsList');
 let rep = 0;
 let count = 0;
 let nav = 0;
@@ -117,6 +118,7 @@ const showSearchList = function (JsonDB) {
                   : '';
               }
             }
+            calendarEventsList(userData);
           });
         rep++;
       }
@@ -161,6 +163,36 @@ function dailyEvents() {
         console.log(`${timeSlots}TimeSlot`);
       });
   }
+}
+
+function calendarEventsList(userData) {
+  const customerCalEvents = userData.CalendarEvents;
+
+  customerCalEvents.forEach((element) => {
+    console.log(element);
+    let li = document.createElement('input');
+    li.type = 'text';
+    li.id = `Event${element.EventID}`;
+    li.classList.add(`form-control`);
+    li.value = element.Date + ' ' + element.Description;
+    CalendarEventsList.appendChild(li);
+  });
+
+  // for (let numberCalendarEvents = openHours; timeSlots <= closeHours; timeSlots++) {
+  //   let li = document.createElement('input');
+  //   li.placeholder = `${timeSlots}:00`;
+  //   li.type = 'text';
+  //   li.id = `${timeSlots}TimeSlot`;
+  //   li.classList.add(`form-control`);
+  //   // prettier-ignore
+  //   if (timeSlots % 2) {li.classList.add(`EventAlternate`);}
+  //   TaskList.appendChild(li);
+  //   window[timeSlots + 'TimeSlot'] = document
+  //     .getElementById(`${timeSlots}TimeSlot`)
+  //     .addEventListener('focusin', function (e) {
+  //       console.log(`${timeSlots}TimeSlot`);
+  //     });
+  // }
 }
 
 function loadCalendar() {
@@ -222,13 +254,13 @@ function loadCalendar() {
                 daySquare.appendChild(eventDiv);
 
                 daySquare.addEventListener('click', () => {
-                  console.log(eventForDay.LastName);
-                  console.log(eventForDay.CalendarEvents[eventDetails].Date);
-                  console.log(eventForDay.CalendarEvents[eventDetails].Time);
-                  console.log(
-                    eventForDay.CalendarEvents[eventDetails].Description
-                  );
-                  console.log('==============');
+                  // console.log(eventForDay.LastName);
+                  // console.log(eventForDay.CalendarEvents[eventDetails].Date);
+                  // console.log(eventForDay.CalendarEvents[eventDetails].Time);
+                  // console.log(
+                  //   eventForDay.CalendarEvents[eventDetails].Description
+                  // );
+                  // console.log('==============');
                   document.getElementById(
                     'monthDisplay'
                   ).innerText = `${tasklistDate.toLocaleDateString('en-us', {
