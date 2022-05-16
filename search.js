@@ -162,6 +162,7 @@ function dailyEvents() {
       })
       .flatMap((userData) => userData.CalendarEvents)
       .sort((a, b) => a.Time - b.Time);
+
     for (const todaysEvent of todaysEvents) {
       if (todaysEvent.Date == todaysDate) {
         let li = document.createElement('input');
@@ -186,9 +187,12 @@ function dailyEvents() {
 }
 
 function calendarEventsList(userData) {
-  const customerCalEvents = userData.CalendarEvents;
-
-  customerCalEvents.forEach((element) => {
+  //sorts the Data in reverse chronological order
+  const customerCalEvents = userData.CalendarEvents?.sort((a, b) =>
+    b.Date.localeCompare(a.Date)
+  );
+  CalendarEventsList.innerHTML = '';
+  customerCalEvents?.forEach((element) => {
     console.log(element);
     let li = document.createElement('input');
     li.type = 'text';
@@ -197,22 +201,6 @@ function calendarEventsList(userData) {
     li.value = element.Date + ' ' + element.Description;
     CalendarEventsList.appendChild(li);
   });
-
-  // for (let numberCalendarEvents = openHours; timeSlots <= closeHours; timeSlots++) {
-  //   let li = document.createElement('input');
-  //   li.placeholder = `${timeSlots}:00`;
-  //   li.type = 'text';
-  //   li.id = `${timeSlots}TimeSlot`;
-  //   li.classList.add(`form-control`);
-  //   // prettier-ignore
-  //   if (timeSlots % 2) {li.classList.add(`EventAlternate`);}
-  //   TaskList.appendChild(li);
-  //   window[timeSlots + 'TimeSlot'] = document
-  //     .getElementById(`${timeSlots}TimeSlot`)
-  //     .addEventListener('focusin', function (e) {
-  //       console.log(`${timeSlots}TimeSlot`);
-  //     });
-  // }
 }
 
 function loadCalendar() {
