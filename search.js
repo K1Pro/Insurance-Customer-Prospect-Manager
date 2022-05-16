@@ -179,7 +179,26 @@ function dailyEvents(todaysDay, todaysMonth, todaysYear) {
         window[todaysEvent.Time + 'TimeSlot' + todaysEventsBckgrd] = document
           .getElementById(`${todaysEvent.Time}TimeSlot${todaysEventsBckgrd}`)
           .addEventListener('focusin', function (e) {
-            console.log(`${todaysEvent.Description}`);
+            console.log(`${todaysEvent.id}`);
+            const findContactInfo = data.find((bartEntry) => {
+              return bartEntry.id == todaysEvent.id;
+            });
+            console.log(findContactInfo);
+            // console.log(`${JSON.stringify(data)}`);
+            //try to compress this as this is being repeated
+            for (
+              let SecondRep = 0;
+              SecondRep < ContactFields.length;
+              SecondRep++
+            ) {
+              let ContactFieldsIDs = ContactFields[SecondRep].id;
+              if (ContactFieldsIDs) {
+                document.getElementById(`${ContactFieldsIDs}`).value =
+                  findContactInfo[ContactFieldsIDs]
+                    ? `${findContactInfo[ContactFieldsIDs]}`
+                    : '';
+              }
+            }
           });
       }
     }
