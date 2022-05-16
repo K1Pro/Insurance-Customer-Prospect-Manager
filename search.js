@@ -146,12 +146,12 @@ contactSearch.addEventListener('focusin', function (e) {
     });
   });
 });
+let BartDate = new Date();
+const todaysDay = BartDate.getDate();
+const todaysMonth = BartDate.getMonth() + 1;
+const todaysYear = BartDate.getFullYear();
 
-function dailyEvents() {
-  let todaysNewDate = new Date();
-  const todaysDay = todaysNewDate.getDate();
-  const todaysMonth = todaysNewDate.getMonth() + 1;
-  const todaysYear = todaysNewDate.getFullYear();
+function dailyEvents(todaysDay, todaysMonth, todaysYear) {
   const todaysDate = todaysMonth + '/' + todaysDay + '/' + todaysYear;
   let todaysEventsBckgrd = 0;
 
@@ -283,42 +283,44 @@ function loadCalendar() {
                   })} ${rep - paddingDays}, ${year}`;
                   // oiginally using this for date: = `${dayString}`;
                   // Resets Tasklist
-                  for (
-                    let timeSlots = openHours;
-                    timeSlots <= closeHours;
-                    timeSlots++
-                  ) {
-                    document.getElementById(`${timeSlots}TimeSlot`).value = '';
-                  }
-                  function populateTaskList() {
-                    // console.log(eventsForDay);
-                    // console.log(eventForDay.CalendarEvents[eventDetails]);
-                    for (
-                      let timeSlots = openHours;
-                      timeSlots <= closeHours;
-                      timeSlots++
-                    ) {
-                      if (
-                        timeSlots ==
-                        eventForDay.CalendarEvents[eventDetails].Time
-                      ) {
-                        document.getElementById(`${timeSlots}TimeSlot`).value =
-                          eventForDay.CalendarEvents[eventDetails].Time
-                            ? `${eventForDay.CalendarEvents[eventDetails].Description}`
-                            : '';
-                      }
-                    }
-                  }
-                  setTimeout(populateTaskList, 1);
+
+                  // for (
+                  //   let timeSlots = openHours;
+                  //   timeSlots <= closeHours;
+                  //   timeSlots++
+                  // ) {
+                  //   document.getElementById(`${timeSlots}TimeSlot`).value = '';
+                  // }
+                  // function populateTaskList() {
+                  //   // console.log(eventsForDay);
+                  //   // console.log(eventForDay.CalendarEvents[eventDetails]);
+                  //   for (
+                  //     let timeSlots = openHours;
+                  //     timeSlots <= closeHours;
+                  //     timeSlots++
+                  //   ) {
+                  //     if (
+                  //       timeSlots ==
+                  //       eventForDay.CalendarEvents[eventDetails].Time
+                  //     ) {
+                  //       document.getElementById(`${timeSlots}TimeSlot`).value =
+                  //         eventForDay.CalendarEvents[eventDetails].Time
+                  //           ? `${eventForDay.CalendarEvents[eventDetails].Description}`
+                  //           : '';
+                  //     }
+                  //   }
+                  // }
+                  // setTimeout(populateTaskList, 1);
                 });
               }
             }
           }
         }
         daySquare.addEventListener('click', () => {
-          console.log('Lets do some real magic here');
           console.log(`${dayString}`);
           document.getElementById('monthDisplay').innerText = `${dayString}`;
+          TaskList.innerHTML = '';
+          dailyEvents(rep - paddingDays, month + 1, year);
         });
         //uncomment to hear for testing
       }
@@ -352,4 +354,4 @@ function initButtons() {
 }
 loadCalendar();
 initButtons();
-dailyEvents();
+dailyEvents(todaysDay, todaysMonth, todaysYear);
