@@ -30,7 +30,7 @@ li:hover {
   background-color: rgb(204, 231, 243);
 }
 
-@media only screen and (min-width: 992px) {
+@media only screen and (min-width: 768px) {
   .bartkaRow {
     height: 50vh;
   }

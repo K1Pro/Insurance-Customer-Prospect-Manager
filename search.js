@@ -148,21 +148,41 @@ contactSearch.addEventListener('focusin', function (e) {
 });
 
 function dailyEvents() {
-  for (let timeSlots = openHours; timeSlots <= closeHours; timeSlots++) {
-    let li = document.createElement('input');
-    li.placeholder = `${timeSlots}:00`;
-    li.type = 'text';
-    li.id = `${timeSlots}TimeSlot`;
-    li.classList.add(`form-control`);
-    // prettier-ignore
-    if (timeSlots % 2) {li.classList.add(`EventAlternate`);}
-    TaskList.appendChild(li);
-    window[timeSlots + 'TimeSlot'] = document
-      .getElementById(`${timeSlots}TimeSlot`)
-      .addEventListener('focusin', function (e) {
-        console.log(`${timeSlots}TimeSlot`);
-      });
-  }
+  let todaysNewDate = new Date();
+  const todaysDay = todaysNewDate.getDate();
+  const todaysMonth = todaysNewDate.getMonth() + 1;
+  const todaysYear = todaysNewDate.getFullYear();
+  const todaysDate = todaysMonth + '/' + todaysDay + '/' + todaysYear;
+  let todaysEventsBckgrd = 0;
+
+  getJSON(ContactsURL).then((data) => {
+    const todaysEvents = data
+      .filter((userData) => {
+        if (userData.CalendarEvents) return userData.CalendarEvents;
+      })
+      .flatMap((userData) => userData.CalendarEvents)
+      .sort((a, b) => a.Time - b.Time);
+    for (const todaysEvent of todaysEvents) {
+      if (todaysEvent.Date == todaysDate) {
+        let li = document.createElement('input');
+        todaysEventsBckgrd++;
+        if (todaysEventsBckgrd % 2) {
+          li.classList.add(`EventAlternate`);
+        }
+        li.id = `${todaysEvent.Time}TimeSlot${todaysEventsBckgrd}`;
+        li.classList.add(`form-control`);
+        li.placeholder = `${todaysEvent.Time}:00`;
+        li.value = `${todaysEvent.Time}:00 - ${todaysEvent.Description}`;
+        li.type = 'text';
+        TaskList.appendChild(li);
+        window[todaysEvent.Time + 'TimeSlot' + todaysEventsBckgrd] = document
+          .getElementById(`${todaysEvent.Time}TimeSlot${todaysEventsBckgrd}`)
+          .addEventListener('focusin', function (e) {
+            console.log(`${todaysEvent.Description}`);
+          });
+      }
+    }
+  });
 }
 
 function calendarEventsList(userData) {
@@ -222,6 +242,10 @@ function loadCalendar() {
   calendar.innerHTML = '';
 
   getJSON(ContactsURL).then((data) => {
+    const eventsForDay = data.filter((entry) => {
+      if (entry.CalendarEvents) return entry.CalendarEvents;
+    });
+
     for (let rep = 1; rep <= 42; rep++) {
       // original: for (let i = 1; i <= paddingDays + daysInMonth; i++) {
       const daySquare = document.createElement('div');
@@ -240,19 +264,22 @@ function loadCalendar() {
       if (rep > paddingDays) {
         daySquare.classList.add('ActiveDay');
         daySquare.innerText = rep - paddingDays;
-        const eventsForDay = data.filter((e) => e.CalendarEvents);
+        // const eventsForDay = data.filter((e) => e.CalendarEvents);
+
+        // console.log(eventsForDay);
 
         for (const eventForDay of eventsForDay) {
+          // console.log(eventForDay);
           for (let eventDetails in eventForDay.CalendarEvents) {
             if (eventForDay.CalendarEvents[eventDetails].Date === dayString) {
               //original:  const eventsForDay = data?.find((e) => e.Date === dayString);
+
               if (eventsForDay) {
                 const eventDiv = document.createElement('div');
                 eventDiv.classList.add('event');
                 eventDiv.innerText = eventForDay.LastName;
                 //original:  eventDiv.innerText = eventsForDay.Title;
                 daySquare.appendChild(eventDiv);
-
                 daySquare.addEventListener('click', () => {
                   // console.log(eventForDay.LastName);
                   // console.log(eventForDay.CalendarEvents[eventDetails].Date);
@@ -276,6 +303,8 @@ function loadCalendar() {
                     document.getElementById(`${timeSlots}TimeSlot`).value = '';
                   }
                   function populateTaskList() {
+                    // console.log(eventsForDay);
+                    // console.log(eventForDay.CalendarEvents[eventDetails]);
                     for (
                       let timeSlots = openHours;
                       timeSlots <= closeHours;
@@ -298,11 +327,12 @@ function loadCalendar() {
             }
           }
         }
-        // daySquare.addEventListener('click', () => {
-        //   console.log('Lets do some real magic here');
-        //   console.log(`${dayString}`);
-        //   document.getElementById('monthDisplay').innerText = `${dayString}`;
-        // });
+        daySquare.addEventListener('click', () => {
+          console.log('Lets do some real magic here');
+          console.log(`${dayString}`);
+          document.getElementById('monthDisplay').innerText = `${dayString}`;
+        });
+        //uncomment to hear for testing
       }
 
       if (rep - paddingDays === day && nav === 0) {
