@@ -170,19 +170,20 @@ function dailyEvents(todaysDay, todaysMonth, todaysYear) {
         if (todaysEventsBckgrd % 2) {
           li.classList.add(`EventAlternate`);
         }
+        const findContactInfo = data.find((bartEntry) => {
+          return bartEntry.id == todaysEvent.id;
+        });
         li.id = `${todaysEvent.Time}TimeSlot${todaysEventsBckgrd}`;
         li.classList.add(`form-control`);
         li.placeholder = `${todaysEvent.Time}:00`;
-        li.value = `${todaysEvent.Time}:00 - ${todaysEvent.Description}`;
+        li.value = `${todaysEvent.Time}:00 (${findContactInfo.LastName}) ${todaysEvent.Description}`;
         li.type = 'text';
         TaskList.appendChild(li);
         window[todaysEvent.Time + 'TimeSlot' + todaysEventsBckgrd] = document
           .getElementById(`${todaysEvent.Time}TimeSlot${todaysEventsBckgrd}`)
           .addEventListener('focusin', function (e) {
             console.log(`${todaysEvent.id}`);
-            const findContactInfo = data.find((bartEntry) => {
-              return bartEntry.id == todaysEvent.id;
-            });
+
             console.log(findContactInfo);
             // console.log(`${JSON.stringify(data)}`);
             //try to compress this as this is being repeated
@@ -199,6 +200,7 @@ function dailyEvents(todaysDay, todaysMonth, todaysYear) {
                     : '';
               }
             }
+            calendarEventsList(findContactInfo);
           });
       }
     }
@@ -211,14 +213,20 @@ function calendarEventsList(userData) {
     b.Date.localeCompare(a.Date)
   );
   CalendarEventsList.innerHTML = '';
+
+  // FInished here on 5/18/2022, add rest of styling from https://getbootstrap.com/docs/5.2/forms/input-group/
+
   customerCalEvents?.forEach((element) => {
+    const inputDiv = document.createElement('div');
+    inputDiv.classList.add('input-group', 'mb-3');
+    CalendarEventsList.appendChild(inputDiv);
     console.log(element);
     let li = document.createElement('input');
     li.type = 'text';
     li.id = `Event${element.EventID}`;
     li.classList.add(`form-control`);
     li.value = element.Date + ' ' + element.Description;
-    CalendarEventsList.appendChild(li);
+    inputDiv.appendChild(li);
   });
 }
 
