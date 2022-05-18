@@ -4,7 +4,6 @@ li:hover {
   cursor: pointer;
   /* font-size: 150%; */
 }
-
 #id {
   display: none;
 }
@@ -34,4 +33,21 @@ li:hover {
   .bartkaRow {
     height: 50vh;
   }
+}
+
+#backButton,
+#nextButton {
+  width: 45px;
+}
+
+#backButton,
+#nextButton,
+#PrevDay,
+#NextDay {
+  box-shadow: 0px 0px 2px gray;
+  border: none;
+  outline: none;
+  padding: 0px;
+  border-radius: 5px;
+  height: 23px;
 }

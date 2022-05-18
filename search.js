@@ -215,17 +215,58 @@ function calendarEventsList(userData) {
   CalendarEventsList.innerHTML = '';
 
   // FInished here on 5/18/2022, add rest of styling from https://getbootstrap.com/docs/5.2/forms/input-group/
+  //<button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</button>
 
   customerCalEvents?.forEach((element) => {
+    //splits the date into three distict parts
+    let splitDate = element.Date.split('/');
+
     const inputDiv = document.createElement('div');
     inputDiv.classList.add('input-group', 'mb-3');
     CalendarEventsList.appendChild(inputDiv);
+
+    // First Input
+    const inputSelect1 = document.createElement('select');
+    inputSelect1.id = 'inputGroupSelect01';
+    inputDiv.appendChild(inputSelect1);
+
+    const inputOption1 = document.createElement('option');
+    inputOption1.setAttribute('selected', 'selected');
+    inputOption1.innerHTML = splitDate[0];
+    inputSelect1.appendChild(inputOption1);
+
+    // working here to get options dynamically loaded: https://www.javascripttutorial.net/javascript-dom/javascript-add-remove-options/ https://www.bing.com/search?q=javascript+add+options+to+select+dynamically&cvid=6f553361e8ce4bf2a5498904832d6cf7&aqs=edge.1.69i57j0l8.7943j0j4&FORM=ANAB01&PC=EDGEDSE
+    const option = new Option('hi', 'again');
+    inputSelect1.add(option, undefined);
+
+    // Second Input
+    const inputSelect2 = document.createElement('select');
+    inputSelect2.id = 'inputGroupSelect02';
+    inputDiv.appendChild(inputSelect2);
+
+    const inputOption2 = document.createElement('option');
+    inputOption2.setAttribute('selected', 'selected');
+    inputOption2.innerHTML = splitDate[1];
+    inputSelect2.appendChild(inputOption2);
+
+    // Third Input
+    const inputSelect3 = document.createElement('select');
+    inputSelect3.id = 'inputGroupSelect03';
+    inputDiv.appendChild(inputSelect3);
+
+    const inputOption3 = document.createElement('option');
+    inputOption3.setAttribute('selected', 'selected');
+    inputOption3.innerHTML = splitDate[2];
+    inputSelect3.appendChild(inputOption3);
+
     console.log(element);
+    console.log(splitDate);
+
     let li = document.createElement('input');
     li.type = 'text';
     li.id = `Event${element.EventID}`;
     li.classList.add(`form-control`);
-    li.value = element.Date + ' ' + element.Description;
+    li.value = element.Description;
     inputDiv.appendChild(li);
   });
 }

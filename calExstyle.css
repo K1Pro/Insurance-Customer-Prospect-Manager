@@ -4,7 +4,7 @@ body {
   justify-content: center;
   background-color: #fffcff;
 }
-button {
+/* button {
   width: 75px;
   cursor: pointer;
   box-shadow: 0px 0px 2px gray;
@@ -12,9 +12,9 @@ button {
   outline: none;
   padding: 0px;
   border-radius: 5px;
-  height: 23px;
-  /* color: white; */
-}
+  height: 23px; 
+   color: white;
+} */
 
 #CalendarHeader {
   /* padding: 10px; */
