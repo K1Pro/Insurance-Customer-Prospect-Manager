@@ -225,7 +225,7 @@ function calendarEventsList(userData) {
     inputDiv.classList.add('input-group', 'mb-3');
     CalendarEventsList.appendChild(inputDiv);
 
-    // First Input
+    // First Input: Month
     const inputSelect1 = document.createElement('select');
     inputSelect1.id = 'inputGroupSelect01';
     inputDiv.appendChild(inputSelect1);
@@ -235,11 +235,14 @@ function calendarEventsList(userData) {
     inputOption1.innerHTML = splitDate[0];
     inputSelect1.appendChild(inputOption1);
 
-    // working here to get options dynamically loaded: https://www.javascripttutorial.net/javascript-dom/javascript-add-remove-options/ https://www.bing.com/search?q=javascript+add+options+to+select+dynamically&cvid=6f553361e8ce4bf2a5498904832d6cf7&aqs=edge.1.69i57j0l8.7943j0j4&FORM=ANAB01&PC=EDGEDSE
-    const option = new Option('hi', 'again');
-    inputSelect1.add(option, undefined);
+    for (let i = 1; i <= 12; i++) {
+      let inputOption1All = document.createElement('option');
+      inputOption1All.value = i;
+      inputOption1All.innerHTML = i;
+      inputSelect1.appendChild(inputOption1All);
+    }
 
-    // Second Input
+    // Second Input: Day
     const inputSelect2 = document.createElement('select');
     inputSelect2.id = 'inputGroupSelect02';
     inputDiv.appendChild(inputSelect2);
@@ -249,7 +252,7 @@ function calendarEventsList(userData) {
     inputOption2.innerHTML = splitDate[1];
     inputSelect2.appendChild(inputOption2);
 
-    // Third Input
+    // Third Input: Year
     const inputSelect3 = document.createElement('select');
     inputSelect3.id = 'inputGroupSelect03';
     inputDiv.appendChild(inputSelect3);
@@ -258,6 +261,13 @@ function calendarEventsList(userData) {
     inputOption3.setAttribute('selected', 'selected');
     inputOption3.innerHTML = splitDate[2];
     inputSelect3.appendChild(inputOption3);
+
+    for (let i = 2010; i <= 2026; i++) {
+      let inputOption3All = document.createElement('option');
+      inputOption3All.value = i;
+      inputOption3All.innerHTML = i;
+      inputSelect3.appendChild(inputOption3All);
+    }
 
     console.log(element);
     console.log(splitDate);
