@@ -88,12 +88,40 @@
             />
             <div class="row g-2">
               <div class="col-4">
-                <input
+                <!-- <input
                   type="text"
                   placeholder="Contact Type"
                   class="form-control"
                   id="Status"
-                />
+                /> -->
+                <select class="form-select" id="Status">
+                  <option selected disabled="disabled">Contact Status</option>
+                  <option value="Customer">Customer</option>
+                  <option value="Former Customer">Former Customer</option>
+                  <option value="Prospect">Prospect</option>
+                  <option value="Hot Lead">Hot Lead</option>
+                  <option value="Cold Lead">Cold Lead</option>
+                </select>
+              </div>
+              <div class="col-4">
+                <select class="form-select" id="Source">
+                  <option selected disabled="disabled">Source</option>
+                  <option value="Allstate">Allstate</option>
+                  <option value="Assurance">Assurance</option>
+                  <option value="Live Transfer Lead">Live Transfer Lead</option>
+                  <option value="Online Lead">Online Lead</option>
+                  <option value="Referral">Referral</option>
+                </select>
+              </div>
+              <div class="col-2">
+                <select class="form-select" id="CreatedBy">
+                  <option selected disabled="disabled">Agent</option>
+                  <option value="Hanna">Hanna</option>
+                  <option value="Bart">Bart</option>
+                  <option value="Kamilla">Kamilla</option>
+                  <option value="Piotr">Piotr</option>
+                  <option value="Aneta">Aneta</option>
+                </select>
               </div>
             </div>
             <div class="row g-2">

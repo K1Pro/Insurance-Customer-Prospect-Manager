@@ -227,7 +227,7 @@ function calendarEventsList(userData) {
 
     // First Input: Month
     const inputSelect1 = document.createElement('select');
-    inputSelect1.id = 'inputGroupSelect01';
+    // inputSelect1.id = `inputGroupSelect01${element.id}`;
     inputDiv.appendChild(inputSelect1);
 
     const inputOption1 = document.createElement('option');
@@ -244,7 +244,7 @@ function calendarEventsList(userData) {
 
     // Second Input: Day
     const inputSelect2 = document.createElement('select');
-    inputSelect2.id = 'inputGroupSelect02';
+    // inputSelect2.id = 'inputGroupSelect02';
     inputDiv.appendChild(inputSelect2);
 
     const inputOption2 = document.createElement('option');
@@ -254,7 +254,7 @@ function calendarEventsList(userData) {
 
     // Third Input: Year
     const inputSelect3 = document.createElement('select');
-    inputSelect3.id = 'inputGroupSelect03';
+    // inputSelect3.id = 'inputGroupSelect03';
     inputDiv.appendChild(inputSelect3);
 
     const inputOption3 = document.createElement('option');
@@ -262,7 +262,7 @@ function calendarEventsList(userData) {
     inputOption3.innerHTML = splitDate[2];
     inputSelect3.appendChild(inputOption3);
 
-    for (let i = 2010; i <= 2026; i++) {
+    for (let i = 2021; i <= 2026; i++) {
       let inputOption3All = document.createElement('option');
       inputOption3All.value = i;
       inputOption3All.innerHTML = i;
