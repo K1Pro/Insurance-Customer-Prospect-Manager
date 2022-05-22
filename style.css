@@ -21,6 +21,11 @@ li:hover {
   margin-left: -27px;
 }
 
+#TaskList li {
+  list-style: none;
+  margin-left: -27px;
+}
+
 /* .EventEvery {
   margin-left: -40px;
   list-style: none;

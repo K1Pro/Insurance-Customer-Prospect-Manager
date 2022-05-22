@@ -165,7 +165,9 @@ function dailyEvents(todaysDay, todaysMonth, todaysYear) {
 
     for (const todaysEvent of todaysEvents) {
       if (todaysEvent.Date == todaysDate) {
-        let li = document.createElement('input');
+        let li = document.createElement('li');
+        // if you want inputs in the daily tasklist, use the following code:
+        // let li = document.createElement('input');
         todaysEventsBckgrd++;
         if (todaysEventsBckgrd % 2) {
           li.classList.add(`EventAlternate`);
@@ -174,14 +176,15 @@ function dailyEvents(todaysDay, todaysMonth, todaysYear) {
           return bartEntry.id == todaysEvent.id;
         });
         li.id = `${todaysEvent.Time}TimeSlot${todaysEventsBckgrd}`;
-        li.classList.add(`form-control`);
-        li.placeholder = `${todaysEvent.Time}:00`;
-        li.value = `${todaysEvent.Time}:00 (${findContactInfo.LastName}) ${todaysEvent.Description}`;
-        li.type = 'text';
+        li.innerText = `${todaysEvent.Time}:00 (${findContactInfo.LastName}) ${todaysEvent.Description}`;
+        // li.classList.add(`form-control`);
+        // li.placeholder = `${todaysEvent.Time}:00`;
+        // li.value = `${todaysEvent.Time}:00 (${findContactInfo.LastName}) ${todaysEvent.Description}`;
+        // li.type = 'text';
         TaskList.appendChild(li);
         window[todaysEvent.Time + 'TimeSlot' + todaysEventsBckgrd] = document
           .getElementById(`${todaysEvent.Time}TimeSlot${todaysEventsBckgrd}`)
-          .addEventListener('focusin', function (e) {
+          .addEventListener('click', function (e) {
             console.log(`${todaysEvent.id}`);
 
             console.log(findContactInfo);
@@ -267,6 +270,26 @@ function calendarEventsList(userData) {
       inputOption3All.value = i;
       inputOption3All.innerHTML = i;
       inputSelect3.appendChild(inputOption3All);
+    }
+
+    let timeSeparator = document.createElement('span');
+    timeSeparator.classList.add(`input-group-text`);
+    timeSeparator.innerHTML = '@';
+    inputDiv.appendChild(timeSeparator);
+
+    const inputSelect4 = document.createElement('select');
+    inputDiv.appendChild(inputSelect4);
+
+    const inputOption4 = document.createElement('option');
+    inputOption4.setAttribute('selected', 'selected');
+    inputOption4.innerHTML = element.Time;
+    inputSelect4.appendChild(inputOption4);
+
+    for (let i = 7; i <= 20; i++) {
+      let inputOption4All = document.createElement('option');
+      inputOption4All.value = i;
+      inputOption4All.innerHTML = i;
+      inputSelect4.appendChild(inputOption4All);
     }
 
     console.log(element);
