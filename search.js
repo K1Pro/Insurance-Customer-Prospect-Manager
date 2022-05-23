@@ -3,6 +3,12 @@ const BartkaTestButton = document.getElementById('BartkaTestButton');
 const message = document.getElementById('message');
 const contactSearch = document.getElementById('contactSearch');
 const TaskList = document.getElementById('TaskList');
+const contactTasksTextArea = document.getElementById('contactTasksTextArea');
+const inputGroupSelect101 = document.getElementById('inputGroupSelect101');
+const inputGroupSelect102 = document.getElementById('inputGroupSelect102');
+const inputGroupSelect103 = document.getElementById('inputGroupSelect103');
+const inputGroupSelect104 = document.getElementById('inputGroupSelect104');
+const inputGroupSelect105 = document.getElementById('inputGroupSelect105');
 let list = document.getElementById('myList');
 let CalendarEventsList = document.getElementById('CalendarEventsList');
 let rep = 0;
@@ -65,6 +71,12 @@ function updateContactInfo(contactID, updateThisKey, updateThisValue) {
       });
     });
 }
+
+contactTasksTextArea.addEventListener('change', function () {
+  let contactTasksTextAreaValue = this.value;
+
+  console.log(contactTasksTextAreaValue);
+});
 
 const showSearchList = function (JsonDB) {
   message.innerText = '';
@@ -295,10 +307,12 @@ function calendarEventsList(userData) {
     console.log(element);
     console.log(splitDate);
 
-    let li = document.createElement('input');
+    let li = document.createElement('textarea');
     li.type = 'text';
     li.id = `Event${element.EventID}`;
     li.classList.add(`form-control`);
+    li.rows = 1;
+    // li.classList.add(`contactTasks`);
     li.value = element.Description;
     inputDiv.appendChild(li);
   });
