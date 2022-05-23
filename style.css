@@ -4,9 +4,9 @@ li:hover {
   cursor: pointer;
   /* font-size: 150%; */
 }
-#id {
+/* #id {
   display: none;
-}
+} */
 .form-control::-moz-placeholder {
   color: red;
   opacity: 0.6;

@@ -71,11 +71,40 @@ function updateContactInfo(contactID, updateThisKey, updateThisValue) {
       });
     });
 }
-
+//finished here 5/23/2022
 contactTasksTextArea.addEventListener('change', function () {
   let contactTasksTextAreaValue = this.value;
-
-  console.log(contactTasksTextAreaValue);
+  let inputGroupSelect101Value = inputGroupSelect101.value;
+  let inputGroupSelect102Value = inputGroupSelect102.value;
+  let inputGroupSelect103Value = inputGroupSelect103.value;
+  let inputGroupSelect104Value = inputGroupSelect104.value;
+  let inputGroupSelect105Value = inputGroupSelect105.value;
+  console.log(
+    contactTasksTextAreaValue,
+    inputGroupSelect101Value,
+    inputGroupSelect102Value,
+    inputGroupSelect103Value,
+    inputGroupSelect104Value,
+    inputGroupSelect105Value,
+    id.value
+  );
+  let contactTasksTextAreaDate = `${inputGroupSelect101Value}/${inputGroupSelect102Value}/${inputGroupSelect103Value}`;
+  fetch(`${ContactsURL}/${id.value}`, {
+    method: 'PATCH',
+    body: JSON.stringify({
+      // This creates a key-value pair to be patached, ex: "FirstName": Bart
+      CalendarEvents: contactTasksTextAreaDate,
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => response.text())
+    .then(() => {
+      getJSON(ContactsURL).then((data) => {
+        console.log(data);
+      });
+    });
 });
 
 const showSearchList = function (JsonDB) {
