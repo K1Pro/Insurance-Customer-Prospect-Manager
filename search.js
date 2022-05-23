@@ -4,11 +4,18 @@ const message = document.getElementById('message');
 const contactSearch = document.getElementById('contactSearch');
 const TaskList = document.getElementById('TaskList');
 const contactTasksTextArea = document.getElementById('contactTasksTextArea');
+let contactTasksTextAreaValue = contactTasksTextArea.value;
+const createEvent = document.getElementById('createEvent');
 const inputGroupSelect101 = document.getElementById('inputGroupSelect101');
 const inputGroupSelect102 = document.getElementById('inputGroupSelect102');
 const inputGroupSelect103 = document.getElementById('inputGroupSelect103');
 const inputGroupSelect104 = document.getElementById('inputGroupSelect104');
 const inputGroupSelect105 = document.getElementById('inputGroupSelect105');
+let inputGroupSelect101Value = inputGroupSelect101.value;
+let inputGroupSelect102Value = inputGroupSelect102.value;
+let inputGroupSelect103Value = inputGroupSelect103.value;
+let inputGroupSelect104Value = inputGroupSelect104.value;
+let inputGroupSelect105Value = inputGroupSelect105.value;
 let list = document.getElementById('myList');
 let CalendarEventsList = document.getElementById('CalendarEventsList');
 let rep = 0;
@@ -72,13 +79,8 @@ function updateContactInfo(contactID, updateThisKey, updateThisValue) {
     });
 }
 //finished here 5/23/2022
-contactTasksTextArea.addEventListener('change', function () {
-  let contactTasksTextAreaValue = this.value;
-  let inputGroupSelect101Value = inputGroupSelect101.value;
-  let inputGroupSelect102Value = inputGroupSelect102.value;
-  let inputGroupSelect103Value = inputGroupSelect103.value;
-  let inputGroupSelect104Value = inputGroupSelect104.value;
-  let inputGroupSelect105Value = inputGroupSelect105.value;
+createEvent.addEventListener('click', function () {
+  contactTasksTextAreaValue = contactTasksTextArea.value;
   console.log(
     contactTasksTextAreaValue,
     inputGroupSelect101Value,
@@ -88,23 +90,54 @@ contactTasksTextArea.addEventListener('change', function () {
     inputGroupSelect105Value,
     id.value
   );
+
   let contactTasksTextAreaDate = `${inputGroupSelect101Value}/${inputGroupSelect102Value}/${inputGroupSelect103Value}`;
-  fetch(`${ContactsURL}/${id.value}`, {
-    method: 'PATCH',
-    body: JSON.stringify({
-      // This creates a key-value pair to be patached, ex: "FirstName": Bart
-      CalendarEvents: contactTasksTextAreaDate,
-    }),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
-    .then((response) => response.text())
-    .then(() => {
-      getJSON(ContactsURL).then((data) => {
-        console.log(data);
+
+  getJSON(ContactsURL).then((data) => {
+    const findEvents = data
+      .filter((userData) => {
+        if (userData.id == id.value) return userData.CalendarEvents;
+      })
+      .flatMap((userData) => userData.CalendarEvents);
+    console.log(`this is the length: ${findEvents.length}`);
+    let NewEventID = findEvents.length + 1;
+    console.log(findEvents);
+    console.log(contactTasksTextAreaDate);
+    let obj = {};
+    findEvents.push(
+      (obj = {
+        id: id.value,
+        EventID: NewEventID,
+        Date: contactTasksTextAreaDate,
+        Time: inputGroupSelect104Value,
+        Description: contactTasksTextAreaValue,
+      })
+    );
+
+    fetch(`${ContactsURL}/${id.value}`, {
+      method: 'PATCH',
+      body: JSON.stringify({
+        // This creates a key-value pair to be patached, ex: "FirstName": Bart
+        CalendarEvents: findEvents,
+        // {
+        //   Date: contactTasksTextAreaDate,
+        //   Description: contactTasksTextAreaValue,
+        // },
+
+        // Description: contactTasksTextAreaValue,
+        // Description: findEvents,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.text())
+      .then(() => {
+        getJSON(ContactsURL).then((data) => {
+          console.log(data);
+        });
       });
-    });
+  });
 });
 
 const showSearchList = function (JsonDB) {
