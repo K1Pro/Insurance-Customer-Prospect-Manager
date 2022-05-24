@@ -1,5 +1,7 @@
 const ContactsURL = 'http://192.168.54.22:4000/contacts';
 let BartDate = new Date();
+// prettier-ignore
+const bartsMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec',];
 const todaysDay = BartDate.getDate();
 const todaysMonth = BartDate.getMonth() + 1;
 const todaysYear = BartDate.getFullYear();
@@ -18,6 +20,8 @@ const inputGroupSelect105 = document.getElementById('inputGroupSelect105');
 inputGroupSelect101.selectedIndex = todaysMonth - 1;
 inputGroupSelect102.selectedIndex = todaysDay - 1;
 inputGroupSelect103.selectedIndex = 1;
+let totalDaysInMonth = '';
+let = calEvtListMthDays = 0;
 
 let inputGroupSelect101Value = inputGroupSelect101.value;
 let inputGroupSelect102Value = inputGroupSelect102.value;
@@ -239,7 +243,9 @@ contactSearch.addEventListener('focusin', function (e) {
 });
 
 function dailyEvents(todaysDay, todaysMonth, todaysYear) {
-  const todaysDate = todaysMonth + '/' + todaysDay + '/' + todaysYear;
+  // prettier-ignore
+  const todaysDate = ('0' + todaysMonth).slice(-2) + '/' + ('0' + todaysDay).slice(-2) + '/' + todaysYear;
+  // console.log(todaysDate);
   let todaysEventsBckgrd = 0;
 
   getJSON(ContactsURL).then((data) => {
@@ -320,44 +326,61 @@ function calendarEventsList(userData) {
     // inputSelect1.id = `inputGroupSelect01${element.id}`;
     inputDiv.appendChild(inputSelect1);
 
-    const inputOption1 = document.createElement('option');
-    inputOption1.setAttribute('selected', 'selected');
-    inputOption1.innerHTML = splitDate[0];
-    inputSelect1.appendChild(inputOption1);
+    // const inputOption1 = document.createElement('option');
+    // inputOption1.setAttribute('selected', 'selected');
+    // inputOption1.selectedIndex = splitDate[0];
+    // inputOption1.innerHTML = "splitDate[0]";
+    // inputSelect1.appendChild(inputOption1);
 
     for (let i = 1; i <= 12; i++) {
       let inputOption1All = document.createElement('option');
-      inputOption1All.value = i;
-      inputOption1All.innerHTML = i;
+      inputOption1All.value = ('0' + i).slice(-2);
+      // inputOption1All.innerHTML = ('0' + i).slice(-2);
+      inputOption1All.innerHTML = bartsMonths[i - 1];
       inputSelect1.appendChild(inputOption1All);
     }
+    inputSelect1.selectedIndex = splitDate[0] - 1;
 
     // Second Input: Day
     const inputSelect2 = document.createElement('select');
     // inputSelect2.id = 'inputGroupSelect02';
     inputDiv.appendChild(inputSelect2);
 
-    const inputOption2 = document.createElement('option');
-    inputOption2.setAttribute('selected', 'selected');
-    inputOption2.innerHTML = splitDate[1];
-    inputSelect2.appendChild(inputOption2);
+    // const inputOption2 = document.createElement('option');
+    // inputOption2.setAttribute('selected', 'selected');
+    // inputOption2.innerHTML = splitDate[1];
+    // inputSelect2.appendChild(inputOption2);
+
+    totalDaysInMonth = new Date(splitDate[2], splitDate[0], 0);
+    calEvtListMthDays = totalDaysInMonth.getDate();
+
+    for (let i = 1; i <= calEvtListMthDays; i++) {
+      let inputOption2All = document.createElement('option');
+      inputOption2All.value = ('0' + i).slice(-2);
+      // inputOption1All.innerHTML = ('0' + i).slice(-2);
+      inputOption2All.innerHTML = ('0' + i).slice(-2);
+      inputSelect2.appendChild(inputOption2All);
+    }
+    inputSelect2.selectedIndex = splitDate[1] - 1;
 
     // Third Input: Year
     const inputSelect3 = document.createElement('select');
     // inputSelect3.id = 'inputGroupSelect03';
     inputDiv.appendChild(inputSelect3);
 
-    const inputOption3 = document.createElement('option');
-    inputOption3.setAttribute('selected', 'selected');
-    inputOption3.innerHTML = splitDate[2];
-    inputSelect3.appendChild(inputOption3);
+    // const inputOption3 = document.createElement('option');
+    // inputOption3.setAttribute('selected', 'selected');
+    // inputOption3.innerHTML = splitDate[2];
+    // inputSelect3.appendChild(inputOption3);
 
-    for (let i = 2021; i <= 2026; i++) {
+    for (let i = 2011; i <= 2026; i++) {
       let inputOption3All = document.createElement('option');
       inputOption3All.value = i;
       inputOption3All.innerHTML = i;
       inputSelect3.appendChild(inputOption3All);
     }
+    inputSelect3.selectedIndex = splitDate[2] - 2011;
+    // console.log(splitDate[2]);
 
     let timeSeparator = document.createElement('span');
     timeSeparator.classList.add(`input-group-text`);
@@ -369,13 +392,13 @@ function calendarEventsList(userData) {
 
     const inputOption4 = document.createElement('option');
     inputOption4.setAttribute('selected', 'selected');
-    inputOption4.innerHTML = element.Time;
+    inputOption4.innerHTML = ('0' + element.Time).slice(-2);
     inputSelect4.appendChild(inputOption4);
 
     for (let i = 7; i <= 20; i++) {
       let inputOption4All = document.createElement('option');
-      inputOption4All.value = i;
-      inputOption4All.innerHTML = i;
+      inputOption4All.value = ('0' + i).slice(-2);
+      inputOption4All.innerHTML = ('0' + i).slice(-2);
       inputSelect4.appendChild(inputOption4All);
     }
 
@@ -392,9 +415,33 @@ function calendarEventsList(userData) {
     inputDiv.appendChild(li);
 
     let checkBox = document.createElement('input');
+    checkBox.id = `ContactEventCheckBox${element.id}${element.EventID}`;
     checkBox.type = 'checkbox';
-    checkBox.value = '';
+    // checkBox.value = '';
     checkBox.classList.add('form-check-input', 'mt-0', 'bartkaCheckbox');
+    if (element.Completed == 'True') {
+      checkBox.checked = true;
+    }
+
+    console.log(checkBox.id);
+
+    function createCheckBoxListeners() {
+      document
+        .getElementById(`ContactEventCheckBox${element.id}${element.EventID}`)
+        .addEventListener('click', () => {
+          console.log(`${element.id}${element.EventID}`);
+          if (element.Completed == 'True') {
+            element.Completed = 'False';
+            console.log('this will turn false');
+          } else {
+            element.Completed = 'True';
+            console.log('this will turn true');
+          }
+        });
+    }
+
+    setTimeout(createCheckBoxListeners, 1);
+
     inputDiv.appendChild(checkBox);
 
     // let inputButton = document.createElement('button');
@@ -441,7 +488,8 @@ function loadCalendar() {
       // original: for (let i = 1; i <= paddingDays + daysInMonth; i++) {
       const daySquare = document.createElement('div');
       daySquare.classList.add('day');
-      const dayString = `${month + 1}/${rep - paddingDays}/${year}`;
+      // prettier-ignore
+      const dayString = `${('0' + (month + 1)).slice(-2)}/${('0' + (rep - paddingDays)).slice(-2)}/${year}`;
       let tasklistDate = new Date();
       tasklistDate.setMonth(month);
       tasklistDate.setDate(rep - paddingDays);
