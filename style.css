@@ -25,7 +25,15 @@ li:hover {
   list-style: none;
   margin-left: -27px;
 }
-
+.bartkaCheckbox {
+  width: 38px;
+  height: 38px;
+}
+.bartkaCheckbox:checked {
+  width: 38px;
+  height: 38px;
+  background: red;
+}
 /* .contactTasks {
   height: 100px;
 } */

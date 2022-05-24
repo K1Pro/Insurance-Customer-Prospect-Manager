@@ -1,4 +1,8 @@
 const ContactsURL = 'http://192.168.54.22:4000/contacts';
+let BartDate = new Date();
+const todaysDay = BartDate.getDate();
+const todaysMonth = BartDate.getMonth() + 1;
+const todaysYear = BartDate.getFullYear();
 const BartkaTestButton = document.getElementById('BartkaTestButton');
 const message = document.getElementById('message');
 const contactSearch = document.getElementById('contactSearch');
@@ -11,6 +15,10 @@ const inputGroupSelect102 = document.getElementById('inputGroupSelect102');
 const inputGroupSelect103 = document.getElementById('inputGroupSelect103');
 const inputGroupSelect104 = document.getElementById('inputGroupSelect104');
 const inputGroupSelect105 = document.getElementById('inputGroupSelect105');
+inputGroupSelect101.selectedIndex = todaysMonth - 1;
+inputGroupSelect102.selectedIndex = todaysDay - 1;
+inputGroupSelect103.selectedIndex = 1;
+
 let inputGroupSelect101Value = inputGroupSelect101.value;
 let inputGroupSelect102Value = inputGroupSelect102.value;
 let inputGroupSelect103Value = inputGroupSelect103.value;
@@ -59,73 +67,14 @@ async function getJSON(url, errorMsg = 'Something went wrong') {
 
 //////////  Adding Database and Retrieving Data
 function updateContactInfo(contactID, updateThisKey, updateThisValue) {
-  console.log(`${ContactsURL}/${contactID}`);
+  if (id.value) {
+    console.log(`${ContactsURL}/${contactID}`);
 
-  fetch(`${ContactsURL}/${contactID}`, {
-    method: 'PATCH',
-    body: JSON.stringify({
-      // This creates a key-value pair to be patached, ex: "FirstName": Bart
-      [updateThisKey]: updateThisValue,
-    }),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
-    .then((response) => response.text())
-    .then(() => {
-      getJSON(ContactsURL).then((data) => {
-        showSearchList(data);
-      });
-    });
-}
-//finished here 5/23/2022
-createEvent.addEventListener('click', function () {
-  contactTasksTextAreaValue = contactTasksTextArea.value;
-  console.log(
-    contactTasksTextAreaValue,
-    inputGroupSelect101Value,
-    inputGroupSelect102Value,
-    inputGroupSelect103Value,
-    inputGroupSelect104Value,
-    inputGroupSelect105Value,
-    id.value
-  );
-
-  let contactTasksTextAreaDate = `${inputGroupSelect101Value}/${inputGroupSelect102Value}/${inputGroupSelect103Value}`;
-
-  getJSON(ContactsURL).then((data) => {
-    const findEvents = data
-      .filter((userData) => {
-        if (userData.id == id.value) return userData.CalendarEvents;
-      })
-      .flatMap((userData) => userData.CalendarEvents);
-    console.log(`this is the length: ${findEvents.length}`);
-    let NewEventID = findEvents.length + 1;
-    console.log(findEvents);
-    console.log(contactTasksTextAreaDate);
-    let obj = {};
-    findEvents.push(
-      (obj = {
-        id: id.value,
-        EventID: NewEventID,
-        Date: contactTasksTextAreaDate,
-        Time: inputGroupSelect104Value,
-        Description: contactTasksTextAreaValue,
-      })
-    );
-
-    fetch(`${ContactsURL}/${id.value}`, {
+    fetch(`${ContactsURL}/${contactID}`, {
       method: 'PATCH',
       body: JSON.stringify({
         // This creates a key-value pair to be patached, ex: "FirstName": Bart
-        CalendarEvents: findEvents,
-        // {
-        //   Date: contactTasksTextAreaDate,
-        //   Description: contactTasksTextAreaValue,
-        // },
-
-        // Description: contactTasksTextAreaValue,
-        // Description: findEvents,
+        [updateThisKey]: updateThisValue,
       }),
       headers: {
         'Content-Type': 'application/json',
@@ -134,10 +83,78 @@ createEvent.addEventListener('click', function () {
       .then((response) => response.text())
       .then(() => {
         getJSON(ContactsURL).then((data) => {
-          console.log(data);
+          showSearchList(data);
         });
       });
-  });
+  } else {
+    alert('Please search for and choose a customer.');
+  }
+}
+//finished here 5/23/2022
+createEvent.addEventListener('click', function () {
+  contactTasksTextAreaValue = contactTasksTextArea.value;
+  inputGroupSelect101Value = inputGroupSelect101.value;
+  inputGroupSelect102Value = inputGroupSelect102.value;
+  inputGroupSelect103Value = inputGroupSelect103.value;
+  inputGroupSelect104Value = inputGroupSelect104.value;
+  inputGroupSelect105Value = inputGroupSelect105.value;
+  console.log(contactTasksTextAreaValue);
+  console.log(id.value);
+
+  if (contactTasksTextAreaValue && id.value) {
+    console.log(
+      contactTasksTextAreaValue,
+      inputGroupSelect101Value,
+      inputGroupSelect102Value,
+      inputGroupSelect103Value,
+      inputGroupSelect104Value,
+      inputGroupSelect105Value,
+      id.value
+    );
+
+    let contactTasksTextAreaDate = `${inputGroupSelect101Value}/${inputGroupSelect102Value}/${inputGroupSelect103Value}`;
+
+    getJSON(ContactsURL).then((data) => {
+      const findEvents = data
+        .filter((userData) => {
+          if (userData.id == id.value) return userData.CalendarEvents;
+        })
+        .flatMap((userData) => userData.CalendarEvents);
+      console.log(`this is the length: ${findEvents.length}`);
+      let NewEventID = findEvents.length + 1;
+      console.log(findEvents);
+      console.log(contactTasksTextAreaDate);
+      let obj = {};
+      findEvents.push(
+        (obj = {
+          id: id.value,
+          EventID: NewEventID,
+          Date: contactTasksTextAreaDate,
+          Time: inputGroupSelect104Value,
+          Description: contactTasksTextAreaValue,
+        })
+      );
+
+      fetch(`${ContactsURL}/${id.value}`, {
+        method: 'PATCH',
+        body: JSON.stringify({
+          // This creates a key-value pair to be patached, ex: "FirstName": Bart
+          CalendarEvents: findEvents,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((response) => response.text())
+        .then(() => {
+          getJSON(ContactsURL).then((data) => {
+            console.log(data);
+          });
+        });
+    });
+  } else {
+    alert("Please choose a customer and add today's events.");
+  }
 });
 
 const showSearchList = function (JsonDB) {
@@ -220,10 +237,6 @@ contactSearch.addEventListener('focusin', function (e) {
     });
   });
 });
-let BartDate = new Date();
-const todaysDay = BartDate.getDate();
-const todaysMonth = BartDate.getMonth() + 1;
-const todaysYear = BartDate.getFullYear();
 
 function dailyEvents(todaysDay, todaysMonth, todaysYear) {
   const todaysDate = todaysMonth + '/' + todaysDay + '/' + todaysYear;
@@ -377,6 +390,19 @@ function calendarEventsList(userData) {
     // li.classList.add(`contactTasks`);
     li.value = element.Description;
     inputDiv.appendChild(li);
+
+    let checkBox = document.createElement('input');
+    checkBox.type = 'checkbox';
+    checkBox.value = '';
+    checkBox.classList.add('form-check-input', 'mt-0', 'bartkaCheckbox');
+    inputDiv.appendChild(checkBox);
+
+    // let inputButton = document.createElement('button');
+    // inputButton.classList.add('btn', 'btn-danger');
+    // inputButton.id = 'button-addon2';
+    // inputButton.type = 'button';
+    // inputButton.innerHTML = 'X';
+    // inputDiv.appendChild(inputButton);
   });
 }
 
