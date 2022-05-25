@@ -23,15 +23,10 @@ const inputGroupSelect105 = document.getElementById('inputGroupSelect105');
 inputGroupSelect101.selectedIndex = todaysMonth - 1;
 inputGroupSelect102.selectedIndex = todaysDay - 1;
 inputGroupSelect103.selectedIndex = 1;
-let totalDaysInMonth = '';
+// prettier-ignore
+let totalDaysInMonth, checkBoxArray,checkBoxSortedArray, removedCheckedEvent, newCheckedArray, li, whichRenewal, checkedEvents;
 let calEvtListMthDays = 0;
 let eventPlaceHolder = 0;
-let checkBoxArray = [];
-let checkBoxSortedArray = [];
-let removedCheckedEvent = [];
-let newCheckedArray = [];
-let li = '';
-let whichRenewal;
 
 let inputGroupSelect101Value = inputGroupSelect101.value;
 let inputGroupSelect102Value = inputGroupSelect102.value;
@@ -314,7 +309,7 @@ function dailyEvents(todaysDay, todaysMonth, todaysYear) {
           whichRenewal += userData.Policy3Type + ', ';
         }
         if (renewal4 == todaysDateAndMonth) {
-          whichRenewal += userData.Policy4Type;
+          whichRenewal += userData.Policy4Type + ', ';
         }
 
         let li = document.createElement('li');
@@ -322,7 +317,9 @@ function dailyEvents(todaysDay, todaysMonth, todaysYear) {
         if (todaysEventsBckgrd % 2) {
           li.classList.add(`EventAlternate`);
         }
-        li.innerText = `Renewal for ${userData.FirstName} ${userData.LastName}: ${whichRenewal}`;
+        li.innerText = `Renewal for ${userData.FirstName} ${
+          userData.LastName
+        }: ${whichRenewal.slice(0, -2)}`;
         console.log(userData);
         TaskList.appendChild(li);
       }
@@ -526,6 +523,7 @@ function loadCalendar() {
       if (rep > paddingDays) {
         daySquare.classList.add('ActiveDay');
         daySquare.innerText = rep - paddingDays;
+
         // const eventsForDay = data.filter((e) => e.CalendarEvents);
 
         for (const eventForDay of eventsForDay) {
@@ -535,7 +533,20 @@ function loadCalendar() {
 
               if (eventsForDay) {
                 const eventDiv = document.createElement('div');
-                eventDiv.classList.add('event');
+                //almost got it to work, checked events but need to make sure if there are multiple events for each customer on one day, that they are separate if they are indeed separately checked
+                console.log(dayString);
+                checkedEvents = eventForDay.CalendarEvents;
+                checkedEvents.forEach((element) => {
+                  if (element.Date == dayString) {
+                    if (element.Completed == 'True') {
+                      eventDiv.classList.add('completedEvent');
+                    } else {
+                      eventDiv.classList.add('event');
+                    }
+                  }
+                });
+                // console.log(checkedEvents);
+                // eventDiv.classList.add('event');
                 eventDiv.innerText = eventForDay.LastName;
                 //original:  eventDiv.innerText = eventsForDay.Title;
                 daySquare.appendChild(eventDiv);

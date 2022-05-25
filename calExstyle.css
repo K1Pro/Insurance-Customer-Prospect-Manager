@@ -77,6 +77,18 @@ body {
   /* padding: 3px; */
   /* background-color: #58bae4; */
   background-color: #dbf4ff;
+  /* (original) background-color: #dbf4ff; */
+  /* color: white; */
+  /* border-radius: 5px; */
+  max-height: 55px;
+  overflow: hidden;
+}
+.completedEvent {
+  font-size: 10px;
+  /* padding: 3px; */
+  /* background-color: #58bae4; */
+  background-color: #ffdbdb;
+  /* (original) background-color: #dbf4ff; */
   /* color: white; */
   /* border-radius: 5px; */
   max-height: 55px;
