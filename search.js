@@ -22,6 +22,11 @@ inputGroupSelect102.selectedIndex = todaysDay - 1;
 inputGroupSelect103.selectedIndex = 1;
 let totalDaysInMonth = '';
 let = calEvtListMthDays = 0;
+let eventPlaceHolder = 0;
+let checkBoxArray = [];
+let checkBoxSortedArray = [];
+let removedCheckedEvent = [];
+let newCheckedArray = [];
 
 let inputGroupSelect101Value = inputGroupSelect101.value;
 let inputGroupSelect102Value = inputGroupSelect102.value;
@@ -102,20 +107,8 @@ createEvent.addEventListener('click', function () {
   inputGroupSelect103Value = inputGroupSelect103.value;
   inputGroupSelect104Value = inputGroupSelect104.value;
   inputGroupSelect105Value = inputGroupSelect105.value;
-  console.log(contactTasksTextAreaValue);
-  console.log(id.value);
 
   if (contactTasksTextAreaValue && id.value) {
-    console.log(
-      contactTasksTextAreaValue,
-      inputGroupSelect101Value,
-      inputGroupSelect102Value,
-      inputGroupSelect103Value,
-      inputGroupSelect104Value,
-      inputGroupSelect105Value,
-      id.value
-    );
-
     let contactTasksTextAreaDate = `${inputGroupSelect101Value}/${inputGroupSelect102Value}/${inputGroupSelect103Value}`;
 
     getJSON(ContactsURL).then((data) => {
@@ -310,10 +303,9 @@ function calendarEventsList(userData) {
   );
   CalendarEventsList.innerHTML = '';
 
-  // FInished here on 5/18/2022, add rest of styling from https://getbootstrap.com/docs/5.2/forms/input-group/
-  //<button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</button>
-
   customerCalEvents?.forEach((element) => {
+    eventPlaceHolder++;
+
     //splits the date into three distict parts
     let splitDate = element.Date.split('/');
 
@@ -323,19 +315,11 @@ function calendarEventsList(userData) {
 
     // First Input: Month
     const inputSelect1 = document.createElement('select');
-    // inputSelect1.id = `inputGroupSelect01${element.id}`;
     inputDiv.appendChild(inputSelect1);
-
-    // const inputOption1 = document.createElement('option');
-    // inputOption1.setAttribute('selected', 'selected');
-    // inputOption1.selectedIndex = splitDate[0];
-    // inputOption1.innerHTML = "splitDate[0]";
-    // inputSelect1.appendChild(inputOption1);
 
     for (let i = 1; i <= 12; i++) {
       let inputOption1All = document.createElement('option');
       inputOption1All.value = ('0' + i).slice(-2);
-      // inputOption1All.innerHTML = ('0' + i).slice(-2);
       inputOption1All.innerHTML = bartsMonths[i - 1];
       inputSelect1.appendChild(inputOption1All);
     }
@@ -343,13 +327,7 @@ function calendarEventsList(userData) {
 
     // Second Input: Day
     const inputSelect2 = document.createElement('select');
-    // inputSelect2.id = 'inputGroupSelect02';
     inputDiv.appendChild(inputSelect2);
-
-    // const inputOption2 = document.createElement('option');
-    // inputOption2.setAttribute('selected', 'selected');
-    // inputOption2.innerHTML = splitDate[1];
-    // inputSelect2.appendChild(inputOption2);
 
     totalDaysInMonth = new Date(splitDate[2], splitDate[0], 0);
     calEvtListMthDays = totalDaysInMonth.getDate();
@@ -357,7 +335,6 @@ function calendarEventsList(userData) {
     for (let i = 1; i <= calEvtListMthDays; i++) {
       let inputOption2All = document.createElement('option');
       inputOption2All.value = ('0' + i).slice(-2);
-      // inputOption1All.innerHTML = ('0' + i).slice(-2);
       inputOption2All.innerHTML = ('0' + i).slice(-2);
       inputSelect2.appendChild(inputOption2All);
     }
@@ -365,13 +342,7 @@ function calendarEventsList(userData) {
 
     // Third Input: Year
     const inputSelect3 = document.createElement('select');
-    // inputSelect3.id = 'inputGroupSelect03';
     inputDiv.appendChild(inputSelect3);
-
-    // const inputOption3 = document.createElement('option');
-    // inputOption3.setAttribute('selected', 'selected');
-    // inputOption3.innerHTML = splitDate[2];
-    // inputSelect3.appendChild(inputOption3);
 
     for (let i = 2011; i <= 2026; i++) {
       let inputOption3All = document.createElement('option');
@@ -380,7 +351,6 @@ function calendarEventsList(userData) {
       inputSelect3.appendChild(inputOption3All);
     }
     inputSelect3.selectedIndex = splitDate[2] - 2011;
-    // console.log(splitDate[2]);
 
     let timeSeparator = document.createElement('span');
     timeSeparator.classList.add(`input-group-text`);
@@ -410,14 +380,12 @@ function calendarEventsList(userData) {
     li.id = `Event${element.EventID}`;
     li.classList.add(`form-control`);
     li.rows = 1;
-    // li.classList.add(`contactTasks`);
     li.value = element.Description;
     inputDiv.appendChild(li);
 
     let checkBox = document.createElement('input');
     checkBox.id = `ContactEventCheckBox${element.id}${element.EventID}`;
     checkBox.type = 'checkbox';
-    // checkBox.value = '';
     checkBox.classList.add('form-check-input', 'mt-0', 'bartkaCheckbox');
     if (element.Completed == 'True') {
       checkBox.checked = true;
@@ -425,31 +393,61 @@ function calendarEventsList(userData) {
 
     console.log(checkBox.id);
 
-    function createCheckBoxListeners() {
-      document
-        .getElementById(`ContactEventCheckBox${element.id}${element.EventID}`)
-        .addEventListener('click', () => {
-          console.log(`${element.id}${element.EventID}`);
-          if (element.Completed == 'True') {
-            element.Completed = 'False';
-            console.log('this will turn false');
-          } else {
-            element.Completed = 'True';
-            console.log('this will turn true');
-          }
-        });
-    }
-
-    setTimeout(createCheckBoxListeners, 1);
-
     inputDiv.appendChild(checkBox);
+    document
+      .getElementById(`ContactEventCheckBox${element.id}${element.EventID}`)
+      .addEventListener('click', () => {
+        checkBoxArray = element;
+        checkBoxSortedArray = userData.CalendarEvents;
+        removedCheckedEvent = checkBoxSortedArray.filter(
+          (dataEvents) => dataEvents.EventID != element.EventID
+        );
+        if (element.Completed == 'True') {
+          console.log('this will turn false');
+          checkBoxArray.Completed = 'False';
+          removedCheckedEvent.push(checkBoxArray);
+          console.log(removedCheckedEvent);
 
-    // let inputButton = document.createElement('button');
-    // inputButton.classList.add('btn', 'btn-danger');
-    // inputButton.id = 'button-addon2';
-    // inputButton.type = 'button';
-    // inputButton.innerHTML = 'X';
-    // inputDiv.appendChild(inputButton);
+          fetch(`${ContactsURL}/${id.value}`, {
+            method: 'PATCH',
+            body: JSON.stringify({
+              // This creates a key-value pair to be patached, ex: "FirstName": Bart
+              CalendarEvents: removedCheckedEvent,
+            }),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          })
+            .then((response) => response.text())
+            .then(() => {
+              getJSON(ContactsURL).then((data) => {
+                console.log(data);
+              });
+            });
+        } else {
+          console.log('this will turn true');
+          checkBoxArray.Completed = 'True';
+          removedCheckedEvent.push(checkBoxArray);
+          console.log(removedCheckedEvent);
+
+          fetch(`${ContactsURL}/${id.value}`, {
+            method: 'PATCH',
+            body: JSON.stringify({
+              // This creates a key-value pair to be patached, ex: "FirstName": Bart
+              CalendarEvents: removedCheckedEvent,
+            }),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          })
+            .then((response) => response.text())
+            .then(() => {
+              getJSON(ContactsURL).then((data) => {
+                console.log(data);
+              });
+            });
+        }
+      });
   });
 }
 
