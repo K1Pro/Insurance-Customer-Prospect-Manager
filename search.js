@@ -8,6 +8,17 @@ const weekdays = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','S
 const todaysDay = BartDate.getDate();
 const todaysMonth = BartDate.getMonth() + 1;
 const todaysYear = BartDate.getFullYear();
+let fourWeeksLater = '';
+let fourWeeksLaterDate = '';
+let fourWeeksLaterMonth = '';
+let fourWeeksLaterYear = '';
+// fourWeeksLater.setDate(fourWeeksLater.getDate() + 28);
+// console.log(fourWeeksLater);
+// const fourWeeksLaterDate = ('0' + (fourWeeksLater.getDate() + 1)).slice(-2);
+// const fourWeeksLaterMonth = ('0' + (fourWeeksLater.getMonth() + 1)).slice(-2);
+// console.log(fourWeeksLaterDate);
+// console.log(fourWeeksLaterMonth);
+
 const BartkaTestButton = document.getElementById('BartkaTestButton');
 const message = document.getElementById('message');
 const contactSearch = document.getElementById('contactSearch');
@@ -24,7 +35,8 @@ inputGroupSelect101.selectedIndex = todaysMonth - 1;
 inputGroupSelect102.selectedIndex = todaysDay - 1;
 inputGroupSelect103.selectedIndex = 1;
 // prettier-ignore
-let totalDaysInMonth, checkBoxArray,checkBoxSortedArray, removedCheckedEvent, newCheckedArray, li, whichRenewal, checkedEvents;
+let totalDaysInMonth, checkBoxArray,checkBoxSortedArray, removedCheckedEvent, newCheckedArray, li, checkedEvents;
+let whichRenewal = '';
 let calEvtListMthDays = 0;
 let eventPlaceHolder = 0;
 
@@ -232,8 +244,22 @@ contactSearch.addEventListener('focusin', function (e) {
 function dailyEvents(todaysDay, todaysMonth, todaysYear) {
   // prettier-ignore
   const todaysDate = ('0' + todaysMonth).slice(-2) + '/' + ('0' + todaysDay).slice(-2) + '/' + todaysYear;
-  const todaysDateAndMonth =
-    ('0' + todaysMonth).slice(-2) + '/' + ('0' + todaysDay).slice(-2);
+
+  fourWeeksLater = new Date(todaysYear, todaysMonth, todaysDay);
+  fourWeeksLater.setDate(fourWeeksLater.getDate() + 28);
+  console.log(fourWeeksLater);
+
+  fourWeeksLaterDate = fourWeeksLater.getDate();
+  fourWeeksLaterMonth = fourWeeksLater.getMonth();
+  fourWeeksLaterYear = fourWeeksLater.getFullYear() + 1;
+  let todaysDateAndMonth =
+    ('0' + fourWeeksLaterMonth).slice(-2) +
+    '/' +
+    ('0' + fourWeeksLaterDate).slice(-2);
+
+  //original:
+  // let todaysDateAndMonth =
+  //   ('0' + todaysMonth).slice(-2) + '/' + ('0' + todaysDay).slice(-2);
   let todaysEventsBckgrd = 0;
 
   getJSON(ContactsURL).then((data) => {
@@ -299,8 +325,9 @@ function dailyEvents(todaysDay, todaysMonth, todaysYear) {
         renewal3 == todaysDateAndMonth ||
         renewal4 == todaysDateAndMonth
       ) {
+        whichRenewal = '';
         if (renewal1 == todaysDateAndMonth) {
-          whichRenewal = userData.Policy1Type + ', ';
+          whichRenewal += userData.Policy1Type + ', ';
         }
         if (renewal2 == todaysDateAndMonth) {
           whichRenewal += userData.Policy2Type + ', ';
@@ -319,7 +346,7 @@ function dailyEvents(todaysDay, todaysMonth, todaysYear) {
         }
         li.innerText = `Renewal for ${userData.FirstName} ${
           userData.LastName
-        }: ${whichRenewal.slice(0, -2)}`;
+        } in 4 weeks: ${whichRenewal.slice(0, -2)}`;
         console.log(userData);
         TaskList.appendChild(li);
       }
@@ -533,20 +560,13 @@ function loadCalendar() {
 
               if (eventsForDay) {
                 const eventDiv = document.createElement('div');
-                //almost got it to work, checked events but need to make sure if there are multiple events for each customer on one day, that they are separate if they are indeed separately checked
-                console.log(dayString);
                 checkedEvents = eventForDay.CalendarEvents;
-                checkedEvents.forEach((element) => {
-                  if (element.Date == dayString) {
-                    if (element.Completed == 'True') {
-                      eventDiv.classList.add('completedEvent');
-                    } else {
-                      eventDiv.classList.add('event');
-                    }
-                  }
-                });
-                // console.log(checkedEvents);
-                // eventDiv.classList.add('event');
+                if (checkedEvents[eventDetails].Completed == 'True') {
+                  eventDiv.classList.add('completedEvent');
+                } else {
+                  // console.log('false');
+                  eventDiv.classList.add('event');
+                }
                 eventDiv.innerText = eventForDay.LastName;
                 //original:  eventDiv.innerText = eventsForDay.Title;
                 daySquare.appendChild(eventDiv);
@@ -556,36 +576,6 @@ function loadCalendar() {
                   ).innerText = `${tasklistDate.toLocaleDateString('en-us', {
                     month: 'long',
                   })} ${rep - paddingDays}, ${year}`;
-                  // oiginally using this for date: = `${dayString}`;
-                  // Resets Tasklist
-
-                  // for (
-                  //   let timeSlots = openHours;
-                  //   timeSlots <= closeHours;
-                  //   timeSlots++
-                  // ) {
-                  //   document.getElementById(`${timeSlots}TimeSlot`).value = '';
-                  // }
-                  // function populateTaskList() {
-                  //   // console.log(eventsForDay);
-                  //   // console.log(eventForDay.CalendarEvents[eventDetails]);
-                  //   for (
-                  //     let timeSlots = openHours;
-                  //     timeSlots <= closeHours;
-                  //     timeSlots++
-                  //   ) {
-                  //     if (
-                  //       timeSlots ==
-                  //       eventForDay.CalendarEvents[eventDetails].Time
-                  //     ) {
-                  //       document.getElementById(`${timeSlots}TimeSlot`).value =
-                  //         eventForDay.CalendarEvents[eventDetails].Time
-                  //           ? `${eventForDay.CalendarEvents[eventDetails].Description}`
-                  //           : '';
-                  //     }
-                  //   }
-                  // }
-                  // setTimeout(populateTaskList, 1);
                 });
               }
             }
