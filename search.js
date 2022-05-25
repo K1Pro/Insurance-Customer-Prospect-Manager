@@ -12,13 +12,6 @@ let fourWeeksLater = '';
 let fourWeeksLaterDate = '';
 let fourWeeksLaterMonth = '';
 let fourWeeksLaterYear = '';
-// fourWeeksLater.setDate(fourWeeksLater.getDate() + 28);
-// console.log(fourWeeksLater);
-// const fourWeeksLaterDate = ('0' + (fourWeeksLater.getDate() + 1)).slice(-2);
-// const fourWeeksLaterMonth = ('0' + (fourWeeksLater.getMonth() + 1)).slice(-2);
-// console.log(fourWeeksLaterDate);
-// console.log(fourWeeksLaterMonth);
-
 const BartkaTestButton = document.getElementById('BartkaTestButton');
 const message = document.getElementById('message');
 const contactSearch = document.getElementById('contactSearch');
@@ -153,6 +146,15 @@ createEvent.addEventListener('click', function () {
         .then(() => {
           getJSON(ContactsURL).then((data) => {
             console.log(data);
+            contactTasksTextArea.value = '';
+
+            const createdEvent = data.find((element) => element.id == id.value);
+            console.log(createdEvent);
+            calendarEventsList(createdEvent);
+            inputGroupSelect101.selectedIndex = todaysMonth - 1;
+            inputGroupSelect102.selectedIndex = todaysDay - 1;
+            inputGroupSelect103.selectedIndex = 1;
+            loadCalendar();
           });
         });
     });
@@ -244,22 +246,18 @@ contactSearch.addEventListener('focusin', function (e) {
 function dailyEvents(todaysDay, todaysMonth, todaysYear) {
   // prettier-ignore
   const todaysDate = ('0' + todaysMonth).slice(-2) + '/' + ('0' + todaysDay).slice(-2) + '/' + todaysYear;
-
+  //compares renewal to 4 weeks later
   fourWeeksLater = new Date(todaysYear, todaysMonth, todaysDay);
   fourWeeksLater.setDate(fourWeeksLater.getDate() + 28);
-  console.log(fourWeeksLater);
-
   fourWeeksLaterDate = fourWeeksLater.getDate();
   fourWeeksLaterMonth = fourWeeksLater.getMonth();
   fourWeeksLaterYear = fourWeeksLater.getFullYear() + 1;
-  let todaysDateAndMonth =
-    ('0' + fourWeeksLaterMonth).slice(-2) +
-    '/' +
-    ('0' + fourWeeksLaterDate).slice(-2);
 
-  //original:
-  // let todaysDateAndMonth =
-  //   ('0' + todaysMonth).slice(-2) + '/' + ('0' + todaysDay).slice(-2);
+  // prettier-ignore
+  let todaysDateAndMonth = ('0' + fourWeeksLaterMonth).slice(-2) + '/' + ('0' + fourWeeksLaterDate).slice(-2);
+
+  //original, do not delete this!!!!!!! compares renewals to todays date
+  // let todaysDateAndMonth = ('0' + todaysMonth).slice(-2) + '/' + ('0' + todaysDay).slice(-2);
   let todaysEventsBckgrd = 0;
 
   getJSON(ContactsURL).then((data) => {
@@ -555,6 +553,7 @@ function loadCalendar() {
 
         for (const eventForDay of eventsForDay) {
           for (let eventDetails in eventForDay.CalendarEvents) {
+            // console.log(eventForDay.CalendarEvents); try to input the renewals here into the calendar
             if (eventForDay.CalendarEvents[eventDetails].Date === dayString) {
               //original:  const eventsForDay = data?.find((e) => e.Date === dayString);
 
