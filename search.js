@@ -28,7 +28,7 @@ inputGroupSelect101.selectedIndex = todaysMonth - 1;
 inputGroupSelect102.selectedIndex = todaysDay - 1;
 inputGroupSelect103.selectedIndex = 1;
 // prettier-ignore
-let totalDaysInMonth, checkBoxArray,checkBoxSortedArray, removedCheckedEvent, newCheckedArray, li, checkedEvents, custTextAreaArray,custTextAreaSortedArray, removedCustTextAreaEvent, custTextAreaValue, custEventHour, removedCustEventHour, custEventYear, removedCustEventYear, yearSelect, monthSelect, daySelect;
+let totalDaysInMonth, checkBoxArray,checkBoxSortedArray, removedCheckedEvent, newCheckedArray, li, checkedEvents, custTextAreaArray,custTextAreaSortedArray, removedCustTextAreaEvent, custTextAreaValue, custEventHour, removedCustEventHour, custEventYear, removedCustEventYear, yearSelect, monthSelect, daySelect, custEventDay, removedCustEventDay, custEventMonth, removedCustEventMonth, firstDate, secondDate, firstDateYear, secondDateYear;
 let whichRenewal = '';
 let calEvtListMthDays = 0;
 let eventPlaceHolder = 0;
@@ -396,6 +396,7 @@ function calendarEventsList(userData) {
   const customerCalEvents = userData.CalendarEvents?.sort((a, b) =>
     b.Date.localeCompare(a.Date)
   );
+
   CalendarEventsList.innerHTML = '';
 
   customerCalEvents?.forEach((element) => {
@@ -420,6 +421,24 @@ function calendarEventsList(userData) {
       inputSelect1.appendChild(inputOption1All);
     }
     inputSelect1.selectedIndex = splitDate[0] - 1;
+    document
+      .getElementById(`MonthSelect${element.id}${element.EventID}`)
+      .addEventListener('change', (trial) => {
+        daySelect = document.getElementById(
+          `DaySelect${element.id}${element.EventID}`
+        ).value;
+        yearSelect = document.getElementById(
+          `YearSelect${element.id}${element.EventID}`
+        ).value;
+        custEventMonth = userData.CalendarEvents;
+        removedCustEventMonth = custEventMonth.findIndex(
+          (bartElement) => bartElement.EventID == element.EventID
+        );
+        custEventMonth[removedCustEventMonth].Date =
+          trial.target.value + '/' + daySelect + '/' + yearSelect;
+        console.log(custEventMonth);
+        updateCustEvents(custEventMonth);
+      });
 
     // Second Input: Day
     const inputSelect2 = document.createElement('select');
@@ -436,6 +455,24 @@ function calendarEventsList(userData) {
       inputSelect2.appendChild(inputOption2All);
     }
     inputSelect2.selectedIndex = splitDate[1] - 1;
+    document
+      .getElementById(`DaySelect${element.id}${element.EventID}`)
+      .addEventListener('change', (trial) => {
+        monthSelect = document.getElementById(
+          `MonthSelect${element.id}${element.EventID}`
+        ).value;
+        yearSelect = document.getElementById(
+          `YearSelect${element.id}${element.EventID}`
+        ).value;
+        custEventDay = userData.CalendarEvents;
+        removedCustEventDay = custEventDay.findIndex(
+          (bartElement) => bartElement.EventID == element.EventID
+        );
+        custEventDay[removedCustEventDay].Date =
+          monthSelect + '/' + trial.target.value + '/' + yearSelect;
+        console.log(custEventDay);
+        updateCustEvents(custEventDay);
+      });
 
     // Third Input: Year
     const inputSelect3 = document.createElement('select');
