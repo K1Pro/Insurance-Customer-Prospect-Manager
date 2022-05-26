@@ -28,7 +28,7 @@ inputGroupSelect101.selectedIndex = todaysMonth - 1;
 inputGroupSelect102.selectedIndex = todaysDay - 1;
 inputGroupSelect103.selectedIndex = 1;
 // prettier-ignore
-let totalDaysInMonth, checkBoxArray,checkBoxSortedArray, removedCheckedEvent, newCheckedArray, li, checkedEvents;
+let totalDaysInMonth, checkBoxArray,checkBoxSortedArray, removedCheckedEvent, newCheckedArray, li, checkedEvents, custTextAreaArray,custTextAreaSortedArray, removedCustTextAreaEvent, custTextAreaValue, custEventHour, removedCustEventHour, custEventYear, removedCustEventYear, yearSelect, monthSelect, daySelect;
 let whichRenewal = '';
 let calEvtListMthDays = 0;
 let eventPlaceHolder = 0;
@@ -345,11 +345,50 @@ function dailyEvents(todaysDay, todaysMonth, todaysYear) {
         li.innerText = `Renewal for ${userData.FirstName} ${
           userData.LastName
         } in 4 weeks: ${whichRenewal.slice(0, -2)}`;
+        li.id = `renewal${userData.id}`;
         console.log(userData);
         TaskList.appendChild(li);
+        document
+          .getElementById(`renewal${userData.id}`)
+          .addEventListener('click', () => {
+            for (
+              let SecondRep = 0;
+              SecondRep < ContactFields.length;
+              SecondRep++
+            ) {
+              let ContactFieldsIDs = ContactFields[SecondRep].id;
+              if (ContactFieldsIDs) {
+                document.getElementById(`${ContactFieldsIDs}`).value = userData[
+                  ContactFieldsIDs
+                ]
+                  ? `${userData[ContactFieldsIDs]}`
+                  : '';
+              }
+            }
+            calendarEventsList(userData);
+          });
       }
     });
   });
+}
+
+function updateCustEvents(itemUpdated) {
+  fetch(`${ContactsURL}/${id.value}`, {
+    method: 'PATCH',
+    body: JSON.stringify({
+      // This creates a key-value pair to be patached, ex: "FirstName": Bart
+      CalendarEvents: itemUpdated,
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => response.text())
+    .then(() => {
+      getJSON(ContactsURL).then((data) => {
+        console.log(data);
+      });
+    });
 }
 
 function calendarEventsList(userData) {
@@ -371,6 +410,7 @@ function calendarEventsList(userData) {
 
     // First Input: Month
     const inputSelect1 = document.createElement('select');
+    inputSelect1.id = `MonthSelect${element.id}${element.EventID}`;
     inputDiv.appendChild(inputSelect1);
 
     for (let i = 1; i <= 12; i++) {
@@ -383,6 +423,7 @@ function calendarEventsList(userData) {
 
     // Second Input: Day
     const inputSelect2 = document.createElement('select');
+    inputSelect2.id = `DaySelect${element.id}${element.EventID}`;
     inputDiv.appendChild(inputSelect2);
 
     totalDaysInMonth = new Date(splitDate[2], splitDate[0], 0);
@@ -398,6 +439,7 @@ function calendarEventsList(userData) {
 
     // Third Input: Year
     const inputSelect3 = document.createElement('select');
+    inputSelect3.id = `YearSelect${element.id}${element.EventID}`;
     inputDiv.appendChild(inputSelect3);
 
     for (let i = 2011; i <= 2026; i++) {
@@ -407,6 +449,24 @@ function calendarEventsList(userData) {
       inputSelect3.appendChild(inputOption3All);
     }
     inputSelect3.selectedIndex = splitDate[2] - 2011;
+    document
+      .getElementById(`YearSelect${element.id}${element.EventID}`)
+      .addEventListener('change', (trial) => {
+        daySelect = document.getElementById(
+          `DaySelect${element.id}${element.EventID}`
+        ).value;
+        monthSelect = document.getElementById(
+          `MonthSelect${element.id}${element.EventID}`
+        ).value;
+        custEventYear = userData.CalendarEvents;
+        removedCustEventYear = custEventYear.findIndex(
+          (bartElement) => bartElement.EventID == element.EventID
+        );
+        custEventYear[removedCustEventYear].Date =
+          monthSelect + '/' + daySelect + '/' + trial.target.value;
+        console.log(custEventYear);
+        updateCustEvents(custEventYear);
+      });
 
     let timeSeparator = document.createElement('span');
     timeSeparator.classList.add(`input-group-text`);
@@ -414,12 +474,8 @@ function calendarEventsList(userData) {
     inputDiv.appendChild(timeSeparator);
 
     const inputSelect4 = document.createElement('select');
+    inputSelect4.id = `HourSelect${element.id}${element.EventID}`;
     inputDiv.appendChild(inputSelect4);
-
-    const inputOption4 = document.createElement('option');
-    inputOption4.setAttribute('selected', 'selected');
-    inputOption4.innerHTML = ('0' + element.Time).slice(-2);
-    inputSelect4.appendChild(inputOption4);
 
     for (let i = 7; i <= 20; i++) {
       let inputOption4All = document.createElement('option');
@@ -427,14 +483,38 @@ function calendarEventsList(userData) {
       inputOption4All.innerHTML = ('0' + i).slice(-2);
       inputSelect4.appendChild(inputOption4All);
     }
+    inputSelect4.selectedIndex = element.Time - 7;
+    document
+      .getElementById(`HourSelect${element.id}${element.EventID}`)
+      .addEventListener('change', (trial) => {
+        custEventHour = userData.CalendarEvents;
+        removedCustEventHour = custEventHour.findIndex(
+          (bartElement) => bartElement.EventID == element.EventID
+        );
+        custEventHour[removedCustEventHour].Time = trial.target.value;
+        console.log(custEventHour);
+        updateCustEvents(custEventHour);
+      });
 
     li = document.createElement('textarea');
     // li.type = 'text';
-    li.id = `Event${element.EventID}`;
+    li.id = `Event${element.id}${element.EventID}`;
     li.classList.add(`form-control`);
     li.rows = 1;
     li.value = element.Description;
     inputDiv.appendChild(li);
+    document
+      .getElementById(`Event${element.id}${element.EventID}`)
+      .addEventListener('change', (trial) => {
+        custTextAreaSortedArray = userData.CalendarEvents;
+        removedCustTextAreaEvent = custTextAreaSortedArray.findIndex(
+          (bartElement) => bartElement.EventID == element.EventID
+        );
+        custTextAreaSortedArray[removedCustTextAreaEvent].Description =
+          trial.target.value;
+        console.log(custTextAreaSortedArray);
+        updateCustEvents(custTextAreaSortedArray);
+      });
 
     let checkBox = document.createElement('input');
     checkBox.id = `ContactEventCheckBox${element.id}${element.EventID}`;
@@ -456,43 +536,11 @@ function calendarEventsList(userData) {
         if (element.Completed == 'True') {
           checkBoxArray.Completed = 'False';
           removedCheckedEvent.push(checkBoxArray);
-
-          fetch(`${ContactsURL}/${id.value}`, {
-            method: 'PATCH',
-            body: JSON.stringify({
-              // This creates a key-value pair to be patached, ex: "FirstName": Bart
-              CalendarEvents: removedCheckedEvent,
-            }),
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          })
-            .then((response) => response.text())
-            .then(() => {
-              getJSON(ContactsURL).then((data) => {
-                console.log(data);
-              });
-            });
+          updateCustEvents(removedCheckedEvent);
         } else {
           checkBoxArray.Completed = 'True';
           removedCheckedEvent.push(checkBoxArray);
-
-          fetch(`${ContactsURL}/${id.value}`, {
-            method: 'PATCH',
-            body: JSON.stringify({
-              // This creates a key-value pair to be patached, ex: "FirstName": Bart
-              CalendarEvents: removedCheckedEvent,
-            }),
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          })
-            .then((response) => response.text())
-            .then(() => {
-              getJSON(ContactsURL).then((data) => {
-                console.log(data);
-              });
-            });
+          updateCustEvents(removedCheckedEvent);
         }
       });
   });
