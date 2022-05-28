@@ -59,11 +59,35 @@ body {
   justify-content: space-between; */
 }
 .day:hover {
-  background-color: #e8faed;
+  background-color: #fae8f5;
+  /* z-index: 40; */
+  /* background-image: linear-gradient(white, white, lightsalmon); */
 }
 
 .day + #currentDay {
-  background-color: #e8f4fa;
+  background-color: #e8f3fa;
+  /* background-color: #e8fae9; */
+  /* background-image: linear-gradient(to right, white, white, lightblue); */
+  /* background-image: linear-gradient(
+    to right,
+    rgba(255, 0, 0, 0),
+    rgba(255, 0, 0, 0),
+    rgba(255, 0, 0, 1)
+  ); */
+}
+#currentDay:hover {
+  background-color: #fae8f5;
+}
+.daySquareNumber {
+  /* position: absolute; */
+  /* text-align: right; */
+  /* padding-left: 3.75vw; */
+  /* z-index: 20; */
+  /* opacity: 0.3; */
+  padding-left: 2px;
+  /* background-color: white; */
+  margin-bottom: -24px;
+  /* margin-left: 20px; */
 }
 
 .notActiveDay {
@@ -73,10 +97,21 @@ body {
   background-color: #ffffcb;
 } */
 .event {
+  text-align: right;
   font-size: 10px;
+  padding-right: 2px;
   /* padding: 3px; */
   /* background-color: #58bae4; */
-  background-color: #dbf4ff;
+  /* background-color: #dbf4ff; */
+  /* background-image: linear-gradient(to right, white, white, lightgreen); */
+  background-image: linear-gradient(
+    to right,
+    rgba(255, 0, 0, 0),
+    rgba(255, 0, 0, 0),
+    rgba(165, 231, 162, 1)
+  );
+  /* -webkit-text-stroke: 0.1px white; */
+  font-weight: bold;
   /* (original) background-color: #dbf4ff; */
   /* color: white; */
   /* border-radius: 5px; */
@@ -84,17 +119,34 @@ body {
   max-height: 55px;
   overflow: hidden;
 }
+.event:hover {
+  /* background-color: #fae8f5; */
+  /* background-image: linear-gradient(to right, white, white, lightblue); */
+}
 .completedEvent {
+  text-align: right;
   /* margin-top: -15px; */
   font-size: 10px;
   /* padding: 3px; */
   /* background-color: #58bae4; */
-  background-color: #ffdbdb;
+  /* background-color: #ffdbdb;
+  background-image: linear-gradient(to right, white, white, lightsalmon); */
+  background-image: linear-gradient(
+    to right,
+    rgba(255, 0, 0, 0),
+    rgba(255, 0, 0, 0),
+    rgba(233, 182, 153, 1)
+  );
+  font-weight: bold;
   /* (original) background-color: #dbf4ff; */
   /* color: white; */
   /* border-radius: 5px; */
   max-height: 55px;
   overflow: hidden;
+}
+.completedEvent:hover {
+  /* background-color: #fae8f5; */
+  /* background-image: linear-gradient(to right, white, white, lightblue); */
 }
 .padding {
   cursor: default !important;

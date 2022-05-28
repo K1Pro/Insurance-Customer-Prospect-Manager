@@ -19,6 +19,7 @@ const TaskList = document.getElementById('TaskList');
 const contactTasksTextArea = document.getElementById('contactTasksTextArea');
 let contactTasksTextAreaValue = contactTasksTextArea.value;
 const createEvent = document.getElementById('createEvent');
+const reviewed = document.getElementById('Reviewed');
 const inputGroupSelect101 = document.getElementById('inputGroupSelect101');
 const inputGroupSelect102 = document.getElementById('inputGroupSelect102');
 const inputGroupSelect103 = document.getElementById('inputGroupSelect103');
@@ -28,7 +29,7 @@ inputGroupSelect101.selectedIndex = todaysMonth - 1;
 inputGroupSelect102.selectedIndex = todaysDay - 1;
 inputGroupSelect103.selectedIndex = 1;
 // prettier-ignore
-let totalDaysInMonth, checkBoxArray,checkBoxSortedArray, removedCheckedEvent, newCheckedArray, li, checkedEvents, custTextAreaArray,custTextAreaSortedArray, removedCustTextAreaEvent, custTextAreaValue, custEventHour, removedCustEventHour, custEventYear, removedCustEventYear, yearSelect, monthSelect, daySelect, custEventDay, removedCustEventDay, custEventMonth, removedCustEventMonth, firstDate, secondDate, firstDateYear, secondDateYear;
+let totalDaysInMonth, checkBoxArray,checkBoxSortedArray, removedCheckedEvent, newCheckedArray, li, checkedEvents, custTextAreaArray,custTextAreaSortedArray, removedCustTextAreaEvent, custTextAreaValue, custEventHour, removedCustEventHour, custEventYear, removedCustEventYear, yearSelect, monthSelect, daySelect, custEventDay, removedCustEventDay, custEventMonth, removedCustEventMonth, firstDate, secondDate, firstDateYear, secondDateYear, YYYYMMDD, YYYYMMDDTemp, daySquareNumber;
 let whichRenewal = '';
 let calEvtListMthDays = 0;
 let eventPlaceHolder = 0;
@@ -102,6 +103,14 @@ function updateContactInfo(contactID, updateThisKey, updateThisValue) {
     alert('Please search for and choose a customer.');
   }
 }
+
+//Reviewed Button
+reviewed.addEventListener('click', function () {
+  if (id.value != '') {
+    console.log('I just reviewed this');
+  }
+});
+
 //Create Button
 createEvent.addEventListener('click', function () {
   contactTasksTextAreaValue = contactTasksTextArea.value;
@@ -112,7 +121,7 @@ createEvent.addEventListener('click', function () {
   inputGroupSelect105Value = inputGroupSelect105.value;
 
   if (contactTasksTextAreaValue && id.value) {
-    let contactTasksTextAreaDate = `${inputGroupSelect101Value}/${inputGroupSelect102Value}/${inputGroupSelect103Value}`;
+    let contactTasksTextAreaDate = `${inputGroupSelect103Value}/${inputGroupSelect101Value}/${inputGroupSelect102Value}`;
 
     getJSON(ContactsURL).then((data) => {
       const findEvents = data
@@ -269,7 +278,9 @@ function dailyEvents(todaysDay, todaysMonth, todaysYear) {
       .sort((a, b) => a.Time - b.Time);
 
     for (const todaysEvent of todaysEvents) {
-      if (todaysEvent.Date == todaysDate) {
+      YYYYMMDDTemp = todaysEvent.Date;
+      YYYYMMDD = YYYYMMDDTemp.slice(5, 10) + '/' + YYYYMMDDTemp.slice(0, 4);
+      if (YYYYMMDD == todaysDate) {
         let li = document.createElement('li');
         // if you want inputs in the daily tasklist, use the following code:
         // let li = document.createElement('input');
@@ -420,7 +431,7 @@ function calendarEventsList(userData) {
       inputOption1All.innerHTML = bartsMonths[i - 1];
       inputSelect1.appendChild(inputOption1All);
     }
-    inputSelect1.selectedIndex = splitDate[0] - 1;
+    inputSelect1.selectedIndex = splitDate[1] - 1;
     document
       .getElementById(`MonthSelect${element.id}${element.EventID}`)
       .addEventListener('change', (trial) => {
@@ -435,7 +446,7 @@ function calendarEventsList(userData) {
           (bartElement) => bartElement.EventID == element.EventID
         );
         custEventMonth[removedCustEventMonth].Date =
-          trial.target.value + '/' + daySelect + '/' + yearSelect;
+          yearSelect + '/' + trial.target.value + '/' + daySelect;
         console.log(custEventMonth);
         updateCustEvents(custEventMonth);
       });
@@ -445,7 +456,7 @@ function calendarEventsList(userData) {
     inputSelect2.id = `DaySelect${element.id}${element.EventID}`;
     inputDiv.appendChild(inputSelect2);
 
-    totalDaysInMonth = new Date(splitDate[2], splitDate[0], 0);
+    totalDaysInMonth = new Date(splitDate[0], splitDate[1], 0);
     calEvtListMthDays = totalDaysInMonth.getDate();
 
     for (let i = 1; i <= calEvtListMthDays; i++) {
@@ -454,7 +465,7 @@ function calendarEventsList(userData) {
       inputOption2All.innerHTML = ('0' + i).slice(-2);
       inputSelect2.appendChild(inputOption2All);
     }
-    inputSelect2.selectedIndex = splitDate[1] - 1;
+    inputSelect2.selectedIndex = splitDate[2] - 1;
     document
       .getElementById(`DaySelect${element.id}${element.EventID}`)
       .addEventListener('change', (trial) => {
@@ -469,7 +480,7 @@ function calendarEventsList(userData) {
           (bartElement) => bartElement.EventID == element.EventID
         );
         custEventDay[removedCustEventDay].Date =
-          monthSelect + '/' + trial.target.value + '/' + yearSelect;
+          yearSelect + '/' + monthSelect + '/' + trial.target.value;
         console.log(custEventDay);
         updateCustEvents(custEventDay);
       });
@@ -485,7 +496,7 @@ function calendarEventsList(userData) {
       inputOption3All.innerHTML = i;
       inputSelect3.appendChild(inputOption3All);
     }
-    inputSelect3.selectedIndex = splitDate[2] - 2011;
+    inputSelect3.selectedIndex = splitDate[0] - 2011;
     document
       .getElementById(`YearSelect${element.id}${element.EventID}`)
       .addEventListener('change', (trial) => {
@@ -500,7 +511,7 @@ function calendarEventsList(userData) {
           (bartElement) => bartElement.EventID == element.EventID
         );
         custEventYear[removedCustEventYear].Date =
-          monthSelect + '/' + daySelect + '/' + trial.target.value;
+          trial.target.value + '/' + monthSelect + '/' + daySelect;
         console.log(custEventYear);
         updateCustEvents(custEventYear);
       });
@@ -632,14 +643,20 @@ function loadCalendar() {
 
       if (rep > paddingDays) {
         daySquare.classList.add('ActiveDay');
-        daySquare.innerText = rep - paddingDays;
-
+        // originally was here, moved it down: daySquare.innerText = rep - paddingDays;
+        daySquareNumber = document.createElement('div');
+        daySquareNumber.classList.add('daySquareNumber');
+        daySquareNumber.innerText = rep - paddingDays;
+        daySquare.appendChild(daySquareNumber);
         // const eventsForDay = data.filter((e) => e.CalendarEvents);
 
         for (const eventForDay of eventsForDay) {
           for (let eventDetails in eventForDay.CalendarEvents) {
             // console.log(eventForDay.CalendarEvents); try to input the renewals here into the calendar
-            if (eventForDay.CalendarEvents[eventDetails].Date === dayString) {
+            YYYYMMDDTemp = eventForDay.CalendarEvents[eventDetails].Date;
+            YYYYMMDD =
+              YYYYMMDDTemp.slice(5, 10) + '/' + YYYYMMDDTemp.slice(0, 4);
+            if (YYYYMMDD === dayString) {
               //original:  const eventsForDay = data?.find((e) => e.Date === dayString);
 
               if (eventsForDay) {
@@ -653,6 +670,7 @@ function loadCalendar() {
                 }
                 eventDiv.innerText = eventForDay.LastName;
                 //original:  eventDiv.innerText = eventsForDay.Title;
+
                 daySquare.appendChild(eventDiv);
                 daySquare.addEventListener('click', () => {
                   document.getElementById(
@@ -665,6 +683,7 @@ function loadCalendar() {
             }
           }
         }
+
         daySquare.addEventListener('click', () => {
           console.log(`${dayString}`);
           document.getElementById('monthDisplay').innerText = `${dayString}`;
