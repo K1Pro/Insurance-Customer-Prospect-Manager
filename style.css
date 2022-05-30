@@ -45,6 +45,24 @@ li:hover {
 .EventAlternate {
   background-color: rgb(204, 231, 243);
 }
+.TaskCompleted {
+  /* background-color: rgb(243, 204, 204); */
+  background-image: linear-gradient(
+    to right,
+    rgba(165, 231, 162, 1),
+    rgba(255, 0, 0, 0),
+    rgba(255, 0, 0, 0)
+  );
+}
+
+.TaskNotCompleted {
+  background-image: linear-gradient(
+    to right,
+    rgba(233, 182, 153, 1),
+    rgba(255, 0, 0, 0),
+    rgba(255, 0, 0, 0)
+  );
+}
 
 @media only screen and (min-width: 768px) {
   .bartkaRow {
@@ -74,4 +92,8 @@ li:hover {
 }
 #createEvent {
   width: 70px;
+}
+.DateBorder {
+  border-left: 0;
+  border-right: 0;
 }

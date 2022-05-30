@@ -30,18 +30,6 @@
     <div class="container-fluid">
       
       <div class="row bartkaRow border border-dark">
-            <!-- Sidebar -->
-<div class="w3-sidebar w3-bar-block w3-border-right" style="display:none" id="mySidebar">
-  <button onclick="w3_close()" class="w3-bar-item w3-large">Close &times;</button>
-  <a href="#" class="w3-bar-item w3-button">Link 1</a>
-  <a href="#" class="w3-bar-item w3-button">Link 2</a>
-  <a href="#" class="w3-bar-item w3-button">Link 3</a>
-</div>
-
-<!-- Page Content -->
-<div class="w3-teal">
-  <button class="w3-button w3-teal w3-xlarge" onclick="w3_open()">☰</button>
-</div>
         <div
           class="col-12 col-md-2 bg-dark text-light"
           style="padding: 10px; --bs-bg-opacity: 0.85"
@@ -699,7 +687,7 @@
         >
 
         <div class="input-group mb-3">
-          <select id="inputGroupSelect101">
+          <select id="inputGroupSelect101" class="DateBorder">
             <option value="01">Jan</option>
             <option value="02">Feb</option>
             <option value="03">Mar</option>
@@ -713,7 +701,7 @@
             <option value="11">Nov</option>
             <option value="12">Dec</option>
           </select>
-          <select  id="inputGroupSelect102">
+          <select  id="inputGroupSelect102" class="DateBorder">
             <option value="01">01</option>
             <option value="02">02</option>
             <option value="03">03</option>
@@ -747,7 +735,7 @@
             <option value="31">31</option>
           </select>
           <!-- add this to all the selects to get them to look nice: class="form-select" -->
-          <select  id="inputGroupSelect103">
+          <select  id="inputGroupSelect103" class="DateBorder">
             <option value="2021">2021</option>
             <option value="2022">2022</option>
             <option value="2023">2023</option>
@@ -755,7 +743,7 @@
           </select>
           <span class="input-group-text">@</span>
 
-          <select  id="inputGroupSelect104">
+          <select  id="inputGroupSelect104" class="DateBorder">
             <option value="07">07</option>
             <option value="08">08</option>
             <option value="09">09</option>
@@ -772,28 +760,18 @@
             <option value="20">20</option>
           </select>
 
-          <select  id="inputGroupSelect105">
+          <select  id="inputGroupSelect105" class="DateBorder">
             <option value="00">00</option>
             <option value="15">15</option>
             <option value="30">30</option>
             <option value="45">45</option>
           </select>
           <!-- <label class="input-group-text" for="inputGroupSelect02">Options</label> -->
-          <textarea id="contactTasksTextArea" class="form-control"></textarea>
+          <textarea id="contactTasksTextArea" class="form-control" placeholder="Please select your contact and type their today's event here..."></textarea>
           <button class="btn btn-success" type="button" id="createEvent">Create Event</button>
         </div>
         <form id="CalendarEventsList"></form>
       </div>
     </div>
-
-    <script>
-      function w3_open() {
-        document.getElementById("mySidebar").style.display = "block";
-      }
-      
-      function w3_close() {
-        document.getElementById("mySidebar").style.display = "none";
-      }
-      </script>
   </body>
 </html>
