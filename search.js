@@ -8,6 +8,8 @@ const weekdays = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','S
 const todaysDay = BartDate.getDate();
 const todaysMonth = BartDate.getMonth() + 1;
 const todaysYear = BartDate.getFullYear();
+// prettier-ignore
+const todaysFullDate = ('0' + todaysMonth).slice(-2) + '/' + ('0' +todaysDay).slice(-2) + '/' + todaysYear;
 let fourWeeksLater = '';
 let fourWeeksLaterDate = '';
 let fourWeeksLaterMonth = '';
@@ -29,7 +31,7 @@ inputGroupSelect101.selectedIndex = todaysMonth - 1;
 inputGroupSelect102.selectedIndex = todaysDay - 1;
 inputGroupSelect103.selectedIndex = 1;
 // prettier-ignore
-let totalDaysInMonth, checkBoxArray,checkBoxSortedArray, removedCheckedEvent, newCheckedArray, li, checkedEvents, custTextAreaArray,custTextAreaSortedArray, removedCustTextAreaEvent, custTextAreaValue, custEventHour, removedCustEventHour, custEventYear, removedCustEventYear, yearSelect, monthSelect, daySelect, custEventDay, removedCustEventDay, custEventMonth, removedCustEventMonth, firstDate, secondDate, firstDateYear, secondDateYear, YYYYMMDD, YYYYMMDDTemp, daySquareNumber;
+let totalDaysInMonth, checkBoxArray,checkBoxSortedArray, removedCheckedEvent, newCheckedArray, li, checkedEvents, custTextAreaArray,custTextAreaSortedArray, removedCustTextAreaEvent, custTextAreaValue, custEventHour, removedCustEventHour, custEventYear, removedCustEventYear, yearSelect, monthSelect, daySelect, custEventDay, removedCustEventDay, custEventMonth, removedCustEventMonth, firstDate, secondDate, firstDateYear, secondDateYear, YYYYMMDD, YYYYMMDDTemp, daySquareNumber, contactLastEditDate, selectedDate, renewalChecked, selectedDateTemp, contactLastEditDateTemp, currentDate, currentDateArray;
 let whichRenewal = '';
 let calEvtListMthDays = 0;
 let eventPlaceHolder = 0;
@@ -107,7 +109,46 @@ function updateContactInfo(contactID, updateThisKey, updateThisValue) {
 //Reviewed Button
 reviewed.addEventListener('click', function () {
   if (id.value != '') {
-    console.log('I just reviewed this');
+    console.log('this is calculated:');
+    console.log(todaysFullDate);
+    console.log('this is from the daily tasklist: ');
+    console.log(document.getElementById('monthDisplay').innerText);
+    fetch(`${ContactsURL}/${id.value}`, {
+      method: 'PATCH',
+      body: JSON.stringify({
+        // This creates a key-value pair to be patached, ex: "FirstName": Bart
+        LastEditDate: todaysFullDate,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.text())
+      .then(() => {
+        getJSON(ContactsURL).then((data) => {
+          currentDate = document.getElementById('monthDisplay').innerText;
+          currentDateArray = currentDate.split('/');
+          console.log(
+            currentDateArray[0],
+            currentDateArray[1],
+            currentDateArray[2]
+          );
+          while (TaskList.firstChild) {
+            TaskList.removeChild(TaskList.firstChild);
+          }
+          dailyEvents(
+            currentDateArray[1],
+            currentDateArray[0],
+            currentDateArray[2]
+          );
+          // console.log("current contact's last editted date:");
+          // console.log(data[id.value - 1].LastEditDate);
+          // contactLastEditDate = data[id.value - 1].LastEditDate;
+          // selectedDate = document.getElementById('monthDisplay').innerText;
+          // console.log('now a comparison:');
+          // console.log(contactLastEditDate.localeCompare(selectedDate));
+        });
+      });
   }
 });
 
@@ -288,6 +329,28 @@ function dailyEvents(todaysDay, todaysMonth, todaysYear) {
         if (todaysEventsBckgrd % 2) {
           li.classList.add(`EventAlternate`);
         }
+        contactLastEditDateTemp = todaysEvent.Completed;
+        console.log(contactLastEditDateTemp);
+
+        // // prettier-ignore
+        // contactLastEditDate = contactLastEditDateTemp.slice(6, 10) + '/' + contactLastEditDateTemp.slice(0, 5);
+        // console.log(contactLastEditDate);
+
+        // selectedDateTemp = document.getElementById('monthDisplay').innerText;
+        // // prettier-ignore
+        // selectedDate = selectedDateTemp.slice(6, 10) + '/' + selectedDateTemp.slice(0, 5);
+        // console.log(selectedDate);
+
+        // renewalChecked = contactLastEditDate.localeCompare(selectedDate);
+        // console.log(renewalChecked);
+        // // console.log(userData.LastEditDate);
+
+        if (contactLastEditDateTemp == 'True') {
+          li.classList.add(`TaskCompleted`);
+        } else {
+          li.classList.add(`TaskNotCompleted`);
+        }
+
         const findContactInfo = data.find((bartEntry) => {
           return bartEntry.id == todaysEvent.id;
         });
@@ -353,6 +416,27 @@ function dailyEvents(todaysDay, todaysMonth, todaysYear) {
         if (todaysEventsBckgrd % 2) {
           li.classList.add(`EventAlternate`);
         }
+
+        contactLastEditDateTemp = userData.LastEditDate;
+        // prettier-ignore
+        contactLastEditDate = contactLastEditDateTemp.slice(6, 10) + '/' + contactLastEditDateTemp.slice(0, 5);
+        console.log(contactLastEditDate);
+
+        selectedDateTemp = document.getElementById('monthDisplay').innerText;
+        // prettier-ignore
+        selectedDate = selectedDateTemp.slice(6, 10) + '/' + selectedDateTemp.slice(0, 5);
+        console.log(selectedDate);
+
+        renewalChecked = contactLastEditDate.localeCompare(selectedDate);
+        console.log(renewalChecked);
+        // console.log(userData.LastEditDate);
+
+        if (renewalChecked >= 0) {
+          li.classList.add(`TaskCompleted`);
+        } else {
+          li.classList.add(`TaskNotCompleted`);
+        }
+
         li.innerText = `Renewal for ${userData.FirstName} ${
           userData.LastName
         } in 4 weeks: ${whichRenewal.slice(0, -2)}`;
@@ -423,6 +507,7 @@ function calendarEventsList(userData) {
     // First Input: Month
     const inputSelect1 = document.createElement('select');
     inputSelect1.id = `MonthSelect${element.id}${element.EventID}`;
+    inputSelect1.classList.add(`DateBorder`);
     inputDiv.appendChild(inputSelect1);
 
     for (let i = 1; i <= 12; i++) {
@@ -454,6 +539,7 @@ function calendarEventsList(userData) {
     // Second Input: Day
     const inputSelect2 = document.createElement('select');
     inputSelect2.id = `DaySelect${element.id}${element.EventID}`;
+    inputSelect2.classList.add(`DateBorder`);
     inputDiv.appendChild(inputSelect2);
 
     totalDaysInMonth = new Date(splitDate[0], splitDate[1], 0);
@@ -488,6 +574,7 @@ function calendarEventsList(userData) {
     // Third Input: Year
     const inputSelect3 = document.createElement('select');
     inputSelect3.id = `YearSelect${element.id}${element.EventID}`;
+    inputSelect3.classList.add(`DateBorder`);
     inputDiv.appendChild(inputSelect3);
 
     for (let i = 2011; i <= 2026; i++) {
@@ -523,6 +610,7 @@ function calendarEventsList(userData) {
 
     const inputSelect4 = document.createElement('select');
     inputSelect4.id = `HourSelect${element.id}${element.EventID}`;
+    inputSelect4.classList.add(`DateBorder`);
     inputDiv.appendChild(inputSelect4);
 
     for (let i = 7; i <= 20; i++) {
@@ -613,11 +701,14 @@ function loadCalendar() {
     day: 'numeric',
   });
   const paddingDays = weekdays.indexOf(dateString.split(', ')[0]);
+  // prettier-ignore
+  document.getElementById('monthDisplay').innerText = `${('0' + (month + 1)).slice(-2)}/${('0' + (day)).slice(-2)}/${year}`;
 
-  document.getElementById('monthDisplay').innerText = `${dt.toLocaleDateString(
-    'en-us',
-    { month: 'long' }
-  )} ${day}, ${year}`;
+  // document.getElementById('monthDisplay').innerText = `${dt.toLocaleDateString(
+  //   'en-us',
+  //   { month: 'long' }
+  // )} ${day}, ${year}`;
+
   calendar.innerHTML = '';
 
   getJSON(ContactsURL).then((data) => {
@@ -723,3 +814,18 @@ function initButtons() {
 loadCalendar();
 initButtons();
 dailyEvents(todaysDay, todaysMonth, todaysYear);
+
+// for (
+//   let SecondRep = 0;
+//   SecondRep < ContactFields.length;
+//   SecondRep++
+// ) {
+//   let ContactFieldsIDs = ContactFields[SecondRep].id;
+//   if (ContactFieldsIDs) {
+//     document.getElementById(`${ContactFieldsIDs}`).value = userData[
+//       ContactFieldsIDs
+//     ]
+//       ? `${userData[ContactFieldsIDs]}`
+//       : '';
+//   }
+// }
