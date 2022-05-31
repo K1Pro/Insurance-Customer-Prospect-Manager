@@ -44,6 +44,11 @@ li:hover {
 } */
 .EventAlternate {
   background-color: rgb(204, 231, 243);
+  border-style: solid;
+
+  border-width: 0.5px;
+  /* border-bottom: 1px; */
+  /* border-color: black; */
 }
 .TaskCompleted {
   /* background-color: rgb(243, 204, 204); */

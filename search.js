@@ -35,6 +35,8 @@ let totalDaysInMonth, checkBoxArray,checkBoxSortedArray, removedCheckedEvent, ne
 let whichRenewal = '';
 let calEvtListMthDays = 0;
 let eventPlaceHolder = 0;
+// loadContacts should start as Zero
+let loadContacts = 0;
 
 let inputGroupSelect101Value = inputGroupSelect101.value;
 let inputGroupSelect102Value = inputGroupSelect102.value;
@@ -59,7 +61,7 @@ for (let rep = 0; rep < ContactFields.length; rep++) {
   let ContactFieldsIDs = ContactFields[rep].id;
   if (ContactFieldsIDs) {
     // console.log(ContactFieldsIDs);
-    window['ContactFieldsIDs'] = document
+    document
       .getElementById(`${ContactFieldsIDs}`)
       .addEventListener('change', function (e) {
         let ContactFieldID = this.id;
@@ -106,6 +108,19 @@ function updateContactInfo(contactID, updateThisKey, updateThisValue) {
   }
 }
 
+function populateContactFields(userData) {
+  for (let SecondRep = 0; SecondRep < ContactFields.length; SecondRep++) {
+    let ContactFieldsIDs = ContactFields[SecondRep].id;
+    if (ContactFieldsIDs) {
+      document.getElementById(`${ContactFieldsIDs}`).value = userData[
+        ContactFieldsIDs
+      ]
+        ? `${userData[ContactFieldsIDs]}`
+        : '';
+    }
+  }
+}
+
 //Reviewed Button
 reviewed.addEventListener('click', function () {
   if (id.value != '') {
@@ -141,12 +156,6 @@ reviewed.addEventListener('click', function () {
             currentDateArray[0],
             currentDateArray[2]
           );
-          // console.log("current contact's last editted date:");
-          // console.log(data[id.value - 1].LastEditDate);
-          // contactLastEditDate = data[id.value - 1].LastEditDate;
-          // selectedDate = document.getElementById('monthDisplay').innerText;
-          // console.log('now a comparison:');
-          // console.log(contactLastEditDate.localeCompare(selectedDate));
         });
       });
   }
@@ -246,24 +255,11 @@ const showSearchList = function (JsonDB) {
         li.setAttribute('id', `list${userData.id}`);
         li.innerText = userData.FirstName + ' ' + userData.LastName;
         list.appendChild(li);
-        // programmatically userData inserted into Contact Fields, ex: document.getElementByID(FirstName).value = userData.FirstName
-        window['list' + userData.id] = document
+        // userData inserted into Contact Fields, ex: document.getElementByID(FirstName).value = userData.FirstName
+        document
           .getElementById(`list${userData.id}`)
-          .addEventListener('click', function () {
-            for (
-              let SecondRep = 0;
-              SecondRep < ContactFields.length;
-              SecondRep++
-            ) {
-              let ContactFieldsIDs = ContactFields[SecondRep].id;
-              if (ContactFieldsIDs) {
-                document.getElementById(`${ContactFieldsIDs}`).value = userData[
-                  ContactFieldsIDs
-                ]
-                  ? `${userData[ContactFieldsIDs]}`
-                  : '';
-              }
-            }
+          .addEventListener('click', () => {
+            populateContactFields(userData);
             calendarEventsList(userData);
           });
         rep++;
@@ -321,6 +317,7 @@ function dailyEvents(todaysDay, todaysMonth, todaysYear) {
     for (const todaysEvent of todaysEvents) {
       YYYYMMDDTemp = todaysEvent.Date;
       YYYYMMDD = YYYYMMDDTemp.slice(5, 10) + '/' + YYYYMMDDTemp.slice(0, 4);
+
       if (YYYYMMDD == todaysDate) {
         let li = document.createElement('li');
         // if you want inputs in the daily tasklist, use the following code:
@@ -331,19 +328,6 @@ function dailyEvents(todaysDay, todaysMonth, todaysYear) {
         }
         contactLastEditDateTemp = todaysEvent.Completed;
         console.log(contactLastEditDateTemp);
-
-        // // prettier-ignore
-        // contactLastEditDate = contactLastEditDateTemp.slice(6, 10) + '/' + contactLastEditDateTemp.slice(0, 5);
-        // console.log(contactLastEditDate);
-
-        // selectedDateTemp = document.getElementById('monthDisplay').innerText;
-        // // prettier-ignore
-        // selectedDate = selectedDateTemp.slice(6, 10) + '/' + selectedDateTemp.slice(0, 5);
-        // console.log(selectedDate);
-
-        // renewalChecked = contactLastEditDate.localeCompare(selectedDate);
-        // console.log(renewalChecked);
-        // // console.log(userData.LastEditDate);
 
         if (contactLastEditDateTemp == 'True') {
           li.classList.add(`TaskCompleted`);
@@ -356,36 +340,19 @@ function dailyEvents(todaysDay, todaysMonth, todaysYear) {
         });
         li.id = `${todaysEvent.Time}TimeSlot${todaysEventsBckgrd}`;
         li.innerText = `${todaysEvent.Time}:00 (${findContactInfo.LastName}) ${todaysEvent.Description}`;
-        // li.classList.add(`form-control`);
-        // li.placeholder = `${todaysEvent.Time}:00`;
-        // li.value = `${todaysEvent.Time}:00 (${findContactInfo.LastName}) ${todaysEvent.Description}`;
-        // li.type = 'text';
-        TaskList.appendChild(li);
-        window[todaysEvent.Time + 'TimeSlot' + todaysEventsBckgrd] = document
-          .getElementById(`${todaysEvent.Time}TimeSlot${todaysEventsBckgrd}`)
-          .addEventListener('click', function (e) {
-            console.log(`${todaysEvent.id}`);
 
+        TaskList.appendChild(li);
+        document
+          .getElementById(`${todaysEvent.Time}TimeSlot${todaysEventsBckgrd}`)
+          .addEventListener('click', () => {
+            console.log(`${todaysEvent.id}`);
             console.log(findContactInfo);
-            //try to compress this as this is being repeated
-            for (
-              let SecondRep = 0;
-              SecondRep < ContactFields.length;
-              SecondRep++
-            ) {
-              let ContactFieldsIDs = ContactFields[SecondRep].id;
-              if (ContactFieldsIDs) {
-                document.getElementById(`${ContactFieldsIDs}`).value =
-                  findContactInfo[ContactFieldsIDs]
-                    ? `${findContactInfo[ContactFieldsIDs]}`
-                    : '';
-              }
-            }
+            populateContactFields(findContactInfo);
             calendarEventsList(findContactInfo);
           });
       }
     }
-
+    //The following populates renewals into the daily tasklist
     const renewals = data.filter((userData) => {
       let renewal1 = `${userData.Policy1RenewMonth}/${userData.Policy1RenewDay}`;
       let renewal2 = `${userData.Policy2RenewMonth}/${userData.Policy2RenewDay}`;
@@ -429,7 +396,6 @@ function dailyEvents(todaysDay, todaysMonth, todaysYear) {
 
         renewalChecked = contactLastEditDate.localeCompare(selectedDate);
         console.log(renewalChecked);
-        // console.log(userData.LastEditDate);
 
         if (renewalChecked >= 0) {
           li.classList.add(`TaskCompleted`);
@@ -443,23 +409,14 @@ function dailyEvents(todaysDay, todaysMonth, todaysYear) {
         li.id = `renewal${userData.id}`;
         console.log(userData);
         TaskList.appendChild(li);
+        if (loadContacts == 0) {
+          loadContacts++;
+          populateContactFields(userData);
+        }
         document
           .getElementById(`renewal${userData.id}`)
           .addEventListener('click', () => {
-            for (
-              let SecondRep = 0;
-              SecondRep < ContactFields.length;
-              SecondRep++
-            ) {
-              let ContactFieldsIDs = ContactFields[SecondRep].id;
-              if (ContactFieldsIDs) {
-                document.getElementById(`${ContactFieldsIDs}`).value = userData[
-                  ContactFieldsIDs
-                ]
-                  ? `${userData[ContactFieldsIDs]}`
-                  : '';
-              }
-            }
+            populateContactFields(userData);
             calendarEventsList(userData);
           });
       }
@@ -814,18 +771,3 @@ function initButtons() {
 loadCalendar();
 initButtons();
 dailyEvents(todaysDay, todaysMonth, todaysYear);
-
-// for (
-//   let SecondRep = 0;
-//   SecondRep < ContactFields.length;
-//   SecondRep++
-// ) {
-//   let ContactFieldsIDs = ContactFields[SecondRep].id;
-//   if (ContactFieldsIDs) {
-//     document.getElementById(`${ContactFieldsIDs}`).value = userData[
-//       ContactFieldsIDs
-//     ]
-//       ? `${userData[ContactFieldsIDs]}`
-//       : '';
-//   }
-// }
