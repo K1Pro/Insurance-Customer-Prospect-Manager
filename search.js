@@ -33,6 +33,12 @@ inputGroupSelect102.selectedIndex = todaysDay - 1;
 inputGroupSelect103.selectedIndex = 1;
 // prettier-ignore
 let totalDaysInMonth, checkBoxArray,checkBoxSortedArray, removedCheckedEvent, newCheckedArray, li, checkedEvents, custTextAreaArray,custTextAreaSortedArray, removedCustTextAreaEvent, custTextAreaValue, custEventHour, removedCustEventHour, custEventYear, removedCustEventYear, yearSelect, monthSelect, daySelect, custEventDay, removedCustEventDay, custEventMonth, removedCustEventMonth, firstDate, secondDate, firstDateYear, secondDateYear, YYYYMMDD, YYYYMMDDTemp, daySquareNumber, contactLastEditDate, selectedDate, renewalChecked, selectedDateTemp, contactLastEditDateTemp, currentDate, currentDateArray;
+function dailyTaskListCurrentDate() {
+  let currentdailyTaskListDate = document.getElementById('dailyTaskListDate');
+  currentDate = currentdailyTaskListDate.innerText;
+  currentDateArray = currentDate.split('/');
+  return currentDateArray;
+}
 let whichRenewal = '';
 let calEvtListMthDays = 0;
 let eventPlaceHolder = 0;
@@ -142,20 +148,13 @@ reviewed.addEventListener('click', function () {
       .then((response) => response.text())
       .then(() => {
         getJSON(ContactsURL).then((data) => {
-          currentDate = dailyTaskListDate.innerText;
-          currentDateArray = currentDate.split('/');
-          console.log(
-            currentDateArray[0],
-            currentDateArray[1],
-            currentDateArray[2]
-          );
           while (TaskList.firstChild) {
             TaskList.removeChild(TaskList.firstChild);
           }
           renderDailyTasklist(
-            currentDateArray[1],
-            currentDateArray[0],
-            currentDateArray[2]
+            dailyTaskListCurrentDate()[1],
+            dailyTaskListCurrentDate()[0],
+            dailyTaskListCurrentDate()[2]
           );
         });
       });
@@ -214,7 +213,11 @@ createEvent.addEventListener('click', function () {
             inputGroupSelect101.selectedIndex = todaysMonth - 1;
             inputGroupSelect102.selectedIndex = todaysDay - 1;
             inputGroupSelect103.selectedIndex = 1;
-            renderDailyTasklist();
+            renderDailyTasklist(
+              dailyTaskListCurrentDate()[1],
+              dailyTaskListCurrentDate()[0],
+              dailyTaskListCurrentDate()[2]
+            );
             loadCalendar();
           });
         });
@@ -292,6 +295,7 @@ contactSearch.addEventListener('focusin', function (e) {
 });
 
 function renderDailyTasklist(todaysDay, todaysMonth, todaysYear) {
+  TaskList.innerHTML = '';
   // prettier-ignore
   const todaysDate = ('0' + todaysMonth).slice(-2) + '/' + ('0' + todaysDay).slice(-2) + '/' + todaysYear;
   //compares renewal to 4 weeks later
@@ -646,6 +650,7 @@ function renderContactTaskList(userData) {
 }
 
 function loadCalendar() {
+  //found bug: need to decrease amount of days for next month if current month has more days than next month, otherwise it throws off the next and previous buttons...
   const dt = new Date();
   if (nav !== 0) {
     dt.setMonth(new Date().getMonth() + nav);
@@ -738,7 +743,6 @@ function loadCalendar() {
         daySquare.addEventListener('click', () => {
           console.log(`${dayString}`);
           dailyTaskListDate.innerText = `${dayString}`;
-          TaskList.innerHTML = '';
           renderDailyTasklist(rep - paddingDays, month + 1, year);
         });
         //uncomment to hear for testing
