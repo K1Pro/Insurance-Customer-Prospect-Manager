@@ -344,17 +344,25 @@ function renderDailyTasklist(todaysDay, todaysMonth, todaysYear) {
         const findContactInfo = data.find((bartEntry) => {
           return bartEntry.id == todaysEvent.id;
         });
-        li.id = `${todaysEvent.Time}TimeSlot${todaysEventsBckgrd}`;
+        li.id = `TimeSlot${todaysEvent.id}${todaysEvent.EventID}`;
         li.innerText = `${todaysEvent.Time}:00 (${findContactInfo.LastName}) ${todaysEvent.Description}`;
 
         TaskList.appendChild(li);
         document
-          .getElementById(`${todaysEvent.Time}TimeSlot${todaysEventsBckgrd}`)
+          .getElementById(`TimeSlot${todaysEvent.id}${todaysEvent.EventID}`)
           .addEventListener('click', () => {
             console.log(`${todaysEvent.id}`);
             console.log(findContactInfo);
             renderContactFields(findContactInfo);
             renderContactTaskList(findContactInfo);
+            //add here focusin
+            console.log(`Event${todaysEvent.id}${todaysEvent.EventID}`);
+            // setTimeout((
+            document
+              .getElementById(`Event${todaysEvent.id}${todaysEvent.EventID}`)
+              .focus();
+            //   5000
+            // );
           });
       }
     }
