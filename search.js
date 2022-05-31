@@ -27,6 +27,7 @@ const inputGroupSelect102 = document.getElementById('inputGroupSelect102');
 const inputGroupSelect103 = document.getElementById('inputGroupSelect103');
 const inputGroupSelect104 = document.getElementById('inputGroupSelect104');
 const inputGroupSelect105 = document.getElementById('inputGroupSelect105');
+const dailyTaskListDate = document.getElementById('dailyTaskListDate');
 inputGroupSelect101.selectedIndex = todaysMonth - 1;
 inputGroupSelect102.selectedIndex = todaysDay - 1;
 inputGroupSelect103.selectedIndex = 1;
@@ -35,8 +36,8 @@ let totalDaysInMonth, checkBoxArray,checkBoxSortedArray, removedCheckedEvent, ne
 let whichRenewal = '';
 let calEvtListMthDays = 0;
 let eventPlaceHolder = 0;
-// loadContacts should start as Zero
-let loadContacts = 0;
+// loadContactsOnce should start as Zero
+let loadContactsOnce = 0;
 
 let inputGroupSelect101Value = inputGroupSelect101.value;
 let inputGroupSelect102Value = inputGroupSelect102.value;
@@ -44,7 +45,7 @@ let inputGroupSelect103Value = inputGroupSelect103.value;
 let inputGroupSelect104Value = inputGroupSelect104.value;
 let inputGroupSelect105Value = inputGroupSelect105.value;
 let list = document.getElementById('myList');
-let CalendarEventsList = document.getElementById('CalendarEventsList');
+let contactTaskList = document.getElementById('contactTaskList');
 let rep = 0;
 let count = 0;
 let nav = 0;
@@ -108,7 +109,7 @@ function updateContactInfo(contactID, updateThisKey, updateThisValue) {
   }
 }
 
-function populateContactFields(userData) {
+function renderContactFields(userData) {
   for (let SecondRep = 0; SecondRep < ContactFields.length; SecondRep++) {
     let ContactFieldsIDs = ContactFields[SecondRep].id;
     if (ContactFieldsIDs) {
@@ -127,7 +128,7 @@ reviewed.addEventListener('click', function () {
     console.log('this is calculated:');
     console.log(todaysFullDate);
     console.log('this is from the daily tasklist: ');
-    console.log(document.getElementById('monthDisplay').innerText);
+    console.log(dailyTaskListDate.innerText);
     fetch(`${ContactsURL}/${id.value}`, {
       method: 'PATCH',
       body: JSON.stringify({
@@ -141,7 +142,7 @@ reviewed.addEventListener('click', function () {
       .then((response) => response.text())
       .then(() => {
         getJSON(ContactsURL).then((data) => {
-          currentDate = document.getElementById('monthDisplay').innerText;
+          currentDate = dailyTaskListDate.innerText;
           currentDateArray = currentDate.split('/');
           console.log(
             currentDateArray[0],
@@ -151,7 +152,7 @@ reviewed.addEventListener('click', function () {
           while (TaskList.firstChild) {
             TaskList.removeChild(TaskList.firstChild);
           }
-          dailyEvents(
+          renderDailyTasklist(
             currentDateArray[1],
             currentDateArray[0],
             currentDateArray[2]
@@ -209,10 +210,11 @@ createEvent.addEventListener('click', function () {
 
             const createdEvent = data.find((element) => element.id == id.value);
             console.log(createdEvent);
-            calendarEventsList(createdEvent);
+            renderContactTaskList(createdEvent);
             inputGroupSelect101.selectedIndex = todaysMonth - 1;
             inputGroupSelect102.selectedIndex = todaysDay - 1;
             inputGroupSelect103.selectedIndex = 1;
+            renderDailyTasklist();
             loadCalendar();
           });
         });
@@ -259,8 +261,8 @@ const showSearchList = function (JsonDB) {
         document
           .getElementById(`list${userData.id}`)
           .addEventListener('click', () => {
-            populateContactFields(userData);
-            calendarEventsList(userData);
+            renderContactFields(userData);
+            renderContactTaskList(userData);
           });
         rep++;
       }
@@ -289,7 +291,7 @@ contactSearch.addEventListener('focusin', function (e) {
   });
 });
 
-function dailyEvents(todaysDay, todaysMonth, todaysYear) {
+function renderDailyTasklist(todaysDay, todaysMonth, todaysYear) {
   // prettier-ignore
   const todaysDate = ('0' + todaysMonth).slice(-2) + '/' + ('0' + todaysDay).slice(-2) + '/' + todaysYear;
   //compares renewal to 4 weeks later
@@ -347,8 +349,8 @@ function dailyEvents(todaysDay, todaysMonth, todaysYear) {
           .addEventListener('click', () => {
             console.log(`${todaysEvent.id}`);
             console.log(findContactInfo);
-            populateContactFields(findContactInfo);
-            calendarEventsList(findContactInfo);
+            renderContactFields(findContactInfo);
+            renderContactTaskList(findContactInfo);
           });
       }
     }
@@ -389,7 +391,7 @@ function dailyEvents(todaysDay, todaysMonth, todaysYear) {
         contactLastEditDate = contactLastEditDateTemp.slice(6, 10) + '/' + contactLastEditDateTemp.slice(0, 5);
         console.log(contactLastEditDate);
 
-        selectedDateTemp = document.getElementById('monthDisplay').innerText;
+        selectedDateTemp = dailyTaskListDate.innerText;
         // prettier-ignore
         selectedDate = selectedDateTemp.slice(6, 10) + '/' + selectedDateTemp.slice(0, 5);
         console.log(selectedDate);
@@ -409,15 +411,16 @@ function dailyEvents(todaysDay, todaysMonth, todaysYear) {
         li.id = `renewal${userData.id}`;
         console.log(userData);
         TaskList.appendChild(li);
-        if (loadContacts == 0) {
-          loadContacts++;
-          populateContactFields(userData);
+        if (loadContactsOnce == 0) {
+          loadContactsOnce++;
+          renderContactFields(userData);
+          renderContactTaskList(userData);
         }
         document
           .getElementById(`renewal${userData.id}`)
           .addEventListener('click', () => {
-            populateContactFields(userData);
-            calendarEventsList(userData);
+            renderContactFields(userData);
+            renderContactTaskList(userData);
           });
       }
     });
@@ -443,13 +446,13 @@ function updateCustEvents(itemUpdated) {
     });
 }
 
-function calendarEventsList(userData) {
+function renderContactTaskList(userData) {
+  contactTaskList.innerHTML = '';
+
   //sorts the Data in reverse chronological order
   const customerCalEvents = userData.CalendarEvents?.sort((a, b) =>
     b.Date.localeCompare(a.Date)
   );
-
-  CalendarEventsList.innerHTML = '';
 
   customerCalEvents?.forEach((element) => {
     eventPlaceHolder++;
@@ -459,7 +462,7 @@ function calendarEventsList(userData) {
 
     const inputDiv = document.createElement('div');
     inputDiv.classList.add('input-group', 'mb-3');
-    CalendarEventsList.appendChild(inputDiv);
+    contactTaskList.appendChild(inputDiv);
 
     // First Input: Month
     const inputSelect1 = document.createElement('select');
@@ -618,6 +621,7 @@ function calendarEventsList(userData) {
     }
 
     inputDiv.appendChild(checkBox);
+    // Checkbox Function on each contact's tasklist
     document
       .getElementById(`ContactEventCheckBox${element.id}${element.EventID}`)
       .addEventListener('click', () => {
@@ -630,10 +634,12 @@ function calendarEventsList(userData) {
           checkBoxArray.Completed = 'False';
           removedCheckedEvent.push(checkBoxArray);
           updateCustEvents(removedCheckedEvent);
+          loadCalendar();
         } else {
           checkBoxArray.Completed = 'True';
           removedCheckedEvent.push(checkBoxArray);
           updateCustEvents(removedCheckedEvent);
+          loadCalendar();
         }
       });
   });
@@ -659,9 +665,9 @@ function loadCalendar() {
   });
   const paddingDays = weekdays.indexOf(dateString.split(', ')[0]);
   // prettier-ignore
-  document.getElementById('monthDisplay').innerText = `${('0' + (month + 1)).slice(-2)}/${('0' + (day)).slice(-2)}/${year}`;
-
-  // document.getElementById('monthDisplay').innerText = `${dt.toLocaleDateString(
+  dailyTaskListDate.innerText = `${('0' + (month + 1)).slice(-2)}/${('0' + (day)).slice(-2)}/${year}`;
+  //Long Form of Date, replace this eventually to show in the Daily Task list
+  // document.getElementById('dailyTaskListDate').innerText = `${dt.toLocaleDateString(
   //   'en-us',
   //   { month: 'long' }
   // )} ${day}, ${year}`;
@@ -721,11 +727,8 @@ function loadCalendar() {
 
                 daySquare.appendChild(eventDiv);
                 daySquare.addEventListener('click', () => {
-                  document.getElementById(
-                    'monthDisplay'
-                  ).innerText = `${tasklistDate.toLocaleDateString('en-us', {
-                    month: 'long',
-                  })} ${rep - paddingDays}, ${year}`;
+                  // prettier-ignore
+                  dailyTaskListDate.innerText = `${tasklistDate.toLocaleDateString('en-us', {month: 'long',})} ${rep - paddingDays}, ${year}`;
                 });
               }
             }
@@ -734,9 +737,9 @@ function loadCalendar() {
 
         daySquare.addEventListener('click', () => {
           console.log(`${dayString}`);
-          document.getElementById('monthDisplay').innerText = `${dayString}`;
+          dailyTaskListDate.innerText = `${dayString}`;
           TaskList.innerHTML = '';
-          dailyEvents(rep - paddingDays, month + 1, year);
+          renderDailyTasklist(rep - paddingDays, month + 1, year);
         });
         //uncomment to hear for testing
       }
@@ -770,4 +773,4 @@ function initButtons() {
 }
 loadCalendar();
 initButtons();
-dailyEvents(todaysDay, todaysMonth, todaysYear);
+renderDailyTasklist(todaysDay, todaysMonth, todaysYear);

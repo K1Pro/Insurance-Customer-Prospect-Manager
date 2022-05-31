@@ -1,5 +1,5 @@
 li:hover {
-  background-color: grey;
+  background-color: lightgrey;
   transition: background-color 800ms;
   cursor: pointer;
   /* font-size: 150%; */
@@ -43,7 +43,8 @@ li:hover {
   list-style: none;
 } */
 .EventAlternate {
-  background-color: rgb(204, 231, 243);
+  background-color: white;
+  /* background-color: rgb(204, 231, 243); */
   border-style: solid;
 
   border-width: 0.5px;
@@ -54,7 +55,8 @@ li:hover {
   /* background-color: rgb(243, 204, 204); */
   background-image: linear-gradient(
     to right,
-    rgba(165, 231, 162, 1),
+    rgba(233, 182, 153, 1),
+    rgba(255, 0, 0, 0),
     rgba(255, 0, 0, 0),
     rgba(255, 0, 0, 0)
   );
@@ -63,7 +65,8 @@ li:hover {
 .TaskNotCompleted {
   background-image: linear-gradient(
     to right,
-    rgba(233, 182, 153, 1),
+    rgba(165, 231, 162, 1),
+    rgba(255, 0, 0, 0),
     rgba(255, 0, 0, 0),
     rgba(255, 0, 0, 0)
   );
