@@ -97,19 +97,95 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
+        <tr id="contactListFilters">
+          <!-- <button type="button" class="btn btn-primary" id="Create">+</button> -->
           <th scope="row">0</th>
-          <td><input placeholder="First Name" /></td>
-          <td><input placeholder="Last Name" /></td>
-          <td><input placeholder="Address" /></td>
-          <td><input placeholder="Address 2" /></td>
-          <td><input placeholder="City" /></td>
-          <td><select></select></td>
-          <td><input placeholder="Zip" /></td>
-          <td><input placeholder="Phone" /></td>
-          <td><select></select></td>
-          <td><select></select></td>
-          <td><input placeholder="Last Edit Date" /></td>
+          <td><input id="filterFirstName" placeholder="First Name" /></td>
+          <td><input id="filterLastName" placeholder="Last Name" /></td>
+          <td><input id="filterAddress" placeholder="Address" /></td>
+          <td><input id="filterAddress2" placeholder="Address 2" /></td>
+          <td><input id="filterCity" placeholder="City" /></td>
+          <td>
+            <select id="filterState" class="form-select">
+              <option selected disabled="disabled">State</option>
+              <option value="AL">AL</option>
+              <option value="AK">AK</option>
+              <option value="AZ">AZ</option>
+              <option value="AR">AR</option>
+              <option value="CA">CA</option>
+              <option value="CO">CO</option>
+              <option value="CT">CT</option>
+              <option value="DE">DE</option>
+              <option value="DC">DC</option>
+              <option value="FL">FL</option>
+              <option value="GA">GA</option>
+              <option value="HI">HI</option>
+              <option value="ID">ID</option>
+              <option value="IL">IL</option>
+              <option value="IN">IN</option>
+              <option value="IA">IO</option>
+              <option value="KS">KS</option>
+              <option value="KY">KY</option>
+              <option value="LA">LA</option>
+              <option value="ME">ME</option>
+              <option value="MD">MD</option>
+              <option value="MA">MA</option>
+              <option value="MI">MI</option>
+              <option value="MN">MN</option>
+              <option value="MS">MI</option>
+              <option value="MO">MO</option>
+              <option value="MT">MT</option>
+              <option value="NE">NE</option>
+              <option value="NV">NV</option>
+              <option value="NH">NH</option>
+              <option value="NJ">NJ</option>
+              <option value="NM">NM</option>
+              <option value="NY">NY</option>
+              <option value="NC">NC</option>
+              <option value="ND">ND</option>
+              <option value="OH">OH</option>
+              <option value="OK">OK</option>
+              <option value="OR">OR</option>
+              <option value="PA">PA</option>
+              <option value="RI">RI</option>
+              <option value="SC">SC</option>
+              <option value="SD">SD</option>
+              <option value="TN">TN</option>
+              <option value="TX">TX</option>
+              <option value="UT">UT</option>
+              <option value="VT">VT</option>
+              <option value="VA">VA</option>
+              <option value="WA">WA</option>
+              <option value="WV">WV</option>
+              <option value="WI">WI</option>
+              <option value="WY">WY</option>
+            </select>
+          </td>
+          <td><input id="filterZip" placeholder="Zip" /></td>
+          <td><input id="filterPhone" placeholder="Phone" /></td>
+          <td>
+            <select class="form-select" id="filterStatus">
+              <option selected disabled="disabled">Status</option>
+              <option value="Customer">Customer</option>
+              <option value="Former Customer">Former Cust</option>
+              <option value="Prospect">Prospect</option>
+              <option value="Hot Lead">Hot Lead</option>
+              <option value="Cold Lead">Cold Lead</option>
+            </select>
+          </td>
+          <td>
+            <select class="form-select" id="filterSource">
+              <option selected disabled="disabled">Source</option>
+              <option value="Allstate">Allstate</option>
+              <option value="Assurance">Assurance</option>
+              <option value="Live Transfer Lead">Live Transfer</option>
+              <option value="Online Lead">Online Lead</option>
+              <option value="Referral">Referral</option>
+            </select>
+          </td>
+          <td>
+            <input id="filterLastEditDate" placeholder="Last Edit Date" />
+          </td>
         </tr>
       </tbody>
       <tbody id="contactList"></tbody>
