@@ -4,7 +4,7 @@ const contactList = document.getElementById('contactList');
 // prettier-ignore
 const contactListHeaders = document.getElementById('contactListHeaders').querySelectorAll('*');
 // prettier-ignore
-let tr, th, td, tdFirstName, tdLastName, tdAddress, tdAddress2, tdCity, tdState, tdZip, tdPhone, tdStatus, tdSource, tdLastEditDate, comparison, inputFirstName,  tdInputFirstName, inputLastName, tdInputLastName, inputAddress, tdInputAddress, inputAddress2, tdInputAddress2, inputCity, tdInputCity, inputState, tdInputState, inputZip, tdInputZip, inputPhone, tdInputPhone, inputStatus, tdInputStatus, inputSource, tdInputSource, inputLastEditDate, tdInputLastEditDate, filteredFirstName;
+let tr, th, td, tdFirstName, tdLastName, tdAddress, tdAddress2, tdCity, tdState, tdZip, tdPhone, tdStatus, tdSource, tdLastEditDate, comparison, inputFirstName,  tdInputFirstName, inputLastName, tdInputLastName, inputAddress, tdInputAddress, inputAddress2, tdInputAddress2, inputCity, tdInputCity, inputState, tdInputState, inputZip, tdInputZip, inputPhone, tdInputPhone, inputStatus, tdInputStatus, inputSource, tdInputSource, inputLastEditDate, tdInputLastEditDate, filteredFirstName, TempInputValue;
 let alternate = 0;
 // Example: FirstName = document.getElementById('FirstName').addEventListener('change, function(e){...});
 for (let rep = 0; rep < contactListHeaders.length; rep++) {
@@ -50,33 +50,32 @@ async function getJSON(url, errorMsg = 'Something went wrong') {
   }
 }
 
-function search(JsonDB) {
-  // if (
-  //   // e.key !== 'Backspace' &&
-  //   e.key !== 'Shift' &&
-  //   e.key !== 'CapsLock' &&
-  //   e.key !== 'Control' &&
-  //   e.key !== 'Alt'
-  // ) {
-  // console.log(inputFirstName.value);
-  let test = inputFirstName.value;
-  contactList.innerHTML = '';
-  let filteredData = JsonDB.filter((userData) => {
-    if (
-      userData.FirstName?.toLowerCase().slice(0, inputFirstName.value.length) ==
-      inputFirstName.value.toLowerCase()
-    ) {
-      return userData;
-    }
-  });
+function search(JsonDB, e) {
+  if (
+    // e.key !== 'Backspace' &&
+    e.key !== 'Shift' &&
+    e.key !== 'CapsLock' &&
+    e.key !== 'Control' &&
+    e.key !== 'Alt'
+  ) {
+    TempInputValue = inputFirstName.value;
+    contactList.innerHTML = '';
+    let filteredData = JsonDB.filter(
+      (userData) =>
+        userData.FirstName?.toLowerCase().slice(
+          0,
+          inputFirstName.value.length
+        ) == inputFirstName.value.toLowerCase()
+    );
 
-  filterInputs();
-  inputFirstName.value = test;
-  filteredData.forEach((contactInfo) => {
-    console.log(contactInfo);
-    populateTable(contactInfo);
-  });
-  inputFirstName.focus();
+    filterInputs();
+    inputFirstName.value = TempInputValue;
+    filteredData.forEach((contactInfo) => {
+      populateTable(contactInfo);
+    });
+    console.log(filteredData);
+    inputFirstName.focus();
+  }
 }
 
 function filterInputs() {
@@ -95,7 +94,7 @@ function filterInputs() {
   inputFirstName.addEventListener('focusin', function (e) {
     getJSON(ContactsURL).then((data) => {
       inputFirstName.addEventListener('keyup', function (e) {
-        search(data);
+        search(data, e);
       });
     });
   });
