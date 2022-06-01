@@ -151,7 +151,7 @@ reviewed.addEventListener('click', function () {
           while (TaskList.firstChild) {
             TaskList.removeChild(TaskList.firstChild);
           }
-          renderDailyTasklist(
+          renderDailyTaskList(
             dailyTaskListCurrentDate()[1],
             dailyTaskListCurrentDate()[0],
             dailyTaskListCurrentDate()[2]
@@ -213,7 +213,7 @@ createEvent.addEventListener('click', function () {
             inputGroupSelect101.selectedIndex = todaysMonth - 1;
             inputGroupSelect102.selectedIndex = todaysDay - 1;
             inputGroupSelect103.selectedIndex = 1;
-            renderDailyTasklist(
+            renderDailyTaskList(
               dailyTaskListCurrentDate()[1],
               dailyTaskListCurrentDate()[0],
               dailyTaskListCurrentDate()[2]
@@ -294,7 +294,7 @@ contactSearch.addEventListener('focusin', function (e) {
   });
 });
 
-function renderDailyTasklist(todaysDay, todaysMonth, todaysYear) {
+function renderDailyTaskList(todaysDay, todaysMonth, todaysYear) {
   TaskList.innerHTML = '';
   // prettier-ignore
   const todaysDate = ('0' + todaysMonth).slice(-2) + '/' + ('0' + todaysDay).slice(-2) + '/' + todaysYear;
@@ -622,6 +622,12 @@ function renderContactTaskList(userData) {
           trial.target.value;
         console.log(custTextAreaSortedArray);
         updateCustEvents(custTextAreaSortedArray);
+        //still need to work on updating the daily Task List when textarea is updated
+        renderDailyTaskList(
+          dailyTaskListCurrentDate()[1],
+          dailyTaskListCurrentDate()[0],
+          dailyTaskListCurrentDate()[2]
+        );
       });
 
     let checkBox = document.createElement('input');
@@ -751,7 +757,7 @@ function loadCalendar() {
         daySquare.addEventListener('click', () => {
           console.log(`${dayString}`);
           dailyTaskListDate.innerText = `${dayString}`;
-          renderDailyTasklist(rep - paddingDays, month + 1, year);
+          renderDailyTaskList(rep - paddingDays, month + 1, year);
         });
         //uncomment to hear for testing
       }
@@ -785,4 +791,4 @@ function initButtons() {
 }
 loadCalendar();
 initButtons();
-renderDailyTasklist(todaysDay, todaysMonth, todaysYear);
+renderDailyTaskList(todaysDay, todaysMonth, todaysYear);
