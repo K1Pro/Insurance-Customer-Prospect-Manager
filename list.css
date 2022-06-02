@@ -1,6 +1,10 @@
-input {
+/* input {
   width: 100px;
-}
+} */
+
+/* form-control {
+  width: 100;
+} */
 
 #createContactButton {
   display: inline-block;
@@ -24,4 +28,18 @@ input {
 .form-control::placeholder {
   color: red;
   opacity: 0.6;
+}
+.input-group > .form-control,
+.input-group > .form-select {
+  width: 150px;
+  margin-left: -10px;
+  margin-bottom: -50px;
+  margin-right: 50px;
+  height: 38px;
+  /* display: inline; */
+}
+
+.input-group
+  > :not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback) {
+  margin-left: 139px;
 }

@@ -4,9 +4,6 @@ const contactList = document.getElementById('contactList');
 // prettier-ignore
 const contactListHeaders = document.getElementById('contactListHeaders').querySelectorAll('*');
 const createContactButton = document.getElementById('createContactButton');
-createContactButton.addEventListener('click', () => {
-  console.log('hi');
-});
 // prettier-ignore
 let tr, th, comparison, buttonCheck, inputCheck, column;
 let alternate = 0;
@@ -19,11 +16,11 @@ for (let rep = 0; rep < contactListHeaders.length; rep++) {
       document
         .getElementById(`${contactListHeadersIDs}`)
         .addEventListener('click', () => {
-          console.log(contactListHeadersIDs);
+          // console.log(contactListHeadersIDs);
           contactList.innerHTML = '';
           comparison = this.id;
           getJSON(ContactsURL).then((data) => {
-            console.log(contactListHeadersIDs);
+            // console.log(contactListHeadersIDs);
             alternate++;
 
             if (alternate % 2) {
@@ -33,7 +30,7 @@ for (let rep = 0; rep < contactListHeaders.length; rep++) {
               // prettier-ignore
               data.sort((a, b) => b[contactListHeadersIDs]?.localeCompare(a[contactListHeadersIDs]));
             }
-            console.log(data);
+            // console.log(data);
             data.forEach((contactInfo) => {
               populateTable(contactInfo);
             });
@@ -53,7 +50,7 @@ for (let rep = 0; rep < contactListHeaders.length; rep++) {
         .addEventListener('focusin', function (e) {
           getJSON(ContactsURL).then((data) => {
             // this.addEventListener('keyup', function (e) {
-            console.log(data);
+            // console.log(data);
             ['keyup', 'change'].forEach((ev) =>
               this.addEventListener(ev, function (e) {
                 search(data, e);
@@ -103,7 +100,7 @@ function search(JsonDB, e) {
     filteredData.forEach((contactInfo) => {
       populateTable(contactInfo);
     });
-    console.log(filteredData);
+    // console.log(filteredData);
   }
 }
 
@@ -136,4 +133,8 @@ getJSON(ContactsURL).then((data) => {
   data.forEach((contactInfo) => {
     populateTable(contactInfo);
   });
+});
+
+createContactButton.addEventListener('click', () => {
+  console.log('hi');
 });
