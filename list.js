@@ -6,8 +6,10 @@ const contactListHeaders = document.getElementById('contactListHeaders').querySe
 const createContactButton = document.getElementById('createContactButton');
 // prettier-ignore
 let tr, th, comparison, buttonCheck, inputCheck, column;
+let newContact = [];
 let alternate = 0;
 // Example: FirstName = document.getElementById('FirstName').addEventListener('change, function(e){...});
+
 for (let rep = 0; rep < contactListHeaders.length; rep++) {
   let contactListHeadersIDs = contactListHeaders[rep].id;
   buttonCheck = document.getElementById(`${contactListHeadersIDs}`);
@@ -72,7 +74,7 @@ async function getJSON(url, errorMsg = 'Something went wrong') {
     console.log(errorMsg);
   }
 }
-
+console.log(contactData);
 function search(JsonDB, e) {
   if (
     // e.key !== 'Backspace' &&
@@ -137,4 +139,58 @@ getJSON(ContactsURL).then((data) => {
 
 createContactButton.addEventListener('click', () => {
   console.log('hi');
+
+  for (let rep = 0; rep < contactListHeaders.length; rep++) {
+    let contactListHeadersIDs = contactListHeaders[rep].id;
+    buttonCheck = document.getElementById(`${contactListHeadersIDs}`);
+    if (contactListHeadersIDs) {
+      if (buttonCheck.tagName == 'INPUT') {
+        column = buttonCheck.value ? buttonCheck.value : '';
+        newContact.push(column);
+      }
+    }
+  }
+  console.log(newContact);
+  fetch(ContactsURL, {
+    method: 'POST',
+    body: JSON.stringify({
+      FirstName: newContact[0],
+      LastName: newContact[1],
+      BirthDate: newContact[2],
+      SpouseName: newContact[3],
+      SpouseLastName: newContact[4],
+      SpouseBirthDate: newContact[5],
+      Address: newContact[6],
+      Address2: newContact[7],
+      City: newContact[8],
+      State: newContact[9],
+      Zip: newContact[10],
+      Phone: newContact[11],
+      Email: newContact[12],
+      Status: newContact[13],
+      Source: newContact[14],
+      EHV: newContact[15],
+      Car1: newContact[16],
+      Car2: newContact[17],
+      Car3: newContact[18],
+      Car4: newContact[19],
+      CreatedBy: 'Bart',
+      LastEditDate: '06/02/2020',
+      Policy1Type: newContact[21],
+      Policy1Number: newContact[22],
+      Policy2Type: newContact[23],
+      Policy2Number: newContact[24],
+      Policy3Type: newContact[25],
+      Policy3Number: newContact[26],
+      Policy4Type: newContact[27],
+      Policy4Number: newContact[28],
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => response.text())
+    .then((data) => {
+      console.log(data);
+    });
 });
