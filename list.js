@@ -8,7 +8,7 @@ createContactButton.addEventListener('click', () => {
   console.log('hi');
 });
 // prettier-ignore
-let tr, th, td, tdFirstName, tdLastName, tdAddress, tdAddress2, tdCity, tdState, tdZip, tdPhone, tdStatus, tdSource, tdLastEditDate, comparison, buttonCheck, inputCheck, column;
+let tr, th, comparison, buttonCheck, inputCheck, column;
 let alternate = 0;
 // Example: FirstName = document.getElementById('FirstName').addEventListener('change, function(e){...});
 for (let rep = 0; rep < contactListHeaders.length; rep++) {
@@ -84,10 +84,6 @@ function search(JsonDB, e) {
     e.key !== 'Control' &&
     e.key !== 'Alt'
   ) {
-    // if (document.getElementById(`filterState`).value != '') {
-    //   console.log(document.getElementById(`filterState`).value);
-    // }
-
     contactList.innerHTML = '';
     let filteredData = JsonDB.filter(
       (userData) =>
@@ -111,23 +107,6 @@ function search(JsonDB, e) {
   }
 }
 
-function populateColumns(data) {
-  console.log(data);
-  for (let rep = 0; rep < contactListHeaders.length; rep++) {
-    let contactListHeadersIDs = contactListHeaders[rep].id;
-    buttonCheck = document.getElementById(`${contactListHeadersIDs}`);
-    if (contactListHeadersIDs) {
-      if (buttonCheck.tagName == 'BUTTON') {
-        column = buttonCheck.id;
-        console.log(column);
-        window[`td${column}`] = document.createElement('td');
-        window[`td${column}`].innerHTML = data.column ? data.column : '';
-        tr.appendChild(window[`td${column}`]);
-      }
-    }
-  }
-}
-
 function populateTable(contactInfo) {
   tr = document.createElement('tr');
   contactList.appendChild(tr);
@@ -135,7 +114,6 @@ function populateTable(contactInfo) {
   th.scope = 'row';
   th.innerHTML = contactInfo.id;
   tr.appendChild(th);
-  // console.log(contactInfo.FirstName);
 
   for (let rep = 0; rep < contactListHeaders.length; rep++) {
     let contactListHeadersIDs = contactListHeaders[rep].id;
@@ -143,7 +121,7 @@ function populateTable(contactInfo) {
     if (contactListHeadersIDs) {
       if (buttonCheck.tagName == 'BUTTON') {
         column = buttonCheck.id;
-        // console.log(contactInfo[column]);
+
         window['td' + column] = document.createElement('td');
         window['td' + column].innerHTML = contactInfo[column]
           ? contactInfo[column]
@@ -152,56 +130,9 @@ function populateTable(contactInfo) {
       }
     }
   }
-
-  // tdFirstName = document.createElement('td');
-  // tdFirstName.innerHTML = contactInfo.FirstName ? contactInfo.FirstName : '';
-  // tr.appendChild(tdFirstName);
-
-  // tdLastName = document.createElement('td');
-  // tdLastName.innerHTML = contactInfo.LastName ? contactInfo.LastName : '';
-  // tr.appendChild(tdLastName);
-
-  // tdAddress = document.createElement('td');
-  // tdAddress.innerHTML = contactInfo.Address ? contactInfo.Address : '';
-  // tr.appendChild(tdAddress);
-
-  // tdAddress2 = document.createElement('td');
-  // tdAddress2.innerHTML = contactInfo.Address2 ? contactInfo.Address2 : '';
-  // tr.appendChild(tdAddress2);
-
-  // tdCity = document.createElement('td');
-  // tdCity.innerHTML = contactInfo.City ? contactInfo.City : '';
-  // tr.appendChild(tdCity);
-
-  // tdState = document.createElement('td');
-  // tdState.innerHTML = contactInfo.State ? contactInfo.State : '';
-  // tr.appendChild(tdState);
-
-  // tdZip = document.createElement('td');
-  // tdZip.innerHTML = contactInfo.Zip ? contactInfo.Zip : '';
-  // tr.appendChild(tdZip);
-
-  // tdPhone = document.createElement('td');
-  // tdPhone.innerHTML = contactInfo.Phone ? contactInfo.Phone : '';
-  // tr.appendChild(tdPhone);
-
-  // tdStatus = document.createElement('td');
-  // tdStatus.innerHTML = contactInfo.Status ? contactInfo.Status : '';
-  // tr.appendChild(tdStatus);
-
-  // tdSource = document.createElement('td');
-  // tdSource.innerHTML = contactInfo.Source ? contactInfo.Source : '';
-  // tr.appendChild(tdSource);
-
-  // tdLastEditDate = document.createElement('td');
-  // tdLastEditDate.innerHTML = contactInfo.LastEditDate
-  //   ? contactInfo.LastEditDate
-  //   : '';
-  // tr.appendChild(tdLastEditDate);
 }
 
 getJSON(ContactsURL).then((data) => {
-  // populateColumns(data);
   data.forEach((contactInfo) => {
     populateTable(contactInfo);
   });
