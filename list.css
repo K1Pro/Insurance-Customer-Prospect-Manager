@@ -1,3 +1,27 @@
 input {
   width: 100px;
 }
+
+#createContactButton {
+  display: inline-block;
+  background: green;
+  border-radius: 4px;
+  font-family: 'arial-black';
+  font-size: 14px;
+  color: #fff;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+#createContactButton:hover {
+  background: blue;
+}
+
+.form-control::-moz-placeholder {
+  color: red;
+  opacity: 0.6;
+}
+.form-control::placeholder {
+  color: red;
+  opacity: 0.6;
+}

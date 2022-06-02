@@ -3,80 +3,65 @@ const ContactsURL = 'http://192.168.54.22:4000/contacts';
 const contactList = document.getElementById('contactList');
 // prettier-ignore
 const contactListHeaders = document.getElementById('contactListHeaders').querySelectorAll('*');
+const createContactButton = document.getElementById('createContactButton');
+createContactButton.addEventListener('click', () => {
+  console.log('hi');
+});
 // prettier-ignore
-const contactListFilters = document.getElementById('contactListFilters').querySelectorAll('*');
-// prettier-ignore
-let tr, th, td, tdFirstName, tdLastName, tdAddress, tdAddress2, tdCity, tdState, tdZip, tdPhone, tdStatus, tdSource, tdLastEditDate, comparison, inputFirstName,  tdInputFirstName, inputLastName, tdInputLastName, inputAddress, tdInputAddress, inputAddress2, tdInputAddress2, inputCity, tdInputCity, inputState, tdInputState, inputZip, tdInputZip, inputPhone, tdInputPhone, inputStatus, tdInputStatus, inputSource, tdInputSource, inputLastEditDate, tdInputLastEditDate, filteredFirstName, TempInputValue;
+let tr, th, td, tdFirstName, tdLastName, tdAddress, tdAddress2, tdCity, tdState, tdZip, tdPhone, tdStatus, tdSource, tdLastEditDate, comparison, buttonCheck, inputCheck, column;
 let alternate = 0;
 // Example: FirstName = document.getElementById('FirstName').addEventListener('change, function(e){...});
 for (let rep = 0; rep < contactListHeaders.length; rep++) {
   let contactListHeadersIDs = contactListHeaders[rep].id;
+  buttonCheck = document.getElementById(`${contactListHeadersIDs}`);
   if (contactListHeadersIDs) {
-    document
-      .getElementById(`${contactListHeadersIDs}`)
-      .addEventListener('click', () => {
-        console.log(contactListHeadersIDs);
-        contactList.innerHTML = '';
-        comparison = this.id;
-        getJSON(ContactsURL).then((data) => {
+    if (buttonCheck.tagName == 'BUTTON') {
+      document
+        .getElementById(`${contactListHeadersIDs}`)
+        .addEventListener('click', () => {
           console.log(contactListHeadersIDs);
-          alternate++;
+          contactList.innerHTML = '';
+          comparison = this.id;
+          getJSON(ContactsURL).then((data) => {
+            console.log(contactListHeadersIDs);
+            alternate++;
 
-          if (alternate % 2) {
-            data.sort((a, b) =>
-              a[contactListHeadersIDs]?.localeCompare(b[contactListHeadersIDs])
-            );
-          } else {
-            data.sort((a, b) =>
-              b[contactListHeadersIDs]?.localeCompare(a[contactListHeadersIDs])
-            );
-          }
-          console.log(data);
-          // filterInputs();
-          data.forEach((contactInfo) => {
-            populateTable(contactInfo);
+            if (alternate % 2) {
+              // prettier-ignore
+              data.sort((a, b) => a[contactListHeadersIDs]?.localeCompare(b[contactListHeadersIDs]));
+            } else {
+              // prettier-ignore
+              data.sort((a, b) => b[contactListHeadersIDs]?.localeCompare(a[contactListHeadersIDs]));
+            }
+            console.log(data);
+            data.forEach((contactInfo) => {
+              populateTable(contactInfo);
+            });
           });
         });
-      });
+    }
   }
 }
 
-for (let rep = 0; rep < contactListFilters.length; rep++) {
-  let contactListFiltersIDs = contactListFilters[rep].id;
-  if (contactListFiltersIDs) {
-    document
-      .getElementById(`${contactListFiltersIDs}`)
-      .addEventListener('focusin', function (e) {
-        getJSON(ContactsURL).then((data) => {
-          console.log('hi');
-          // console.log(data);
-          this.addEventListener('keyup', function (e) {
-            search(data, e);
+for (let rep = 0; rep < contactListHeaders.length; rep++) {
+  let contactListHeadersIDs = contactListHeaders[rep].id;
+  buttonCheck = document.getElementById(`${contactListHeadersIDs}`);
+  if (contactListHeadersIDs) {
+    if (buttonCheck.tagName == 'INPUT') {
+      document
+        .getElementById(`${contactListHeadersIDs}`)
+        .addEventListener('focusin', function (e) {
+          getJSON(ContactsURL).then((data) => {
+            // this.addEventListener('keyup', function (e) {
+            console.log(data);
+            ['keyup', 'change'].forEach((ev) =>
+              this.addEventListener(ev, function (e) {
+                search(data, e);
+              })
+            );
           });
         });
-
-        // contactList.innerHTML = '';
-        // comparison = this.id;
-        // getJSON(ContactsURL).then((data) => {
-        //   console.log(contactListHeadersIDs);
-        //   alternate++;
-
-        //   if (alternate % 2) {
-        //     data.sort((a, b) =>
-        //       a[contactListHeadersIDs]?.localeCompare(b[contactListHeadersIDs])
-        //     );
-        //   } else {
-        //     data.sort((a, b) =>
-        //       b[contactListHeadersIDs]?.localeCompare(a[contactListHeadersIDs])
-        //     );
-        //   }
-        //   console.log(data);
-        //   // filterInputs();
-        //   data.forEach((contactInfo) => {
-        //     populateTable(contactInfo);
-        //   });
-        // });
-      });
+    }
   }
 }
 
@@ -99,16 +84,26 @@ function search(JsonDB, e) {
     e.key !== 'Control' &&
     e.key !== 'Alt'
   ) {
+    // if (document.getElementById(`filterState`).value != '') {
+    //   console.log(document.getElementById(`filterState`).value);
+    // }
+
     contactList.innerHTML = '';
     let filteredData = JsonDB.filter(
       (userData) =>
-        userData.FirstName?.toLowerCase().slice(
-          0,
-          document.getElementById(`filterFirstName`).value.length
-        ) == document.getElementById(`filterFirstName`).value.toLowerCase()
+        // prettier-ignore
+        userData.FirstName?.toLowerCase().slice(0,document.getElementById(`filterFirstName`).value.length) == document.getElementById(`filterFirstName`).value.toLowerCase() &&
+        userData.LastName?.toLowerCase().slice(0,document.getElementById(`filterLastName`).value.length) == document.getElementById(`filterLastName`).value.toLowerCase() &&
+        userData.Address?.toLowerCase().slice(0,document.getElementById(`filterAddress`).value.length) == document.getElementById(`filterAddress`).value.toLowerCase() &&
+      // userData.Address2?.toLowerCase().slice(0,document.getElementById(`filterAddress2`).value.length) == document.getElementById(`filterAddress2`).value.toLowerCase() &&
+        userData.City?.toLowerCase().slice(0,document.getElementById(`filterCity`).value.length) == document.getElementById(`filterCity`).value.toLowerCase() &&
+        userData.State?.toLowerCase().slice(0,document.getElementById(`filterState`).value.length) == document.getElementById(`filterState`).value.toLowerCase() &&
+        userData.Zip?.toLowerCase().slice(0,document.getElementById(`filterZip`).value.length) == document.getElementById(`filterZip`).value.toLowerCase() &&
+        userData.Phone?.toLowerCase().slice(0,document.getElementById(`filterPhone`).value.length) == document.getElementById(`filterPhone`).value.toLowerCase() &&
+        userData.Status?.toLowerCase().slice(0,document.getElementById(`filterStatus`).value.length) == document.getElementById(`filterStatus`).value.toLowerCase() &&
+        userData.Source?.toLowerCase().slice(0,document.getElementById(`filterSource`).value.length) == document.getElementById(`filterSource`).value.toLowerCase()
     );
 
-    // filterInputs();
     filteredData.forEach((contactInfo) => {
       populateTable(contactInfo);
     });
@@ -116,153 +111,21 @@ function search(JsonDB, e) {
   }
 }
 
-function filterInputs() {
-  tr = document.createElement('tr');
-  contactList.appendChild(tr);
-  th = document.createElement('th');
-  th.scope = 'row';
-  th.innerHTML = '0';
-  tr.appendChild(th);
-
-  inputFirstName = document.createElement('input');
-  tdInputFirstName = document.createElement('td');
-  inputFirstName.placeholder = 'First Name';
-  tdInputFirstName.appendChild(inputFirstName);
-  tr.appendChild(tdInputFirstName);
-  inputFirstName.addEventListener('focusin', function (e) {
-    getJSON(ContactsURL).then((data) => {
-      inputFirstName.addEventListener('keyup', function (e) {
-        search(data, e);
-      });
-    });
-  });
-
-  inputLastName = document.createElement('input');
-  tdInputLastName = document.createElement('td');
-  inputLastName.placeholder = 'Last Name';
-  tdInputLastName.appendChild(inputLastName);
-  tr.appendChild(tdInputLastName);
-  inputLastName.addEventListener('focusin', function (e) {
-    getJSON(ContactsURL).then((data) => {
-      inputLastName.addEventListener('keyup', function (e) {
-        console.log(inputLastName.value);
-      });
-    });
-  });
-
-  inputAddress = document.createElement('input');
-  tdInputAddress = document.createElement('td');
-  inputAddress.placeholder = 'Address';
-  tdInputAddress.appendChild(inputAddress);
-  tr.appendChild(tdInputAddress);
-  inputAddress.addEventListener('focusin', function (e) {
-    getJSON(ContactsURL).then((data) => {
-      inputAddress.addEventListener('keyup', function (e) {
-        console.log(inputAddress.value);
-      });
-    });
-  });
-
-  inputAddress2 = document.createElement('input');
-  tdInputAddress2 = document.createElement('td');
-  inputAddress2.placeholder = 'Address 2';
-  tdInputAddress2.appendChild(inputAddress2);
-  tr.appendChild(tdInputAddress2);
-  inputAddress2.addEventListener('focusin', function (e) {
-    getJSON(ContactsURL).then((data) => {
-      inputAddress2.addEventListener('keyup', function (e) {
-        console.log(inputAddress2.value);
-      });
-    });
-  });
-
-  inputCity = document.createElement('input');
-  tdInputCity = document.createElement('td');
-  inputCity.placeholder = 'City';
-  tdInputCity.appendChild(inputCity);
-  tr.appendChild(tdInputCity);
-  inputCity.addEventListener('focusin', function (e) {
-    getJSON(ContactsURL).then((data) => {
-      inputCity.addEventListener('keyup', function (e) {
-        console.log(inputCity.value);
-      });
-    });
-  });
-
-  inputState = document.createElement('select');
-  tdInputState = document.createElement('td');
-  tdInputState.appendChild(inputState);
-  tr.appendChild(tdInputState);
-  inputState.addEventListener('focusin', function (e) {
-    getJSON(ContactsURL).then((data) => {
-      inputState.addEventListener('keyup', function (e) {
-        console.log(inputState.value);
-      });
-    });
-  });
-
-  inputZip = document.createElement('input');
-  tdInputZip = document.createElement('td');
-  inputZip.placeholder = 'Zip';
-  tdInputZip.appendChild(inputZip);
-  tr.appendChild(tdInputZip);
-  inputZip.addEventListener('focusin', function (e) {
-    getJSON(ContactsURL).then((data) => {
-      inputZip.addEventListener('keyup', function (e) {
-        console.log(inputZip.value);
-      });
-    });
-  });
-
-  inputPhone = document.createElement('input');
-  tdInputPhone = document.createElement('td');
-  inputPhone.placeholder = 'Phone';
-  tdInputPhone.appendChild(inputPhone);
-  tr.appendChild(tdInputPhone);
-  inputPhone.addEventListener('focusin', function (e) {
-    getJSON(ContactsURL).then((data) => {
-      inputPhone.addEventListener('keyup', function (e) {
-        console.log(inputPhone.value);
-      });
-    });
-  });
-
-  inputStatus = document.createElement('select');
-  tdInputStatus = document.createElement('td');
-  tdInputStatus.appendChild(inputStatus);
-  tr.appendChild(tdInputStatus);
-  inputStatus.addEventListener('focusin', function (e) {
-    getJSON(ContactsURL).then((data) => {
-      inputStatus.addEventListener('keyup', function (e) {
-        console.log(inputStatus.value);
-      });
-    });
-  });
-
-  inputSource = document.createElement('select');
-  tdInputSource = document.createElement('td');
-  tdInputSource.appendChild(inputSource);
-  tr.appendChild(tdInputSource);
-  inputSource.addEventListener('focusin', function (e) {
-    getJSON(ContactsURL).then((data) => {
-      inputSource.addEventListener('keyup', function (e) {
-        console.log(inputSource.value);
-      });
-    });
-  });
-
-  inputLastEditDate = document.createElement('input');
-  tdInputLastEditDate = document.createElement('td');
-  inputLastEditDate.placeholder = 'Last Edit Date';
-  tdInputLastEditDate.appendChild(inputLastEditDate);
-  tr.appendChild(tdInputLastEditDate);
-  inputLastEditDate.addEventListener('focusin', function (e) {
-    getJSON(ContactsURL).then((data) => {
-      inputLastEditDate.addEventListener('keyup', function (e) {
-        console.log('Just pressed Last Edit Date');
-      });
-    });
-  });
+function populateColumns(data) {
+  console.log(data);
+  for (let rep = 0; rep < contactListHeaders.length; rep++) {
+    let contactListHeadersIDs = contactListHeaders[rep].id;
+    buttonCheck = document.getElementById(`${contactListHeadersIDs}`);
+    if (contactListHeadersIDs) {
+      if (buttonCheck.tagName == 'BUTTON') {
+        column = buttonCheck.id;
+        console.log(column);
+        window[`td${column}`] = document.createElement('td');
+        window[`td${column}`].innerHTML = data.column ? data.column : '';
+        tr.appendChild(window[`td${column}`]);
+      }
+    }
+  }
 }
 
 function populateTable(contactInfo) {
@@ -272,57 +135,73 @@ function populateTable(contactInfo) {
   th.scope = 'row';
   th.innerHTML = contactInfo.id;
   tr.appendChild(th);
+  // console.log(contactInfo.FirstName);
 
-  tdFirstName = document.createElement('td');
-  tdFirstName.innerHTML = contactInfo.FirstName ? contactInfo.FirstName : '';
-  tr.appendChild(tdFirstName);
+  for (let rep = 0; rep < contactListHeaders.length; rep++) {
+    let contactListHeadersIDs = contactListHeaders[rep].id;
+    buttonCheck = document.getElementById(`${contactListHeadersIDs}`);
+    if (contactListHeadersIDs) {
+      if (buttonCheck.tagName == 'BUTTON') {
+        column = buttonCheck.id;
+        // console.log(contactInfo[column]);
+        window['td' + column] = document.createElement('td');
+        window['td' + column].innerHTML = contactInfo[column]
+          ? contactInfo[column]
+          : '';
+        tr.appendChild(window['td' + column]);
+      }
+    }
+  }
 
-  tdLastName = document.createElement('td');
-  tdLastName.innerHTML = contactInfo.LastName ? contactInfo.LastName : '';
-  tr.appendChild(tdLastName);
+  // tdFirstName = document.createElement('td');
+  // tdFirstName.innerHTML = contactInfo.FirstName ? contactInfo.FirstName : '';
+  // tr.appendChild(tdFirstName);
 
-  tdAddress = document.createElement('td');
-  tdAddress.innerHTML = contactInfo.Address ? contactInfo.Address : '';
-  tr.appendChild(tdAddress);
+  // tdLastName = document.createElement('td');
+  // tdLastName.innerHTML = contactInfo.LastName ? contactInfo.LastName : '';
+  // tr.appendChild(tdLastName);
 
-  tdAddress2 = document.createElement('td');
-  tdAddress2.innerHTML = contactInfo.Address2 ? contactInfo.Address2 : '';
-  tr.appendChild(tdAddress2);
+  // tdAddress = document.createElement('td');
+  // tdAddress.innerHTML = contactInfo.Address ? contactInfo.Address : '';
+  // tr.appendChild(tdAddress);
 
-  tdCity = document.createElement('td');
-  tdCity.innerHTML = contactInfo.City ? contactInfo.City : '';
-  tr.appendChild(tdCity);
+  // tdAddress2 = document.createElement('td');
+  // tdAddress2.innerHTML = contactInfo.Address2 ? contactInfo.Address2 : '';
+  // tr.appendChild(tdAddress2);
 
-  tdState = document.createElement('td');
-  tdState.innerHTML = contactInfo.State ? contactInfo.State : '';
-  tr.appendChild(tdState);
+  // tdCity = document.createElement('td');
+  // tdCity.innerHTML = contactInfo.City ? contactInfo.City : '';
+  // tr.appendChild(tdCity);
 
-  tdZip = document.createElement('td');
-  tdZip.innerHTML = contactInfo.Zip ? contactInfo.Zip : '';
-  tr.appendChild(tdZip);
+  // tdState = document.createElement('td');
+  // tdState.innerHTML = contactInfo.State ? contactInfo.State : '';
+  // tr.appendChild(tdState);
 
-  tdPhone = document.createElement('td');
-  tdPhone.innerHTML = contactInfo.Phone ? contactInfo.Phone : '';
-  tr.appendChild(tdPhone);
+  // tdZip = document.createElement('td');
+  // tdZip.innerHTML = contactInfo.Zip ? contactInfo.Zip : '';
+  // tr.appendChild(tdZip);
 
-  tdStatus = document.createElement('td');
-  tdStatus.innerHTML = contactInfo.Status ? contactInfo.Status : '';
-  tr.appendChild(tdStatus);
+  // tdPhone = document.createElement('td');
+  // tdPhone.innerHTML = contactInfo.Phone ? contactInfo.Phone : '';
+  // tr.appendChild(tdPhone);
 
-  tdSource = document.createElement('td');
-  tdSource.innerHTML = contactInfo.Source ? contactInfo.Source : '';
-  tr.appendChild(tdSource);
+  // tdStatus = document.createElement('td');
+  // tdStatus.innerHTML = contactInfo.Status ? contactInfo.Status : '';
+  // tr.appendChild(tdStatus);
 
-  tdLastEditDate = document.createElement('td');
-  tdLastEditDate.innerHTML = contactInfo.LastEditDate
-    ? contactInfo.LastEditDate
-    : '';
-  tr.appendChild(tdLastEditDate);
+  // tdSource = document.createElement('td');
+  // tdSource.innerHTML = contactInfo.Source ? contactInfo.Source : '';
+  // tr.appendChild(tdSource);
+
+  // tdLastEditDate = document.createElement('td');
+  // tdLastEditDate.innerHTML = contactInfo.LastEditDate
+  //   ? contactInfo.LastEditDate
+  //   : '';
+  // tr.appendChild(tdLastEditDate);
 }
 
 getJSON(ContactsURL).then((data) => {
-  //   console.log(data);
-  // filterInputs();
+  // populateColumns(data);
   data.forEach((contactInfo) => {
     populateTable(contactInfo);
   });

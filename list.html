@@ -40,74 +40,238 @@
     <table class="table table-striped">
       <thead>
         <tr id="contactListHeaders">
-          <th scope="col">#</th>
           <th scope="col">
-            <button type="button" class="btn btn-primary" id="FirstName">
+            <p id="createContactButton">+</p>
+          </th>
+          <th scope="col">
+            <div class="input-group mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="filterFirstName"
+                placeholder="First Name"
+              />
+              <button
+                class="btn btn-outline-secondary"
+                type="button"
+                id="FirstName"
+              >
+                ↕
+              </button>
+            </div>
+            <!-- <button type="button" class="btn btn-primary" id="FirstName">
               First Name
-            </button>
+            </button> -->
           </th>
           <th scope="col">
-            <button type="button" class="btn btn-primary" id="LastName">
-              Last Name
-            </button>
+            <div class="input-group mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="filterLastName"
+                placeholder="Last Name"
+              />
+              <button
+                class="btn btn-outline-secondary"
+                type="button"
+                id="LastName"
+              >
+                ↕
+              </button>
+            </div>
           </th>
           <th scope="col">
-            <button type="button" class="btn btn-primary" id="Address">
-              Address
-            </button>
+            <div class="input-group mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="filterAddress"
+                placeholder="Address"
+              />
+              <button
+                class="btn btn-outline-secondary"
+                type="button"
+                id="Address"
+              >
+                ↕
+              </button>
+            </div>
           </th>
           <th scope="col">
-            <button type="button" class="btn btn-primary" id="Address2">
-              Address2
-            </button>
+            <div class="input-group mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="filterAddress2"
+                placeholder="Address2"
+              />
+              <button
+                class="btn btn-outline-secondary"
+                type="button"
+                id="Address2"
+              >
+                ↕
+              </button>
+            </div>
           </th>
           <th scope="col">
-            <button type="button" class="btn btn-primary" id="City">
-              City
-            </button>
+            <div class="input-group mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="filterCity"
+                placeholder="City"
+              />
+              <button class="btn btn-outline-secondary" type="button" id="City">
+                ↕
+              </button>
+            </div>
           </th>
           <th scope="col">
-            <button type="button" class="btn btn-primary" id="State">
-              State
-            </button>
+            <div class="input-group mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="filterState"
+                placeholder="State"
+              />
+              <button
+                class="btn btn-outline-secondary"
+                type="button"
+                id="State"
+              >
+                ↕
+              </button>
+            </div>
           </th>
           <th scope="col">
-            <button type="button" class="btn btn-primary" id="Zip">Zip</button>
+            <div class="input-group mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="filterZip"
+                placeholder="Zip"
+              />
+              <button class="btn btn-outline-secondary" type="button" id="Zip">
+                ↕
+              </button>
+            </div>
           </th>
           <th scope="col">
-            <button type="button" class="btn btn-primary" id="Phone">
-              Phone
-            </button>
+            <div class="input-group mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="filterPhone"
+                placeholder="Phone"
+              />
+              <button
+                class="btn btn-outline-secondary"
+                type="button"
+                id="Phone"
+              >
+                ↕
+              </button>
+            </div>
           </th>
           <th scope="col">
-            <button type="button" class="btn btn-primary" id="Status">
-              Status
-            </button>
+            <div class="input-group mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="filterStatus"
+                placeholder="Status"
+                list="listStatus"
+              />
+              <datalist id="listStatus">
+                <option value="Customer"></option>
+                <option value="Former Customer"></option>
+                <option value="Prospect"></option>
+                <option value="Hot Lead"></option>
+                <option value="Cold Lead"></option>
+              </datalist>
+              <button
+                class="btn btn-outline-secondary"
+                type="button"
+                id="Status"
+              >
+                ↕
+              </button>
+            </div>
           </th>
           <th scope="col">
-            <button type="button" class="btn btn-primary" id="Source">
-              Source
-            </button>
+            <div class="input-group mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="filterSource"
+                placeholder="Source"
+                list="listSource"
+              />
+              <datalist id="listSource">
+                <option value="Allstate"></option>
+                <option value="Assurance"></option>
+                <option value="Live Transfer Lead"></option>
+                <option value="Online Lead"></option>
+                <option value="Referral"></option>
+              </datalist>
+              <button
+                class="btn btn-outline-secondary"
+                type="button"
+                id="Source"
+              >
+                ↕
+              </button>
+            </div>
           </th>
           <th scope="col">
-            <button type="button" class="btn btn-primary" id="LastEditDate">
-              Last Edit Date
-            </button>
+            <div class="input-group mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="filterLastEditDate"
+                placeholder="Last Edit Date"
+              />
+              <button
+                class="btn btn-outline-secondary"
+                type="button"
+                id="LastEditDate"
+              >
+                ↕
+              </button>
+            </div>
           </th>
         </tr>
       </thead>
-      <tbody>
+      <!-- <tbody>
         <tr id="contactListFilters">
-          <!-- <button type="button" class="btn btn-primary" id="Create">+</button> -->
+          <button type="button" class="btn btn-primary" id="Create">+</button>
           <th scope="row">0</th>
-          <td><input id="filterFirstName" placeholder="First Name" /></td>
+          <td>
+            Bart
+            <div class="input-group mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="filterFirstName"
+                placeholder="First Name"
+              />
+              <button
+                class="btn btn-outline-secondary"
+                type="button"
+                id="button-addon2"
+              >
+                ↕
+              </button>
+            </div>
+          </td>
           <td><input id="filterLastName" placeholder="Last Name" /></td>
           <td><input id="filterAddress" placeholder="Address" /></td>
           <td><input id="filterAddress2" placeholder="Address 2" /></td>
           <td><input id="filterCity" placeholder="City" /></td>
           <td>
             <select id="filterState" class="form-select">
-              <option selected disabled="disabled">State</option>
+              <option selected disabled="disabled" value="IL">State</option>
               <option value="AL">AL</option>
               <option value="AK">AK</option>
               <option value="AZ">AZ</option>
@@ -165,17 +329,22 @@
           <td><input id="filterPhone" placeholder="Phone" /></td>
           <td>
             <select class="form-select" id="filterStatus">
-              <option selected disabled="disabled">Status</option>
+              <option selected disabled="disabled" value="Former Customer">
+                Status
+              </option>
               <option value="Customer">Customer</option>
               <option value="Former Customer">Former Cust</option>
               <option value="Prospect">Prospect</option>
               <option value="Hot Lead">Hot Lead</option>
               <option value="Cold Lead">Cold Lead</option>
+              <option value="Employee">Employee</option>
             </select>
           </td>
           <td>
             <select class="form-select" id="filterSource">
-              <option selected disabled="disabled">Source</option>
+              <option selected disabled="disabled" value="Allstate">
+                Source
+              </option>
               <option value="Allstate">Allstate</option>
               <option value="Assurance">Assurance</option>
               <option value="Live Transfer Lead">Live Transfer</option>
@@ -187,7 +356,7 @@
             <input id="filterLastEditDate" placeholder="Last Edit Date" />
           </td>
         </tr>
-      </tbody>
+      </tbody> -->
       <tbody id="contactList"></tbody>
     </table>
 
