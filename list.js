@@ -10,19 +10,18 @@ let newContact = [];
 let alternate = 0;
 // Example: FirstName = document.getElementById('FirstName').addEventListener('change, function(e){...});
 
-for (let rep = 0; rep < contactListHeaders.length; rep++) {
-  let contactListHeadersIDs = contactListHeaders[rep].id;
-  buttonCheck = document.getElementById(`${contactListHeadersIDs}`);
-  if (contactListHeadersIDs) {
-    if (buttonCheck.tagName == 'BUTTON') {
-      document
-        .getElementById(`${contactListHeadersIDs}`)
-        .addEventListener('click', () => {
-          // console.log(contactListHeadersIDs);
-          contactList.innerHTML = '';
-          comparison = this.id;
-          getJSON(ContactsURL).then((data) => {
-            // console.log(contactListHeadersIDs);
+//sorting buttons
+function sortDataBase(data) {
+  for (let rep = 0; rep < contactListHeaders.length; rep++) {
+    let contactListHeadersIDs = contactListHeaders[rep].id;
+    buttonCheck = document.getElementById(`${contactListHeadersIDs}`);
+    if (contactListHeadersIDs) {
+      if (buttonCheck.tagName == 'BUTTON') {
+        document
+          .getElementById(`${contactListHeadersIDs}`)
+          .addEventListener('click', () => {
+            contactList.innerHTML = '';
+
             alternate++;
 
             if (alternate % 2) {
@@ -36,30 +35,31 @@ for (let rep = 0; rep < contactListHeaders.length; rep++) {
             data.forEach((contactInfo) => {
               populateTable(contactInfo);
             });
+            // });
           });
-        });
+      }
     }
   }
 }
 
-for (let rep = 0; rep < contactListHeaders.length; rep++) {
-  let contactListHeadersIDs = contactListHeaders[rep].id;
-  buttonCheck = document.getElementById(`${contactListHeadersIDs}`);
-  if (contactListHeadersIDs) {
-    if (buttonCheck.tagName == 'INPUT') {
-      document
-        .getElementById(`${contactListHeadersIDs}`)
-        .addEventListener('focusin', function (e) {
-          getJSON(ContactsURL).then((data) => {
-            // this.addEventListener('keyup', function (e) {
-            // console.log(data);
+//search buttons
+function searchDatabase(data) {
+  for (let rep = 0; rep < contactListHeaders.length; rep++) {
+    let contactListHeadersIDs = contactListHeaders[rep].id;
+    buttonCheck = document.getElementById(`${contactListHeadersIDs}`);
+    if (contactListHeadersIDs) {
+      if (buttonCheck.tagName == 'INPUT') {
+        document
+          .getElementById(`${contactListHeadersIDs}`)
+          .addEventListener('focusin', function (e) {
             ['keyup', 'change'].forEach((ev) =>
               this.addEventListener(ev, function (e) {
+                // console.log(data);
                 search(data, e);
               })
             );
           });
-        });
+      }
     }
   }
 }
@@ -74,7 +74,7 @@ async function getJSON(url, errorMsg = 'Something went wrong') {
     console.log(errorMsg);
   }
 }
-console.log(contactData);
+
 function search(JsonDB, e) {
   if (
     // e.key !== 'Backspace' &&
@@ -106,6 +106,7 @@ function search(JsonDB, e) {
   }
 }
 
+//populates the table with the data from the database
 function populateTable(contactInfo) {
   tr = document.createElement('tr');
   contactList.appendChild(tr);
@@ -132,14 +133,16 @@ function populateTable(contactInfo) {
 }
 
 getJSON(ContactsURL).then((data) => {
+  data.reverse();
   data.forEach((contactInfo) => {
     populateTable(contactInfo);
   });
+  searchDatabase(data);
+  sortDataBase(data);
 });
 
+//creates a new contact
 createContactButton.addEventListener('click', () => {
-  console.log('hi');
-
   for (let rep = 0; rep < contactListHeaders.length; rep++) {
     let contactListHeadersIDs = contactListHeaders[rep].id;
     buttonCheck = document.getElementById(`${contactListHeadersIDs}`);
@@ -192,5 +195,6 @@ createContactButton.addEventListener('click', () => {
     .then((response) => response.text())
     .then((data) => {
       console.log(data);
+      window.location.reload();
     });
 });
