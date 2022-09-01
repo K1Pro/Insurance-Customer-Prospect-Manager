@@ -34,6 +34,20 @@ li:hover {
   height: 38px;
   background: red;
 }
+
+#contactTasksTextArea {
+  resize: none;
+  overflow: hidden;
+  min-height: 62px;
+  max-height: 124px;
+}
+
+.form-control {
+  resize: none;
+  overflow: hidden;
+  min-height: 62px;
+  max-height: 124px;
+}
 /* .contactTasks {
   height: 100px;
 } */

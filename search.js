@@ -39,6 +39,10 @@ function dailyTaskListCurrentDate() {
   currentDateArray = currentDate.split('/');
   return currentDateArray;
 }
+function auto_grow(element) {
+  element.style.height = '5px';
+  element.style.height = element.scrollHeight + 'px';
+}
 let whichRenewal = '';
 let calEvtListMthDays = 0;
 let eventPlaceHolder = 0;
