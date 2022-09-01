@@ -43,8 +43,8 @@ li:hover {
 }
 
 .form-control {
-  resize: none;
-  overflow: hidden;
+  /* resize: none; */
+  /* overflow: hidden; */
   min-height: 62px;
   max-height: 124px;
 }

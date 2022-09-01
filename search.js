@@ -42,6 +42,7 @@ function dailyTaskListCurrentDate() {
 function auto_grow(element) {
   element.style.height = '5px';
   element.style.height = element.scrollHeight + 'px';
+  console.log(element.style.height);
 }
 let whichRenewal = '';
 let calEvtListMthDays = 0;
@@ -612,8 +613,10 @@ function renderContactTaskList(userData) {
     // li.type = 'text';
     li.id = `Event${element.id}${element.EventID}`;
     li.classList.add(`form-control`);
-    li.rows = 1;
+    li.rows = element.Description.length / 100 + 1;
+    console.log(element.Description.length / 100 + 1);
     li.value = element.Description;
+
     inputDiv.appendChild(li);
     document
       .getElementById(`Event${element.id}${element.EventID}`)
