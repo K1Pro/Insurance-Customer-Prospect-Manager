@@ -1,5 +1,5 @@
 'use strict';
-const ContactsURL = 'http://192.168.54.22:4000/contacts';
+import { ContactsURL } from './variables.js';
 let BartDate = new Date();
 // prettier-ignore
 const bartsMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec',];
